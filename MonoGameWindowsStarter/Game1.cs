@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MonoGameWindowsStarter
 {
@@ -11,6 +12,9 @@ namespace MonoGameWindowsStarter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        public Grid Grid;
+        public Ship Ship;
 
         public Game1()
         {
@@ -26,8 +30,28 @@ namespace MonoGameWindowsStarter
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            Config.Initialize();
 
+            graphics.PreferredBackBufferWidth = Config.GAME_WIDTH;
+            graphics.PreferredBackBufferHeight = Config.GAME_HEIGHT;
+            graphics.ApplyChanges();
+
+            Grid = new Grid(Config.GRID_COUNT_X, Config.GRID_COUNT_Y);
+            Grid.Initialize(Config.GRID_DESTINATION);
+
+            Ship = new Ship();
+            Ship.Initialize(Config.COMPONENTS);
+
+            /*
+            Rectangle loc = new Rectangle(Config.PRIMARY_BUTTON_X, Config.PRIMARY_BUTTON_Y, Config.PRIMARY_BUTTON_WIDTH, Config.PRIMARY_BUTTON_HEIGHT);
+            BuildModeButton = new Button(loc, "Build Mode", Color.ForestGreen);
+
+            loc.Y -= 200;
+            HealthBar = new ProgressBar(loc, Color.DarkGray, Color.LightYellow, "Test Text");
+            HealthBar.Initialize();
+            */
+
+            this.IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -37,10 +61,30 @@ namespace MonoGameWindowsStarter
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            Texture2D tileTexture = Content.Load<Texture2D>("Tile");
+            Grid.LoadContent(tileTexture);
+
+            Dictionary<Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
+            //Texture2D componentTexture = Content.Load<Texture2D>("Component");
+            //textures.Add(Component.Component_Type.Generic, componentTexture);
+            Texture2D weaponTexture = Content.Load<Texture2D>("Component_Weapon");
+            textures.Add(Component.Component_Type.Weapon, weaponTexture);
+            Texture2D structureTexture = Content.Load<Texture2D>("Structure");
+            textures.Add(Component.Component_Type.Structure, structureTexture);
+
+            /*
+            Texture2D buttonTexture = Content.Load<Texture2D>("Button");
+            SpriteFont font = Content.Load<SpriteFont>("DebugFont");
+            BuildModeButton.LoadContent(font, buttonTexture);
+
+            Texture2D barTexture = Content.Load<Texture2D>("Progress_Bar");
+            Texture2D pixel = Content.Load<Texture2D>("pixel");
+            HealthBar.LoadContent(barTexture, pixel, pixel, font);
+            */
+
+            Ship.LoadContent(textures);
         }
 
         /// <summary>
@@ -49,7 +93,7 @@ namespace MonoGameWindowsStarter
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
         /// <summary>
@@ -62,7 +106,35 @@ namespace MonoGameWindowsStarter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            if(Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                int x = Mouse.GetState().X;
+                int y = Mouse.GetState().Y;
+                if(Grid.PixelToTile(x, y, out int tileX, out int tileY))
+                {
+                    Component found = null;
+                    foreach(Component c in Ship.GetComponents())
+                    {
+                        if(c.X == tileX && c.Y == tileY)
+                        {
+                            found = c;
+                            break;
+                        }
+                    }
+                    if(found == null)
+                    {
+                        Component newComponent = new WeaponComponent(tileX, tileY, Config.COMPONENT_WEAPON_COLOR);
+                        Ship.AddComponent(newComponent);
+                    }
+                }
+            }
+
+            /*
+            HealthBar.Update((1000 - frame) / 1000f);
+            frame++;
+            if (frame > 1000)
+                frame = 0;
+            */
 
             base.Update(gameTime);
         }
@@ -73,9 +145,17 @@ namespace MonoGameWindowsStarter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Config.BACKGROUND_COLOR);
 
-            // TODO: Add your drawing code here
+            Grid.Draw(spriteBatch);
+
+            Ship.Draw(spriteBatch, Grid.Info);
+
+            /*
+            BuildModeButton.Draw(spriteBatch);
+
+            HealthBar.Draw(spriteBatch);
+            */
 
             base.Draw(gameTime);
         }
