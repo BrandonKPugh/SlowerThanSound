@@ -52,6 +52,8 @@
     <Compile Include="RenderHelper.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteSheet.cs" />
     <Compile Include="StructureComponent.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="WeaponComponent.cs" />
