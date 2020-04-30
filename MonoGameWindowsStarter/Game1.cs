@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameWindowsStarter.States;
 using System.Collections.Generic;
 
 namespace MonoGameWindowsStarter
@@ -12,6 +13,15 @@ namespace MonoGameWindowsStarter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        private State _currentState;
+
+        private State _nextState;
+
+        public void ChangeState(State state)
+        {
+            _nextState = state;
+        }
 
         public Grid Grid;
         public Ship Ship;
@@ -90,6 +100,8 @@ namespace MonoGameWindowsStarter
             //*/
 
             Ship.LoadContent(textures);
+
+            _currentState = new MenuState(this, graphics.GraphicsDevice, Content);
         }
 
         /// <summary>
@@ -141,6 +153,17 @@ namespace MonoGameWindowsStarter
                 frame = 0;
             //*/
 
+            if (_nextState != null)
+            {
+                _currentState = _nextState;
+
+                _nextState = null;
+            }
+
+            _currentState.Update(gameTime);
+
+            _currentState.PostUpdate(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -155,6 +178,8 @@ namespace MonoGameWindowsStarter
             Grid.Draw(spriteBatch);
 
             Ship.Draw(spriteBatch, Grid.Info);
+
+            _currentState.Draw(gameTime, spriteBatch);
 
             //*
             BuildModeButton.Draw(spriteBatch);

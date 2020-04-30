@@ -44,8 +44,10 @@
     <Compile Include="Button.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Controls\Button.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="ModeState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +56,9 @@
     <Compile Include="Ship.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteSheet.cs" />
+    <Compile Include="States\GameState.cs" />
+    <Compile Include="States\MenuState.cs" />
+    <Compile Include="States\State.cs" />
     <Compile Include="StructureComponent.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="WeaponComponent.cs" />
