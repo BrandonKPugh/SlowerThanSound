@@ -9,11 +9,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameWindowsStarter.States
 {
-    public class MenuState : State
+    public class MainMenuState : State
     {
         private List<Controls.Button> _components;
 
-        public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
+        public MainMenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
             var buttonTexture = _content.Load<Texture2D>("Button");

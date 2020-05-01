@@ -57,7 +57,8 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteSheet.cs" />
     <Compile Include="States\GameState.cs" />
-    <Compile Include="States\MenuState.cs" />
+    <Compile Include="States\PauseState.cs" />
+    <Compile Include="States\MainMenuState.cs" />
     <Compile Include="States\State.cs" />
     <Compile Include="StructureComponent.cs" />
     <Compile Include="Tile.cs" />

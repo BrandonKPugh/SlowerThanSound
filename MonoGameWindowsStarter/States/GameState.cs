@@ -23,6 +23,7 @@ namespace MonoGameWindowsStarter.States
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
+
             Grid = new Grid(Config.GRID_COUNT_X, Config.GRID_COUNT_Y);
             Grid.Initialize(Config.GRID_DESTINATION);
 
@@ -79,6 +80,9 @@ namespace MonoGameWindowsStarter.States
 
         public override void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                _game.ChangeState(new PauseState(_game, _graphicsDevice, _content, this));
+
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 int x = Mouse.GetState().X;
