@@ -62,9 +62,24 @@ namespace MonoGameWindowsStarter.Spaceship
         }
 
         // Loops through all components on the ship and calls Draw() on each one
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, ModeState.State currentState)
         {
-            Grid.Draw(spriteBatch);
+            switch(currentState)
+            {
+                case ModeState.State.Build:
+                    {
+                        Grid.Draw(spriteBatch);
+                        break;
+                    }
+                case ModeState.State.Combat:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp);
             foreach (Component component in Components)

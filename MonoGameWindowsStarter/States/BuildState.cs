@@ -9,20 +9,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGameWindowsStarter.Controls;
 
 namespace MonoGameWindowsStarter.States
 {
     class BuildState : State
     {
         public Ship Ship;
+        private List<UI_Component> _uicomponents;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
+            Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
+            SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
+
+            Button CombatModeButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.BUILDMODE_COMBATMODE,
+            };
+
+            CombatModeButton.Click += CombatModeButton_Click;
+
+            TextBox BuildModeTitle = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.BUILDMODE_TITLE,
+            };
+
+            _uicomponents = new List<UI_Component>()
+            {
+                CombatModeButton,
+                BuildModeTitle
+            };
+
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Ship.Draw(spriteBatch);
+            spriteBatch.Begin();
+
+            foreach (var component in _uicomponents)
+                component.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
+            Ship.Draw(spriteBatch, ModeState.State.Build);
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -58,6 +87,13 @@ namespace MonoGameWindowsStarter.States
                     }
                 }
             }
+            foreach (var component in _uicomponents)
+                component.Update(gameTime);
+        }
+
+        private void CombatModeButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content, Ship));
         }
     }
 }
