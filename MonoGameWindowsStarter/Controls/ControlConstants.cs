@@ -59,15 +59,27 @@ namespace MonoGameWindowsStarter.Controls
         {
             private float x, y, width, height;
             private Color color;
-            private int weight;
-            public BORDERBOX_INFO(int weight, Color color, float x_percent, float y_percent, float width_percent, float height_percent)
+            private int weight, padding;
+            public BORDERBOX_INFO(int penWeight, Color color, float x_percent, float y_percent, float width_percent, float height_percent, int padding)
             {
                 this.x = x_percent;
                 this.y = y_percent;
                 this.width = width_percent;
                 this.height = height_percent;
-                this.weight = weight;
+                this.weight = penWeight;
                 this.color = color;
+                this.padding = padding;
+            }
+
+            public BORDERBOX_INFO(int penWeight, Color color, int padding)
+            {
+                this.x = 0;
+                this.y = 0;
+                this.width = 0;
+                this.height = 0;
+                this.weight = penWeight;
+                this.color = color;
+                this.padding = padding;
             }
             public int X { get { return (int)(this.x * Config.GAME_WIDTH); } }
             public int Y { get { return (int)(this.y * Config.GAME_HEIGHT); } }
@@ -75,6 +87,7 @@ namespace MonoGameWindowsStarter.Controls
             public int Height { get { return (int)(this.height * Config.GAME_HEIGHT); } }
             public int Weight { get { return weight; } }
             public Color Color { get { return color; } }
+            public int Padding { get { return padding; } }
         }
 
         public const string BUTTON_TEXTURE = "Button";
@@ -107,6 +120,9 @@ namespace MonoGameWindowsStarter.Controls
 
         public static BUTTON_INFO COMBATMODE_BUILDMODE = new BUTTON_INFO("Build Mode", 0.625f, 0.775f, 0.25f, 0.125f);
         public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.125f);
+        // BORDERBOX_INFO(penWeight, color, padding)
+        // Position/size is later set using BorderBox.SetPosition() so that it is aligned with the grid.
+        public static BORDERBOX_INFO COMBATMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
 
 
         #endregion
@@ -115,7 +131,9 @@ namespace MonoGameWindowsStarter.Controls
 
         public static BUTTON_INFO BUILDMODE_COMBATMODE = new BUTTON_INFO("Combat Mode", 0.625f, 0.775f, 0.25f, 0.125f);
         public static TEXTBOX_INFO BUILDMODE_TITLE = new TEXTBOX_INFO("Build Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.125f);
-        public static BORDERBOX_INFO BUILDMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, .05f, .05f, .50625f, .9f);
+        // BORDERBOX_INFO(penWeight, color, padding)
+        // Position/size is later set using BorderBox.SetPosition() so that it is aligned with the grid.
+        public static BORDERBOX_INFO BUILDMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
 
         #endregion
 

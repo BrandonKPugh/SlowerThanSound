@@ -38,7 +38,7 @@ namespace MonoGameWindowsStarter.Spaceship
         }
 
         // GRID_INFO(tilesWide, tilesHigh, x, y, width, height);
-        public static GRID_INFO SHIP_GRID = new GRID_INFO(12, 12, .05f, .05f, .50625f, .9f);
+        public static GRID_INFO SHIP_GRID = new GRID_INFO(15, 15, .05f, .05f, .50625f, .9f);
 
         //      Color of the lines on the grid (the tile centers are *currently* transparent)
         public static Color GRID_COLOR = new Color(30, 30, 30);

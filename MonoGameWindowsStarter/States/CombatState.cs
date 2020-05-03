@@ -29,6 +29,7 @@ namespace MonoGameWindowsStarter.States
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D tileTexture = content.Load<Texture2D>("Tile");
+            Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
             Dictionary<Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
             Texture2D weaponTexture = content.Load<Texture2D>("Component_Weapon");
@@ -48,11 +49,19 @@ namespace MonoGameWindowsStarter.States
                 TextBoxInfo = ControlConstants.COMBATMODE_TITLE,
             };
 
+            BorderBox GridBox = new BorderBox(pixelTexture)
+            {
+                BorderBoxInfo = ControlConstants.BUILDMODE_GRIDBOX
+            };
+            GridBox.SetPosition(Ship.Grid.Info.GridRectangle, ControlConstants.BUILDMODE_GRIDBOX.Padding);
+
             _uicomponents = new List<UI_Component>()
             {
                 BuildModeButton,
                 CombatModeTitle,
+                GridBox
             };
+
 
             Ship.LoadContent(textures, tileTexture);
             this.Ship = ship;
