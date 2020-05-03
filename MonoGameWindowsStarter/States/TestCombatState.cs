@@ -29,8 +29,8 @@ namespace MonoGameWindowsStarter.States
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            PlayerShip.Draw(spriteBatch);
-            EnemyShip.Draw(spriteBatch);
+            PlayerShip.Draw(spriteBatch, ModeState.State.Combat);
+            EnemyShip.Draw(spriteBatch, ModeState.State.Combat);
         }
 
         public override void PostUpdate(GameTime gameTime)
