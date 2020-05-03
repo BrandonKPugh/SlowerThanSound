@@ -18,7 +18,7 @@ namespace MonoGameWindowsStarter.States
         public Spaceship.Ship Ship;
         private List<UI_Component> _uicomponents;
 
-        public CombatState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
+        public CombatState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship)
           : base(game, graphicsDevice, content)
         {
             ShipConstants.Initialize();
@@ -55,6 +55,7 @@ namespace MonoGameWindowsStarter.States
             };
 
             Ship.LoadContent(textures, tileTexture);
+            this.Ship = ship;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
