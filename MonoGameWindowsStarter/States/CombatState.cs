@@ -110,7 +110,7 @@ namespace MonoGameWindowsStarter.States
         }
         private void BuildModeButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new BuildState(_game, _graphicsDevice, _content));
+            _game.ChangeState(new BuildState(_game, _graphicsDevice, _content, Ship));
         }
     }
 }

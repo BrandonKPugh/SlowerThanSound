@@ -9,12 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGameWindowsStarter.Controls;
 
 namespace MonoGameWindowsStarter.States
 {
     class BuildState : State
     {
         public Ship Ship;
+        private List<UI_Component> _uicomponents;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -49,12 +51,12 @@ namespace MonoGameWindowsStarter.States
                 component.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-            Ship.Draw(spriteBatch);
+            Ship.Draw(spriteBatch, ModeState.State.Build);
         }
 
         public override void PostUpdate(GameTime gameTime)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void Update(GameTime gameTime)
@@ -91,7 +93,7 @@ namespace MonoGameWindowsStarter.States
 
         private void CombatModeButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content));
+            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content, Ship));
         }
     }
 }
