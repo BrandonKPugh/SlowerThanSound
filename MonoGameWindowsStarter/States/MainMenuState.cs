@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameWindowsStarter.Components;
 using MonoGameWindowsStarter.Controls;
+using MonoGameWindowsStarter.Spaceship;
 
 namespace MonoGameWindowsStarter.States
 {
@@ -71,7 +73,25 @@ namespace MonoGameWindowsStarter.States
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content));
+            ShipConstants.Initialize();
+
+            Ship Ship = new Ship();
+            Ship.Initialize(ShipConstants.COMPONENTS);
+
+            Texture2D tileTexture = _content.Load<Texture2D>("Tile");
+
+            Dictionary<Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
+            Texture2D weaponTexture = _content.Load<Texture2D>("Component_Weapon");
+            textures.Add(Component.Component_Type.Weapon, weaponTexture);
+            Texture2D structureTexture = _content.Load<Texture2D>("Structure");
+            textures.Add(Component.Component_Type.Structure, structureTexture);
+
+            //SpriteFont font = content.Load<SpriteFont>("DebugFont");
+            //Texture2D pixel = content.Load<Texture2D>("pixel");
+
+            Ship.LoadContent(textures, tileTexture);
+
+            _game.ChangeState(new BuildState(_game, _graphicsDevice, _content, Ship));
         }
 
         public override void PostUpdate(GameTime gameTime)

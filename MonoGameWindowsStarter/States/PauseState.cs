@@ -79,10 +79,6 @@ namespace MonoGameWindowsStarter.States
             Console.WriteLine("Load Game");
         }
 
-        private void NewGameButton_Click(object sender, EventArgs e)
-        {
-            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content));
-        }
         private void ResumeGameButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(state);
