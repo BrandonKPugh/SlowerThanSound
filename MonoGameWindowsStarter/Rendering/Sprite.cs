@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Rendering
 {
     /// <summary>
     /// A class representing a single sprite from a spritesheet

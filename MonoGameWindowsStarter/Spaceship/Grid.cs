@@ -6,23 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Spaceship
 {
     // Holds all of the Tiles that make up the grid structure
     public class Grid
     {
         // This struct is passed around so that other classes know where the grid is (for when we have camera movement)
+        
         public struct GridInfo
         {
             public Rectangle GridRectangle;
             public int TilesWide;
             public int TilesHigh;
-            public int TileWidth;
-            public int TileHeight;
+            public int TileWidth { get { return (int)(GridRectangle.Width / TilesWide); } }
+            public int TileHeight { get { return (int)(GridRectangle.Height / TilesHigh); } }
         }
+        
 
         // 2D List, Tiles[x][y]
-        public List<List<Tile>> Tiles;
+        //public List<List<Tile>> Tiles;
 
         public GridInfo Info;
 
@@ -34,27 +36,17 @@ namespace MonoGameWindowsStarter
         public int Center_Y { get { return Info.TilesHigh / 2; } }
 
         // countX and countY to determine how many tiles to create
-        public Grid(int countX, int countY)
+        public Grid(ShipConstants.GRID_INFO initial)
         {
-            Info.TilesWide = countX;
-            Info.TilesHigh = countY;
+            Info.TilesWide = initial.TilesWide;
+            Info.TilesHigh = initial.TilesHigh;
+            Info.GridRectangle = initial.Rect;
         }
 
         // Set the location/size of the grid
-        public void Initialize(Rectangle dest)
+        public void Initialize()
         {
-            SetLocation(dest);
-            Tiles = new List<List<Tile>>();
-            // Create all of the tiles 
-            //      (currently each tile holds no data and isn't even used for rendering)
-            for (int x = 0; x < Info.TilesWide; x++)
-            {
-                Tiles.Add(new List<Tile>());
-                for (int y = 0; y < Info.TilesHigh; y++)
-                {
-                    Tiles[x].Add(new Tile(x, y));
-                }
-            }
+
         }
 
         public void LoadContent(Texture2D tileTexture)
@@ -66,9 +58,6 @@ namespace MonoGameWindowsStarter
         public void SetLocation(Rectangle dest)
         {
             Info.GridRectangle = dest;
-
-            Info.TileWidth = dest.Width / Info.TilesWide;
-            Info.TileHeight = dest.Height / Info.TilesHigh;
         }
 
         // Uses the grid's location and size to render each tile.
@@ -81,7 +70,7 @@ namespace MonoGameWindowsStarter
                 for(int y = 0; y < Info.TilesHigh; y++)
                 {
                     Rectangle newDest = new Rectangle(Info.GridRectangle.X + Info.TileWidth * x, Info.GridRectangle.Y + Info.TileHeight * y, Info.TileWidth, Info.TileHeight);
-                    spriteBatch.Draw(TileTexture, newDest, Config.GRID_COLOR);
+                    spriteBatch.Draw(TileTexture, newDest, ShipConstants.GRID_COLOR);
                 }
             }
 

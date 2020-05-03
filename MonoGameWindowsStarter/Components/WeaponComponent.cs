@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Components
 {
     // Inherits from abstract Component class
     public class WeaponComponent : Component

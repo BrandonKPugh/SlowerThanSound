@@ -23,7 +23,6 @@ namespace MonoGameWindowsStarter
             _nextState = state;
         }
 
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -38,8 +37,6 @@ namespace MonoGameWindowsStarter
         /// </summary>
         protected override void Initialize()
         {
-            Config.Initialize();
-
             graphics.PreferredBackBufferWidth = Config.GAME_WIDTH;
             graphics.PreferredBackBufferHeight = Config.GAME_HEIGHT;
             graphics.ApplyChanges();

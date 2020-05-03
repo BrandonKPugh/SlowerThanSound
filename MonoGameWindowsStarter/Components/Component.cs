@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGameWindowsStarter.Spaceship;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Components
 {
     // abstract component class that all other components will inherit from
     public abstract class Component
@@ -42,7 +43,7 @@ namespace MonoGameWindowsStarter
             this.Y = y;
             this.Color = color;
             // For now, grabs the generic health value
-            this.Health = Config.GENERIC_COMPONENT_HEALTH;
+            this.Health = ComponentConstants.GENERIC_COMPONENT_HEALTH;
         }
 
         public abstract void Initialize();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Rendering
 {
     /// <summary>
     /// A class representing a SpriteSheet

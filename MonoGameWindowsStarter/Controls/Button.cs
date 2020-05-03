@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MonoGameWindowsStarter.Controls
 {
-    public class Button
+    public class Button : UI_Component
     {
         #region Fields
 
@@ -33,13 +33,13 @@ namespace MonoGameWindowsStarter.Controls
 
         public Color PenColour { get; set; }
 
-        public Vector2 Position { get; set; }
+        public ControlConstants.BUTTON_INFO ButtonInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Text = value.Text; } }
 
-        public Rectangle Rectangle
+        public Rectangle Location
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
             }
         }
 
@@ -55,28 +55,25 @@ namespace MonoGameWindowsStarter.Controls
 
             _font = font;
 
-            PenColour = Color.Black;
+            PenColour = ControlConstants.BUTTON_PENCOLOR;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var colour = Color.White;
 
             if (_isHovering)
-                colour = Color.Gray;
+                colour = ControlConstants.BUTTON_HOVERING;
 
-            spriteBatch.Draw(_texture, Rectangle, colour);
+            spriteBatch.Draw(_texture, Location, colour);
 
             if (!string.IsNullOrEmpty(Text))
             {
-                var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
-                var y = (Rectangle.Y + (Rectangle.Height / 2)) - (_font.MeasureString(Text).Y / 2);
-
-                spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColour);
+                CenterString(Text, _font, Position, Size, spriteBatch, ControlConstants.BUTTON_PENCOLOR);
             }
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();
@@ -85,7 +82,7 @@ namespace MonoGameWindowsStarter.Controls
 
             _isHovering = false;
 
-            if (mouseRectangle.Intersects(Rectangle))
+            if (mouseRectangle.Intersects(Location))
             {
                 _isHovering = true;
 

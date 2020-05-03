@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Components
 {
     public class StructureComponent : Component
     {

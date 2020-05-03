@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGameWindowsStarter.Components;
+using MonoGameWindowsStarter.Spaceship;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Spaceship
 {
     public class Ship
     {
@@ -14,6 +16,8 @@ namespace MonoGameWindowsStarter
         private List<Component> Components;
         // Dictionary for component textures
         private Dictionary<Component.Component_Type, Texture2D> Textures;
+
+        public Grid Grid;
 
         public Ship()
         {
@@ -29,7 +33,10 @@ namespace MonoGameWindowsStarter
         public void Initialize(List<Component> components)
         {
             Initialize();
+
             Textures = new Dictionary<Component.Component_Type, Texture2D>();
+
+            Grid = new Grid(ShipConstants.SHIP_GRID);
 
             foreach (Component a in components)
             {
@@ -38,10 +45,12 @@ namespace MonoGameWindowsStarter
         }
 
         // Load the textures for all components on the ship
-        public void LoadContent(Dictionary<Component.Component_Type, Texture2D> textures)
+        public void LoadContent(Dictionary<Component.Component_Type, Texture2D> textures, Texture2D TileTexture)
         {
+            Grid.LoadContent(TileTexture);
+
             // Loop through each texture that was just passed in and add it to the ship's dictionary
-            foreach(KeyValuePair<Component.Component_Type, Texture2D> pair in textures)
+            foreach (KeyValuePair<Component.Component_Type, Texture2D> pair in textures)
             {
                 Textures.Add(pair.Key, pair.Value);
             }
@@ -53,13 +62,15 @@ namespace MonoGameWindowsStarter
         }
 
         // Loops through all components on the ship and calls Draw() on each one
-        public void Draw(SpriteBatch spriteBatch, Grid.GridInfo gridInfo)
+        public void Draw(SpriteBatch spriteBatch)
         {
+            Grid.Draw(spriteBatch);
+
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp);
             foreach (Component component in Components)
             {
                 // Passes gridInfo so that if/when the grid is altered, the components will be rendered correctly
-                component.Draw(spriteBatch, gridInfo);
+                component.Draw(spriteBatch, Grid.Info);
             }
             spriteBatch.End();
         }

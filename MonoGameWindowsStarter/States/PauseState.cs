@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameWindowsStarter.Controls;
 
 namespace MonoGameWindowsStarter.States
 {
@@ -23,32 +24,28 @@ namespace MonoGameWindowsStarter.States
 
             var resumeGameButton = new Controls.Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
-                Text = "Resume Game",
+                ButtonInfo = ControlConstants.PAUSEMENU_RESUMEGAME,
             };
 
             resumeGameButton.Click += ResumeGameButton_Click;
 
             var saveGameButton = new Controls.Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
-                Text = "Save Game",
+                ButtonInfo = ControlConstants.PAUSEMENU_SAVEGAME,
             };
 
             saveGameButton.Click += SaveGameButton_Click;
 
             var loadGameButton = new Controls.Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
-                Text = "Load Game",
+                ButtonInfo = ControlConstants.PAUSEMENU_LOADGAME,
             };
 
             loadGameButton.Click += LoadGameButton_Click;
 
             var quitGameButton = new Controls.Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 350),
-                Text = "Quit Game",
+                ButtonInfo = ControlConstants.PAUSEMENU_QUITGAME,
             };
 
             quitGameButton.Click += QuitGameButton_Click;
@@ -74,7 +71,7 @@ namespace MonoGameWindowsStarter.States
 
         private void SaveGameButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Load Game");
+            Console.WriteLine("Save Game");
         }
 
         private void LoadGameButton_Click(object sender, EventArgs e)
@@ -84,7 +81,7 @@ namespace MonoGameWindowsStarter.States
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content));
         }
         private void ResumeGameButton_Click(object sender, EventArgs e)
         {

@@ -1,19 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameWindowsStarter.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameWindowsStarter
+namespace MonoGameWindowsStarter.Controls
 {
     // Use to create/render a progress bar (i.e. health bar, ammo bar)
-    public class ProgressBar
+    public class ProgressBar : UI_Component
     {
         // Between 0 and 1, represents the progress
         //      Moves from left (0) to right (1)
-        public float Value;
+        private float _value;
+        public float Value
+        { 
+            get { return _value; }
+            set { _value = value;
+                if (_value > 1f)
+                    _value = 1f;
+                if (_value < 0f)
+                    _value = 0f; }
+        }
 
         private Rectangle Location;
 
@@ -59,17 +69,12 @@ namespace MonoGameWindowsStarter
             this.Font = font;
         }
 
-        // value from 0 to 1 represents the progress
-        public void Update(float value)
+        public override void Update(GameTime gameTime)
         {
-            Value = value;
-            if (Value > 1f)
-                Value = 1f;
-            if (Value < 0f)
-                Value = 0f;
+
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
 
@@ -77,7 +82,7 @@ namespace MonoGameWindowsStarter
             spriteBatch.Draw(BackgroundTexture, Location, BackgroundColor);
             spriteBatch.Draw(ProgressionTexture, progressionDest, ProgressionColor);
             spriteBatch.Draw(BarTexture, Location, Color.Black);
-            RenderHelper.CenterString(Text, Font, Location, spriteBatch);
+            Button.CenterString(Text, Font, Position, Size, spriteBatch, ControlConstants.BAR_PENCOLOR);
 
             spriteBatch.End();
 

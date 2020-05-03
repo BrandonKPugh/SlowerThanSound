@@ -6,49 +6,52 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameWindowsStarter.Controls;
 
 namespace MonoGameWindowsStarter.States
 {
     public class MainMenuState : State
     {
-        private List<Controls.Button> _components;
+        private List<UI_Component> _components;
 
-        public MainMenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-          : base(game, graphicsDevice, content)
+        public MainMenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
         {
-            var buttonTexture = _content.Load<Texture2D>("Button");
-            var buttonFont = _content.Load<SpriteFont>("DebugFont");
+            var buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
+            var buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
 
-            var newGameButton = new Controls.Button(buttonTexture, buttonFont)
+            var menuTextBox = new TextBox("Slower Than Sound", buttonFont)
             {
-                Position = new Vector2(300, 200),
-                Text = "New Game",
+                TextBoxInfo = ControlConstants.MAINMENU_TITLE,
+            };
+
+            var newGameButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.MAINMENU_NEWGAME,
             };
 
             newGameButton.Click += NewGameButton_Click;
 
-            var loadGameButton = new Controls.Button(buttonTexture, buttonFont)
+            var loadGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
-                Text = "Load Game",
+                ButtonInfo = ControlConstants.MAINMENU_LOADGAME,
             };
 
             loadGameButton.Click += LoadGameButton_Click;
 
-            var quitGameButton = new Controls.Button(buttonTexture, buttonFont)
+            var quitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
-                Text = "Quit Game",
+                ButtonInfo = ControlConstants.MAINMENU_QUITGAME,
             };
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Controls.Button>()
-      {
-        newGameButton,
-        loadGameButton,
-        quitGameButton,
-      };
+            _components = new List<UI_Component>()
+            {
+                menuTextBox,
+                newGameButton,
+                loadGameButton,
+                quitGameButton,
+            };
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -68,7 +71,7 @@ namespace MonoGameWindowsStarter.States
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            _game.ChangeState(new CombatState(_game, _graphicsDevice, _content));
         }
 
         public override void PostUpdate(GameTime gameTime)
