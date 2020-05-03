@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGameWindowsStarter.Spaceship;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,28 @@ namespace MonoGameWindowsStarter.Controls
             public Color Color { get { return color; } }
         }
 
+        public struct BORDERBOX_INFO
+        {
+            private float x, y, width, height;
+            private Color color;
+            private int weight;
+            public BORDERBOX_INFO(int weight, Color color, float x_percent, float y_percent, float width_percent, float height_percent)
+            {
+                this.x = x_percent;
+                this.y = y_percent;
+                this.width = width_percent;
+                this.height = height_percent;
+                this.weight = weight;
+                this.color = color;
+            }
+            public int X { get { return (int)(this.x * Config.GAME_WIDTH); } }
+            public int Y { get { return (int)(this.y * Config.GAME_HEIGHT); } }
+            public int Width { get { return (int)(this.width * Config.GAME_WIDTH); } }
+            public int Height { get { return (int)(this.height * Config.GAME_HEIGHT); } }
+            public int Weight { get { return weight; } }
+            public Color Color { get { return color; } }
+        }
+
         public const string BUTTON_TEXTURE = "Button";
         public const string BUTTON_FONT = "DebugFont";
         public static Color BUTTON_PENCOLOR = Color.Black;
@@ -64,7 +87,7 @@ namespace MonoGameWindowsStarter.Controls
 
         #region MAINMENU
 
-        public static TEXTBOX_INFO MAINMENU_TITLE = new TEXTBOX_INFO("Slower Than Sound", Color.Blue, 0.3f, 0.05f, 0.4f, 0.2f);
+        public static TEXTBOX_INFO MAINMENU_TITLE = new TEXTBOX_INFO("Slower Than Sound", Color.LightSkyBlue, 0.3f, 0.05f, 0.4f, 0.2f);
         public static BUTTON_INFO MAINMENU_NEWGAME = new BUTTON_INFO("New Game", 0.35f, 0.3f, 0.3f, 0.15f);
         public static BUTTON_INFO MAINMENU_LOADGAME = new BUTTON_INFO("Load Game", 0.35f, 0.5f, 0.3f, 0.15f);
         public static BUTTON_INFO MAINMENU_QUITGAME = new BUTTON_INFO("Quit Game", 0.35f, 0.7f, 0.3f, 0.15f);
@@ -83,13 +106,16 @@ namespace MonoGameWindowsStarter.Controls
         #region COMBATMODE
 
         public static BUTTON_INFO COMBATMODE_BUILDMODE = new BUTTON_INFO("Build Mode", 0.625f, 0.775f, 0.25f, 0.125f);
+        public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.125f);
 
 
         #endregion
 
         #region BUILDMODE
 
-
+        public static BUTTON_INFO BUILDMODE_COMBATMODE = new BUTTON_INFO("Combat Mode", 0.625f, 0.775f, 0.25f, 0.125f);
+        public static TEXTBOX_INFO BUILDMODE_TITLE = new TEXTBOX_INFO("Build Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.125f);
+        public static BORDERBOX_INFO BUILDMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, .05f, .05f, .50625f, .9f);
 
         #endregion
 

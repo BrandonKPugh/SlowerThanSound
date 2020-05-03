@@ -19,7 +19,7 @@ namespace MonoGameWindowsStarter.States
             var buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             var buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
 
-            var menuTextBox = new TextBox("Slower Than Sound", buttonFont)
+            var menuTextBox = new TextBox(buttonFont)
             {
                 TextBoxInfo = ControlConstants.MAINMENU_TITLE,
             };

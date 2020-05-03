@@ -16,7 +16,7 @@ namespace MonoGameWindowsStarter
         {
             Main,
             Build,
-            Battle
+            Combat
         }
         
 

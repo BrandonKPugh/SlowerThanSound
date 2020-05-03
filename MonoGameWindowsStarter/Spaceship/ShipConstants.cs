@@ -37,7 +37,8 @@ namespace MonoGameWindowsStarter.Spaceship
             public Rectangle Rect { get { return new Rectangle(X, Y, Width, Height); } }
         }
 
-        public static GRID_INFO SHIP_GRID = new GRID_INFO(20, 20, .05f, .05f, .50625f, .9f);
+        // GRID_INFO(tilesWide, tilesHigh, x, y, width, height);
+        public static GRID_INFO SHIP_GRID = new GRID_INFO(12, 12, .05f, .05f, .50625f, .9f);
 
         //      Color of the lines on the grid (the tile centers are *currently* transparent)
         public static Color GRID_COLOR = new Color(30, 30, 30);

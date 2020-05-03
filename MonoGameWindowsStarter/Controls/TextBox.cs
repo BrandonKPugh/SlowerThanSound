@@ -12,15 +12,13 @@ namespace MonoGameWindowsStarter.Controls
     {
         public string Text { get; set; }
         public Color Color { get; set; }
-        public ControlConstants.TEXTBOX_INFO TextBoxInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Text = value.Text; } }
+        public ControlConstants.TEXTBOX_INFO TextBoxInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Text = value.Text; Color = value.Color; } }
 
         private SpriteFont _font;
 
-        public TextBox(string text, SpriteFont font)
+        public TextBox(SpriteFont font)
         {
-            this.Text = text;
             this._font = font;
-            this.Color = Color.White;
         }
 
         public void Initialize()

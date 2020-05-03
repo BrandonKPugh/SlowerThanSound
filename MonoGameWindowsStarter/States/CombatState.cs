@@ -16,6 +16,7 @@ namespace MonoGameWindowsStarter.States
     public class CombatState : State
     {
         public Spaceship.Ship Ship;
+        private List<UI_Component> _uicomponents;
 
         public CombatState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -25,6 +26,8 @@ namespace MonoGameWindowsStarter.States
             Ship = new Ship();
             Ship.Initialize(ShipConstants.COMPONENTS);
 
+            Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
+            SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D tileTexture = content.Load<Texture2D>("Tile");
 
             Dictionary<Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
@@ -33,15 +36,37 @@ namespace MonoGameWindowsStarter.States
             Texture2D structureTexture = content.Load<Texture2D>("Structure");
             textures.Add(Component.Component_Type.Structure, structureTexture);
 
-            //SpriteFont font = content.Load<SpriteFont>("DebugFont");
-            //Texture2D pixel = content.Load<Texture2D>("pixel");
+            Button BuildModeButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_BUILDMODE,
+            };
+
+            BuildModeButton.Click += BuildModeButton_Click;
+
+            TextBox CombatModeTitle = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.COMBATMODE_TITLE,
+            };
+
+            _uicomponents = new List<UI_Component>()
+            {
+                BuildModeButton,
+                CombatModeTitle,
+            };
 
             Ship.LoadContent(textures, tileTexture);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Ship.Draw(spriteBatch);
+            Ship.Draw(spriteBatch, ModeState.State.Combat);
+
+            spriteBatch.Begin();
+
+            foreach (var component in _uicomponents)
+                component.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -53,6 +78,9 @@ namespace MonoGameWindowsStarter.States
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 _game.ChangeState(new PauseState(_game, _graphicsDevice, _content, this));
+
+            foreach (var component in _uicomponents)
+                component.Update(gameTime);
 
             /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
@@ -78,6 +106,10 @@ namespace MonoGameWindowsStarter.States
                 }
             }
             */
+        }
+        private void BuildModeButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new BuildState(_game, _graphicsDevice, _content));
         }
     }
 }

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentConstants.cs" />
+    <Compile Include="Controls\BorderBox.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\ControlConstants.cs" />
     <Compile Include="Controls\TextBox.cs" />
