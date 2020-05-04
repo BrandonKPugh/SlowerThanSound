@@ -49,5 +49,16 @@ namespace MonoGameWindowsStarter.Spaceship
         {
             return (x >= GridLocation.X && x < GridLocation.X + GridLocation.Width && y >= GridLocation.Y && y < GridLocation.Y + GridLocation.Height);
         }
+
+        public Rectangle GetArea()
+        {
+            return GridLocation;
+        }
+
+        public uint GetPriority()
+        {
+            //Debug value, will get value of each component and return the total value at some point
+            return 1;
+        }
     }
 }

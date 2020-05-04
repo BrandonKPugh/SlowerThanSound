@@ -20,6 +20,13 @@ namespace MonoGameWindowsStarter.AI
 
         public EnemyAI(Ship enemyShip, Ship playerShip)
         {
+
+        }
+
+        private void FireWeapon()
+        {
+            var priorityDict = _playerShip.GetRoomPriorities();
+            priorityDict.Max<uint>
         }
 
         public void Update(GameTime gameTime)

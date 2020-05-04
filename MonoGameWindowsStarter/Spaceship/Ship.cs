@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MonoGameWindowsStarter.Components;
 using MonoGameWindowsStarter.Spaceship;
+using Microsoft.Xna.Framework;
 
 namespace MonoGameWindowsStarter.Spaceship
 {
@@ -18,6 +19,8 @@ namespace MonoGameWindowsStarter.Spaceship
         private Dictionary<Component.Component_Type, Texture2D> Textures;
 
         public Grid Grid;
+
+        private List<Room> Rooms;
 
         public Ship()
         {
@@ -113,6 +116,17 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 throw new Exception("Component's texture was not found. ComponentType: " + component.ComponentType.ToString());
             }
+        }
+
+        public Dictionary<uint,Rectangle> GetRoomPriorities()
+        {
+            Dictionary<uint, Rectangle> priorityDict = new Dictionary<uint, Rectangle>();
+            foreach (Room room in Rooms){
+                var priority = room.GetPriority();
+                var rectangle = room.GetArea();
+                priorityDict.Add(priority, rectangle);
+            }
+            return priorityDict;
         }
     }
 }
