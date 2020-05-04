@@ -44,6 +44,27 @@ namespace MonoGameWindowsStarter.States
 
             BuildModeButton.Click += BuildModeButton_Click;
 
+            Button TargetStoragesButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_TARGETSTORAGES,
+            };
+
+            TargetStoragesButton.Click += TargetStoragesButton_Click;
+
+            Button TargetWeaponsButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_TARGETWEAPONS,
+            };
+
+            TargetWeaponsButton.Click += TargetWeaponsButton_Click;
+
+            Button TargetPowerButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_TARGETPOWER,
+            };
+
+            TargetPowerButton.Click += TargetPowerButton_Click;
+
             TextBox CombatModeTitle = new TextBox(buttonFont)
             {
                 TextBoxInfo = ControlConstants.COMBATMODE_TITLE,
@@ -59,7 +80,10 @@ namespace MonoGameWindowsStarter.States
             {
                 BuildModeButton,
                 CombatModeTitle,
-                GridBox
+                GridBox,
+                TargetStoragesButton,
+                TargetWeaponsButton,
+                TargetPowerButton
             };
 
 
@@ -120,6 +144,21 @@ namespace MonoGameWindowsStarter.States
         private void BuildModeButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new BuildState(_game, _graphicsDevice, _content, Ship));
+        }
+
+        private void TargetStoragesButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TargetWeaponsButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TargetPowerButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

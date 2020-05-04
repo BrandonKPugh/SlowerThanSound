@@ -124,6 +124,9 @@ namespace MonoGameWindowsStarter.Controls
         // Position/size is later set using BorderBox.SetPosition() so that it is aligned with the grid.
         public static BORDERBOX_INFO COMBATMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
 
+        public static BUTTON_INFO COMBATMODE_TARGETSTORAGES = new BUTTON_INFO("Material Storage", 0.625f, 0.275f, 0.25f, 0.1f);
+        public static BUTTON_INFO COMBATMODE_TARGETWEAPONS = new BUTTON_INFO("Weapon Systems", 0.625f, 0.425f, 0.25f, 0.1f);
+        public static BUTTON_INFO COMBATMODE_TARGETPOWER = new BUTTON_INFO("Power Generation", 0.625f, 0.575f, 0.25f, 0.1f);
 
         #endregion
 
