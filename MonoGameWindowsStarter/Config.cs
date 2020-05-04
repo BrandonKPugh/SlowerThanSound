@@ -12,5 +12,7 @@ namespace MonoGameWindowsStarter
         public static int GAME_WIDTH = 1600;
         public static int GAME_HEIGHT = 900;
         public static Color BACKGROUND_COLOR = new Color(75, 75, 75);
+
+        public const string PIXEL_TEXTURE = "pixel";
     }
 }

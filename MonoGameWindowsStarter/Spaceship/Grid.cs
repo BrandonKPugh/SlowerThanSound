@@ -18,8 +18,21 @@ namespace MonoGameWindowsStarter.Spaceship
             public Rectangle GridRectangle;
             public int TilesWide;
             public int TilesHigh;
-            public int TileWidth { get { return (int)(GridRectangle.Width / TilesWide); } }
-            public int TileHeight { get { return (int)(GridRectangle.Height / TilesHigh); } }
+
+            public float TileWidth { get { return (float)GridRectangle.Width / TilesWide; } }
+            public float TileHeight { get { return (float)GridRectangle.Height / TilesHigh; } }
+
+            public Rectangle TileBounds(int X, int Y)
+            {
+                int x = (int)(X * ((float)GridRectangle.Width / TilesWide));
+                int y = (int)(Y * ((float)GridRectangle.Height / TilesHigh));
+                int w = ((int)((X + 1) * ((float)GridRectangle.Width / TilesWide))) - x;
+                int h = ((int)((Y + 1) * ((float)GridRectangle.Height / TilesHigh))) - y;
+
+                x += GridRectangle.X;
+                y += GridRectangle.Y;
+                return new Rectangle(x, y, w, h);
+            }
         }
         
 
@@ -69,8 +82,7 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 for(int y = 0; y < Info.TilesHigh; y++)
                 {
-                    Rectangle newDest = new Rectangle(Info.GridRectangle.X + Info.TileWidth * x, Info.GridRectangle.Y + Info.TileHeight * y, Info.TileWidth, Info.TileHeight);
-                    spriteBatch.Draw(TileTexture, newDest, ShipConstants.GRID_COLOR);
+                    spriteBatch.Draw(TileTexture, Info.TileBounds(x, y), ShipConstants.GRID_COLOR);
                 }
             }
 
@@ -84,8 +96,8 @@ namespace MonoGameWindowsStarter.Spaceship
         {
             if(pixelX >= Info.GridRectangle.X && pixelX < Info.GridRectangle.X + Info.GridRectangle.Width && pixelY >= Info.GridRectangle.Y && pixelY < Info.GridRectangle.Y + Info.GridRectangle.Height)
             {
-                tileX = (int)(pixelX - Info.GridRectangle.X) / Info.TileWidth;
-                tileY = (int)(pixelY - Info.GridRectangle.Y) / Info.TileHeight;
+                tileX = (int)((pixelX - Info.GridRectangle.X) / Info.TileWidth);
+                tileY = (int)((pixelY - Info.GridRectangle.Y) / Info.TileHeight);
                 return true;
             }
             else

@@ -29,6 +29,7 @@ namespace MonoGameWindowsStarter.States
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D tileTexture = content.Load<Texture2D>("Tile");
+            Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
             Dictionary<Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
             Texture2D weaponTexture = content.Load<Texture2D>("Component_Weapon");
@@ -43,16 +44,48 @@ namespace MonoGameWindowsStarter.States
 
             BuildModeButton.Click += BuildModeButton_Click;
 
+            Button TargetStoragesButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_TARGETSTORAGES,
+            };
+
+            TargetStoragesButton.Click += TargetStoragesButton_Click;
+
+            Button TargetWeaponsButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_TARGETWEAPONS,
+            };
+
+            TargetWeaponsButton.Click += TargetWeaponsButton_Click;
+
+            Button TargetPowerButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_TARGETPOWER,
+            };
+
+            TargetPowerButton.Click += TargetPowerButton_Click;
+
             TextBox CombatModeTitle = new TextBox(buttonFont)
             {
                 TextBoxInfo = ControlConstants.COMBATMODE_TITLE,
             };
 
+            BorderBox GridBox = new BorderBox(pixelTexture)
+            {
+                BorderBoxInfo = ControlConstants.BUILDMODE_GRIDBOX
+            };
+            GridBox.SetPosition(Ship.Grid.Info.GridRectangle, ControlConstants.BUILDMODE_GRIDBOX.Padding);
+
             _uicomponents = new List<UI_Component>()
             {
                 BuildModeButton,
                 CombatModeTitle,
+                GridBox,
+                TargetStoragesButton,
+                TargetWeaponsButton,
+                TargetPowerButton
             };
+
 
             Ship.LoadContent(textures, tileTexture);
             this.Ship = ship;
@@ -111,6 +144,21 @@ namespace MonoGameWindowsStarter.States
         private void BuildModeButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new BuildState(_game, _graphicsDevice, _content, Ship));
+        }
+
+        private void TargetStoragesButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TargetWeaponsButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TargetPowerButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

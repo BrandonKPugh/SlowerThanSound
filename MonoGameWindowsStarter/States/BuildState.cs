@@ -22,6 +22,7 @@ namespace MonoGameWindowsStarter.States
             this.Ship = ship;
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
+            Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
             Button CombatModeButton = new Button(buttonTexture, buttonFont)
             {
@@ -35,10 +36,18 @@ namespace MonoGameWindowsStarter.States
                 TextBoxInfo = ControlConstants.BUILDMODE_TITLE,
             };
 
+            BorderBox GridBox = new BorderBox(pixelTexture)
+            {
+                BorderBoxInfo = ControlConstants.BUILDMODE_GRIDBOX
+            };
+
+            GridBox.SetPosition(Ship.Grid.Info.GridRectangle, ControlConstants.BUILDMODE_GRIDBOX.Padding);
+
             _uicomponents = new List<UI_Component>()
             {
                 CombatModeButton,
-                BuildModeTitle
+                BuildModeTitle,
+                GridBox
             };
 
         }

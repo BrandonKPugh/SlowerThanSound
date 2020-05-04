@@ -71,14 +71,7 @@ namespace MonoGameWindowsStarter.Components
             }
             else
             {
-                // Calculates where it should go on the screen.
-                // Uses gridInfo to determine the size/location of the grid.
-                int xPos = gridInfo.GridRectangle.X + gridInfo.TileWidth * X;
-                int yPos = gridInfo.GridRectangle.Y + gridInfo.TileHeight * Y;
-                int xSize = gridInfo.TileWidth;
-                int ySize = gridInfo.TileHeight;
-                Rectangle dest = new Rectangle(xPos, yPos, xSize, ySize);
-                spriteBatch.Draw(Texture, dest, Color);
+                spriteBatch.Draw(Texture, gridInfo.TileBounds(X, Y), Color);
             }
         }
 
