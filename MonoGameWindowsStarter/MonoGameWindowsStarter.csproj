@@ -51,6 +51,7 @@
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Spaceship\Grid.cs" />
+    <Compile Include="Spaceship\Projectile.cs" />
     <Compile Include="States\BuildState.cs" />
     <Compile Include="ModeState.cs" />
     <Compile Include="Config.cs" />
