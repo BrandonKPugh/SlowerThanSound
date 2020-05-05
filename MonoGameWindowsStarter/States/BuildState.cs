@@ -31,6 +31,27 @@ namespace MonoGameWindowsStarter.States
 
             CombatModeButton.Click += CombatModeButton_Click;
 
+            Button ShipBuildButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.BUILDMODE_SHIPBUILD,
+            };
+
+            ShipBuildButton.Click += ShipBuildButton_Click;
+
+            Button ComponentBuildButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.BUILDMODE_COMPONENTBUILD,
+            };
+
+            ComponentBuildButton.Click += ComponentBuildButton_Click;
+
+            Button ResearchButton = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.BUILDMODE_RESEARCH,
+            };
+
+            ResearchButton.Click += ResearchButton_Click;
+
             TextBox BuildModeTitle = new TextBox(buttonFont)
             {
                 TextBoxInfo = ControlConstants.BUILDMODE_TITLE,
@@ -46,6 +67,9 @@ namespace MonoGameWindowsStarter.States
             _uicomponents = new List<UI_Component>()
             {
                 CombatModeButton,
+                ShipBuildButton,
+                ComponentBuildButton,
+                ResearchButton,
                 BuildModeTitle,
                 GridBox
             };
@@ -78,24 +102,36 @@ namespace MonoGameWindowsStarter.States
             {
                 int x = Mouse.GetState().X;
                 int y = Mouse.GetState().Y;
+
                 if (Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY))
                 {
-                    Component found = null;
-                    foreach (Component c in Ship.GetComponents())
+                    foreach (Room room in Ship.Rooms)
                     {
-                        if (c.X == tileX && c.Y == tileY)
+                        if (room.Contains(tileX,tileY))
                         {
-                            found = c;
+                            Component found = null;
+                            foreach (Component c in room.GetComponents())
+                            {
+                                if (c.X == tileX && c.Y == tileY)
+                                {
+                                    found = c;
+                                    break;
+                                }
+                            }
+                            if (found == null)
+                            {
+                                Component newComponent = new WeaponComponent(tileX, tileY, ComponentConstants.COMPONENT_WEAPON_COLOR);
+                                room.AddComponent(newComponent);
+                            }
                             break;
                         }
                     }
-                    if (found == null)
-                    {
-                        Component newComponent = new WeaponComponent(tileX, tileY, ComponentConstants.COMPONENT_WEAPON_COLOR);
-                        Ship.AddComponent(newComponent);
-                    }
+
+                    
                 }
             }
+
+
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
         }
@@ -103,6 +139,19 @@ namespace MonoGameWindowsStarter.States
         private void CombatModeButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new CombatState(_game, _graphicsDevice, _content, Ship));
+        }
+
+        private void ShipBuildButton_Click(object sender, EventArgs e)
+        {
+            
+        }
+        private void ComponentBuildButton_Click(object sender, EventArgs e)
+        {
+            
+        }
+        private void ResearchButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

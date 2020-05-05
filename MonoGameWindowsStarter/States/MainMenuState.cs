@@ -76,7 +76,7 @@ namespace MonoGameWindowsStarter.States
             ShipConstants.Initialize();
 
             Ship Ship = new Ship();
-            Ship.Initialize(ShipConstants.COMPONENTS);
+            Ship.Initialize(ShipConstants.ROOMPOINTS);
 
             Texture2D tileTexture = _content.Load<Texture2D>("Tile");
 

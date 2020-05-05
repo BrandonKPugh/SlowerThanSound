@@ -23,8 +23,8 @@ namespace MonoGameWindowsStarter.States
         {
             ShipConstants.Initialize();
 
-            Ship = new Ship();
-            Ship.Initialize(ShipConstants.COMPONENTS);
+            Ship = ship;
+            //Ship.Initialize(ShipConstants.COMPONENTS);
 
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
@@ -116,30 +116,6 @@ namespace MonoGameWindowsStarter.States
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
 
-            /*
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            {
-                int x = Mouse.GetState().X;
-                int y = Mouse.GetState().Y;
-                if (Grid.PixelToTile(x, y, out int tileX, out int tileY))
-                {
-                    Component found = null;
-                    foreach (Component c in Ship.GetComponents())
-                    {
-                        if (c.X == tileX && c.Y == tileY)
-                        {
-                            found = c;
-                            break;
-                        }
-                    }
-                    if (found == null)
-                    {
-                        Component newComponent = new WeaponComponent(tileX, tileY, ComponentConstants.COMPONENT_WEAPON_COLOR);
-                        Ship.AddComponent(newComponent);
-                    }
-                }
-            }
-            */
         }
         private void BuildModeButton_Click(object sender, EventArgs e)
         {

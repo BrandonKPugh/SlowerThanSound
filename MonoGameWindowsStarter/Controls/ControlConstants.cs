@@ -133,6 +133,9 @@ namespace MonoGameWindowsStarter.Controls
         #region BUILDMODE
 
         public static BUTTON_INFO BUILDMODE_COMBATMODE = new BUTTON_INFO("Combat Mode", 0.625f, 0.775f, 0.25f, 0.125f);
+        public static BUTTON_INFO BUILDMODE_SHIPBUILD = new BUTTON_INFO("Ship", 0.6f, 0.15f, 0.1f, 0.05f);
+        public static BUTTON_INFO BUILDMODE_COMPONENTBUILD = new BUTTON_INFO("Components", 0.7f, 0.15f, 0.1f, 0.05f);
+        public static BUTTON_INFO BUILDMODE_RESEARCH = new BUTTON_INFO("Research", 0.8f, 0.15f, 0.1f, 0.05f);
         public static TEXTBOX_INFO BUILDMODE_TITLE = new TEXTBOX_INFO("Build Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.125f);
         // BORDERBOX_INFO(penWeight, color, padding)
         // Position/size is later set using BorderBox.SetPosition() so that it is aligned with the grid.

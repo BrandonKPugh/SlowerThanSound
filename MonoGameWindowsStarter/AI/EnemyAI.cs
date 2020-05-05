@@ -36,6 +36,7 @@ namespace MonoGameWindowsStarter.AI
             var x = rand.Next(target.X, target.X + target.Width);
             var y = rand.Next(target.Y, target.Y + target.Height);
             //Spawn new projectile with random start position outside of the screen that flies towards (x,y)
+            //new Projectile();
         }
 
         public void Update(GameTime gameTime)
