@@ -63,7 +63,6 @@
     <Compile Include="Spaceship\ShipConstants.cs" />
     <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Rendering\SpriteSheet.cs" />
-    <Compile Include="States\TestCombatState.cs" />
     <Compile Include="States\CombatState.cs" />
     <Compile Include="States\PauseState.cs" />
     <Compile Include="States\MainMenuState.cs" />

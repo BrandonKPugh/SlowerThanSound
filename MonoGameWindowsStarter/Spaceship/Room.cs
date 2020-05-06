@@ -28,6 +28,7 @@ namespace MonoGameWindowsStarter.Spaceship
 
         private List<Component> Components;
         private Ship Ship;
+        private Grid Grid;
 
         public Rectangle GridLocation;
         public Room_Type RoomType;
@@ -42,7 +43,7 @@ namespace MonoGameWindowsStarter.Spaceship
             Components = new List<Component>();
             Ship = ship;
         }
-        public Room(Ship ship, Point p1, Point p2, Room_Type roomType)
+        public Room(Ship ship, Grid grid, Point p1, Point p2, Room_Type roomType)
         {
             var minX = Math.Min(p1.X, p2.X);
             var minY = Math.Min(p1.Y, p2.Y);
@@ -59,6 +60,7 @@ namespace MonoGameWindowsStarter.Spaceship
             this.RoomID = GetNextRoomID();
             Components = new List<Component>();
             Ship = ship;
+            Grid = grid;
 
             foreach(int x in xRange)
             {
@@ -116,13 +118,17 @@ namespace MonoGameWindowsStarter.Spaceship
         {
             return GridLocation;
         }
-        public Rectangle GetInteriorArea(float tileWidth, float tileHeight)
+        public Rectangle GetInteriorArea()
         {
-            var x = GridLocation.X + tileWidth;
-            var y = GridLocation.Y + tileHeight;
-            var width = GridLocation.Width - tileWidth;
-            var height = GridLocation.Height - tileHeight;
-            return new Rectangle((int)x,(int)y,(int)width,(int)height);
+            var info = Grid.Info;
+            var topLeft = info.TileBounds(GridLocation.X, GridLocation.Y);
+            var bottomRight = info.TileBounds(GridLocation.Width, GridLocation.Height);
+            var x = topLeft.X + topLeft.Width;
+            var y = topLeft.Y + topLeft.Height;
+            var width = bottomRight.X - x;
+            var height = bottomRight.Y - y;
+
+            return new Rectangle(x, y, width, height);
         }
 
         public uint GetPriority()

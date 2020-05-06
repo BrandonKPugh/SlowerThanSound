@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGameWindowsStarter.Spaceship;
+using MonoGameWindowsStarter.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,21 @@ namespace MonoGameWindowsStarter.AI
     {
         #region Fields
 
-        protected Ship _enemyShip;
+        //protected Ship _enemyShip;
 
         protected Ship _playerShip;
 
+        protected CombatState _combatState;
+
+        private TimeSpan timer;
+
         #endregion
 
-        public EnemyAI(Ship enemyShip, Ship playerShip)
+        public EnemyAI(Ship playerShip, CombatState combatState)
         {
-
+            _playerShip = playerShip;
+            _combatState = combatState;
+            timer = new TimeSpan();
         }
 
         private void AttackPlayer()
@@ -28,6 +35,7 @@ namespace MonoGameWindowsStarter.AI
             var priorityDict = _playerShip.GetRoomPriorities();
             Rectangle rect; 
             priorityDict.TryGetValue(priorityDict.Keys.Max(), out rect);
+            FireWeapon(rect);
         }
 
         private void FireWeapon(Rectangle target)
@@ -35,13 +43,17 @@ namespace MonoGameWindowsStarter.AI
             Random rand = new Random();
             var x = rand.Next(target.X, target.X + target.Width);
             var y = rand.Next(target.Y, target.Y + target.Height);
-            //Spawn new projectile with random start position outside of the screen that flies towards (x,y)
-            //new Projectile();
+            _combatState.AddProjectile(new Projectile(new Point(x, y), new Vector2(1000, 1000)));
         }
 
         public void Update(GameTime gameTime)
         {
-            
+            timer += gameTime.ElapsedGameTime;
+            if (timer.TotalSeconds > 1)
+            {
+                AttackPlayer();
+                timer = new TimeSpan();
+            }
         }
     }
 }

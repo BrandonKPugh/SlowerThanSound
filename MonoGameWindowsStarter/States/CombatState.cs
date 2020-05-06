@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MonoGameWindowsStarter.Controls;
 using MonoGameWindowsStarter.Components;
 using MonoGameWindowsStarter.Spaceship;
+using MonoGameWindowsStarter.AI;
 
 namespace MonoGameWindowsStarter.States
 {
@@ -17,14 +18,20 @@ namespace MonoGameWindowsStarter.States
     {
         public Spaceship.Ship Ship;
         private List<UI_Component> _uicomponents;
+        private EnemyAI enemyAI;
+        private List<Projectile> projectiles;
+        private List<Projectile> deadProjectiles;
+
+        private Texture2D projectileTexture;
 
         public CombatState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship)
           : base(game, graphicsDevice, content)
         {
             ShipConstants.Initialize();
-
+            
             Ship = ship;
             //Ship.Initialize(ShipConstants.COMPONENTS);
+            projectileTexture = _content.Load<Texture2D>("Pixel");
 
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
@@ -89,6 +96,10 @@ namespace MonoGameWindowsStarter.States
 
             Ship.LoadContent(textures, tileTexture);
             this.Ship = ship;
+
+            enemyAI = new EnemyAI(this.Ship, this);
+            projectiles = new List<Projectile>();
+            deadProjectiles = new List<Projectile>();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -99,6 +110,8 @@ namespace MonoGameWindowsStarter.States
 
             foreach (var component in _uicomponents)
                 component.Draw(gameTime, spriteBatch);
+            foreach (var projectile in projectiles)
+                projectile.Draw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -116,6 +129,25 @@ namespace MonoGameWindowsStarter.States
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
 
+            enemyAI.Update(gameTime);
+
+            foreach(var projectile in projectiles)
+            {
+                projectile.Update(gameTime);
+                if (projectile.AtTarget == true)
+                    deadProjectiles.Add(projectile);
+            }
+            foreach (var projectile in deadProjectiles)
+            {
+                projectiles.Remove(projectile);
+            }
+
+        }
+
+        public void AddProjectile(Projectile projectile)
+        {
+            projectile._texture = projectileTexture;
+            projectiles.Add(projectile);
         }
         private void BuildModeButton_Click(object sender, EventArgs e)
         {

@@ -37,7 +37,7 @@ namespace MonoGameWindowsStarter.Spaceship
 
             foreach (Tuple<Point,Point> a in rooms)
             {
-                Rooms.Add(new Room(this, a.Item1, a.Item2, Room.Room_Type.None));
+                Rooms.Add(new Room(this, Grid, a.Item1, a.Item2, Room.Room_Type.None));
             }
         }
 
@@ -134,7 +134,7 @@ namespace MonoGameWindowsStarter.Spaceship
             Dictionary<uint, Rectangle> priorityDict = new Dictionary<uint, Rectangle>();
             foreach (Room room in Rooms){
                 var priority = room.GetPriority();
-                var rectangle = room.GetArea();
+                var rectangle = room.GetInteriorArea();
                 priorityDict.Add(priority, rectangle);
             }
             return priorityDict;
