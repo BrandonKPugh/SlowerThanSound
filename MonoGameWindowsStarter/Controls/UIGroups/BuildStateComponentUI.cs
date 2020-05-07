@@ -16,14 +16,27 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
-            Button TestButton = new Button(buttonTexture, buttonFont)
+            Button PlaceStorage = new Button(buttonTexture, buttonFont)
             {
-                ButtonInfo = ControlConstants.COMPONENTBUILD_TEST,
+                ButtonInfo = ControlConstants.PLACE_COMPONENT_STORAGE,
             };
+
+            Button PlaceWeapon = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.PLACE_COMPONENT_WEAPON,
+            };
+            
+            Button CreateRoom = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.CREATE_ROOM,
+            };
+
 
             UI_Components = new List<UI_Component>()
             {
-                TestButton
+                PlaceStorage,
+                PlaceWeapon,
+                CreateRoom
             };
         }
     }

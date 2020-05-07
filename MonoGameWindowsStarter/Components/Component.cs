@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonoGameWindowsStarter.Spaceship;
+using static MonoGameWindowsStarter.States.BuildState;
 
 namespace MonoGameWindowsStarter.Components
 {
@@ -75,5 +76,28 @@ namespace MonoGameWindowsStarter.Components
             }
         }
 
+        internal static bool RoomTypeMatches(Placement_Type placementType, Room.Room_Type roomType)
+        {
+            switch (placementType)
+            {
+                case Placement_Type.None:
+                case Placement_Type.Room:
+                    {
+                        return false;
+                    }
+                case Placement_Type.Weapon:
+                    {
+                        return (roomType == Room.Room_Type.Weapon);
+                    }
+                case Placement_Type.Storage:
+                    {
+                        return (roomType == Room.Room_Type.Material_Storage);
+                    }
+                default:
+                    {
+                        throw new NotImplementedException("Unknown placement type");
+                    }
+            }
+        }
     }
 }

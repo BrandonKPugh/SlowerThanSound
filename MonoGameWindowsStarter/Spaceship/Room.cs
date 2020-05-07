@@ -52,9 +52,6 @@ namespace MonoGameWindowsStarter.Spaceship
             p1 = new Point(minX, minY);
             p2 = new Point(maxX, maxY);
 
-            IEnumerable<int> xRange = Enumerable.Range(p1.X, p2.X);
-            IEnumerable<int> yRange = Enumerable.Range(p1.Y+1, p2.Y - p1.Y-1);
-
             this.GridLocation = new Rectangle(p1.X, p1.Y,p2.X-p1.X,p2.Y-p1.Y);
             this.RoomType = roomType;
             this.RoomID = GetNextRoomID();
@@ -62,12 +59,12 @@ namespace MonoGameWindowsStarter.Spaceship
             Ship = ship;
             Grid = grid;
 
-            foreach(int x in xRange)
+            for(int x = p1.X; x <= p2.X; x++)
             {
                 Components.Add(new StructureComponent(x, p1.Y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
                 Components.Add(new StructureComponent(x, p2.Y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
             }
-            foreach (int y in yRange)
+            for(int y = p1.Y; y <= p2.Y; y++)
             {
                 Components.Add(new StructureComponent(p1.X, y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
                 Components.Add(new StructureComponent(p2.X, y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));

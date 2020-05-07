@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGameWindowsStarter.Controls.UIGroups;
 using MonoGameWindowsStarter.Spaceship;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -93,8 +95,10 @@ namespace MonoGameWindowsStarter.Controls
         public const string BUTTON_TEXTURE = "Button";
         public const string BUTTON_FONT = "DebugFont";
         public static Color BUTTON_PENCOLOR = Color.Black;
+        public static Color BUTTON_BACKCOLOR = Color.White;
         public static Color BUTTON_HOVERING = Color.Gray;
         public const float BUTTON_PADDING_RATIO = 0.90f;
+        public static Color BUTTON_SELECTED = Color.SkyBlue;
 
         public static Color BAR_PENCOLOR = Color.Black;
 
@@ -135,27 +139,36 @@ namespace MonoGameWindowsStarter.Controls
         public static BUTTON_INFO BUILDMODE_COMBATMODE = new BUTTON_INFO("Combat Mode", 0.625f, 0.825f, 0.25f, 0.125f);
 
         private const float _CANVAS_WIDTH = .38125f;
+        private const float _CANVAS_HEIGHT = 0.6f;
         private const float _CANVAS_X = 0.5625f;
+        private const float _CANVAS_Y = 0.2f;
         private const float _SHIP_RATIO = _CANVAS_WIDTH * 14f / 64f;
         private const float _COMPONENT_RATIO = _CANVAS_WIDTH * 27f / 64f;
         private const float _RESEARCH_RATIO = _CANVAS_WIDTH * 22f / 64f;
         private const float _GAP_RATIO = (_CANVAS_WIDTH - (_SHIP_RATIO + _COMPONENT_RATIO + _RESEARCH_RATIO)) / 2;
-        public static BUTTON_INFO BUILDMODE_SHIPBUILD = new BUTTON_INFO("Ship", _CANVAS_X, 0.125f, _SHIP_RATIO, .06875f);
+
+        public static BORDERBOX_INFO BUILDMODE_CANVAS = new BORDERBOX_INFO(3, Color.Black, _CANVAS_X, _CANVAS_Y, _CANVAS_WIDTH, _CANVAS_HEIGHT, 5);
         #region SHIPBUILD
+        public static BUTTON_INFO BUILDMODE_SHIPBUILD = new BUTTON_INFO("Ship", _CANVAS_X, 0.125f, _SHIP_RATIO, .06875f);
         public static BUTTON_INFO SHIPBUILD_TEST = new BUTTON_INFO("View Ship", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f)/2);
+        #endregion
+        #region COMPONENTBUILD
+        public static BUTTON_INFO BUILDMODE_COMPONENTBUILD = new BUTTON_INFO("Components", _CANVAS_X + _SHIP_RATIO + _GAP_RATIO, 0.125f, _COMPONENT_RATIO, .06875f);
 
-        public static BUTTON_INFO COMPONENTBUILD_TEST = new BUTTON_INFO("Place Component", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f) / 2);
-
+        private const float _SPACINGX = 1 / 64f;
+        private const float _SPACINGY = 1 / 64f;
+        private const int _BUTTON_COUNT = 3;
+        private const float BUTTON_X = _CANVAS_WIDTH - _SPACINGX * 2;
+        private const float BUTTON_Y = (_CANVAS_HEIGHT - (_SPACINGY * (_BUTTON_COUNT + 1))) / _BUTTON_COUNT;
+        public static BUTTON_INFO PLACE_COMPONENT_WEAPON = new BUTTON_INFO("Place Weapon", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_STORAGE = new BUTTON_INFO("Place Storage", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 1, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 2, BUTTON_X, BUTTON_Y);
+        #endregion
+        #region RESEARCH
+        public static BUTTON_INFO BUILDMODE_RESEARCH = new BUTTON_INFO("Research", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);
         public static BUTTON_INFO RESEARCH_TEST = new BUTTON_INFO("Research Item", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f) / 2);
         #endregion
-        public static BUTTON_INFO BUILDMODE_COMPONENTBUILD = new BUTTON_INFO("Components", _CANVAS_X + _SHIP_RATIO + _GAP_RATIO, 0.125f, _COMPONENT_RATIO, .06875f);
-        #region COMPONENTBUILD
-        #endregion
-        public static BUTTON_INFO BUILDMODE_RESEARCH = new BUTTON_INFO("Research", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);
-        #region RESEARCH
-        #endregion
 
-        public static BORDERBOX_INFO BUILDMODE_CANVAS = new BORDERBOX_INFO(3, Color.Black, _CANVAS_X, 0.2f, _CANVAS_WIDTH, 0.6f, 5);
 
         public static TEXTBOX_INFO BUILDMODE_TITLE = new TEXTBOX_INFO("Build Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.05f);
         public static BORDERBOX_INFO BUILDMODE_TITLEBOX = new BORDERBOX_INFO(3, Color.Black, 5);

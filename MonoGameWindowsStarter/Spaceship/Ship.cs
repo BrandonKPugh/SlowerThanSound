@@ -37,7 +37,7 @@ namespace MonoGameWindowsStarter.Spaceship
 
             foreach (Tuple<Point,Point> a in rooms)
             {
-                Rooms.Add(new Room(this, Grid, a.Item1, a.Item2, Room.Room_Type.None));
+                Rooms.Add(new Room(this, Grid, a.Item1, a.Item2, Room.Room_Type.Weapon));
             }
         }
 

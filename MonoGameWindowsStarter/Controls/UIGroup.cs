@@ -66,11 +66,24 @@ namespace MonoGameWindowsStarter.Controls
                     if(button.Text == buttonText)
                     {
                         button.Click += clickEvent;
+                        button.Click += SetSelectedButton;
                         return true;
                     }
                 }
             }
             return false;
+        }
+
+        private void SetSelectedButton(object sender, EventArgs e)
+        {
+            foreach (UI_Component component in UI_Components)
+            {
+                if (component.GetType() == typeof(Button))
+                {
+                    ((Button)component).BackColour = ControlConstants.BUTTON_BACKCOLOR;
+                }
+            }
+            ((Button)sender).BackColour = ControlConstants.BUTTON_SELECTED;
         }
     }
 }

@@ -17,9 +17,17 @@ namespace MonoGameWindowsStarter.States
 {
     class BuildState : State
     {
+        public enum Placement_Type
+        {
+            None,
+            Room,
+            Weapon,
+            Storage
+        }
         public Ship Ship;
         private List<UI_Component> _uicomponents;
         private UIGroup _activeCanvas;
+        private Placement_Type _placementType = Placement_Type.None;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -117,40 +125,74 @@ namespace MonoGameWindowsStarter.States
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 _game.ChangeState(new PauseState(_game, _graphicsDevice, _content, this));
 
-            
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            switch(_placementType)
             {
-                int x = Mouse.GetState().X;
-                int y = Mouse.GetState().Y;
-
-                if (Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY))
-                {
-                    foreach (Room room in Ship.Rooms)
+                case Placement_Type.None:
                     {
-                        if (room.Contains(tileX,tileY))
-                        {
-                            Component found = null;
-                            foreach (Component c in room.GetComponents())
-                            {
-                                if (c.X == tileX && c.Y == tileY)
-                                {
-                                    found = c;
-                                    break;
-                                }
-                            }
-                            if (found == null)
-                            {
-                                Component newComponent = new WeaponComponent(tileX, tileY, ComponentConstants.COMPONENT_WEAPON_COLOR);
-                                room.AddComponent(newComponent);
-                            }
-                            break;
-                        }
+                        break;
                     }
+                case Placement_Type.Room:
+                    {
+                        break;
+                    }
+                case Placement_Type.Storage:
+                case Placement_Type.Weapon:
+                    {
+                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                        {
+                            int x = Mouse.GetState().X;
+                            int y = Mouse.GetState().Y;
 
-                    
-                }
+                            if (Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY))
+                            {
+                                Console.WriteLine("X: " + tileX + ", Y: " + tileY);
+                                foreach (Room room in Ship.Rooms)
+                                {
+                                    if (room.Contains(tileX, tileY))
+                                    {
+                                        Component found = null;
+                                        foreach (Component c in room.GetComponents())
+                                        {
+                                            if (c.X == tileX && c.Y == tileY)
+                                            {
+                                                found = c;
+                                                break;
+                                            }
+                                        }
+                                        if (found == null)
+                                        {
+                                            if(Component.RoomTypeMatches(_placementType, room.RoomType))
+                                            {
+                                                Component newComponent;
+                                                switch (_placementType)
+                                                {
+                                                    case Placement_Type.Storage:
+                                                        {
+                                                            throw new NotImplementedException("Storage Components don't exist");
+                                                        }
+                                                    case Placement_Type.Weapon:
+                                                        {
+                                                            newComponent = new WeaponComponent(tileX, tileY, ComponentConstants.COMPONENT_WEAPON_COLOR);
+                                                            break;
+                                                        }
+                                                    default:
+                                                        {
+                                                            throw new NotImplementedException("That component type doesn't exist!");
+                                                        }
+                                                }
+                                                room.AddComponent(newComponent);
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+
+                            }
+                        }
+                        break;
+                    }
             }
-
 
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
@@ -172,6 +214,9 @@ namespace MonoGameWindowsStarter.States
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
             BuildStateComponentUI componentCanvas = new BuildStateComponentUI(_content);
+            componentCanvas.InitializeButton(PlaceWeaponButton_Click, ControlConstants.PLACE_COMPONENT_WEAPON.Text);
+            componentCanvas.InitializeButton(PlaceStorageButton_Click, ControlConstants.PLACE_COMPONENT_STORAGE.Text);
+            componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
             _activeCanvas = componentCanvas;
         }
         private void ResearchButton_Click(object sender, EventArgs e)
@@ -180,8 +225,20 @@ namespace MonoGameWindowsStarter.States
             _activeCanvas = componentCanvas;
         }
 
-        private void TestButton_Click(object sender, EventArgs e)
+        private void PlaceWeaponButton_Click(object sender, EventArgs e)
         {
+            _placementType = Placement_Type.Weapon;
+        }
+
+        private void PlaceStorageButton_Click(object sender, EventArgs e)
+        {
+            _placementType = Placement_Type.Storage;
+
+        }
+
+        private void CreateRoomButton_Click(object sender, EventArgs e)
+        {
+            _placementType = Placement_Type.Room;
 
         }
     }

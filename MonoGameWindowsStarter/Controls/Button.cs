@@ -32,6 +32,7 @@ namespace MonoGameWindowsStarter.Controls
         public bool Clicked { get; private set; }
 
         public Color PenColour { get; set; }
+        public Color BackColour { get; set; }
 
         public ControlConstants.BUTTON_INFO ButtonInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Text = value.Text; } }
 
@@ -56,20 +57,21 @@ namespace MonoGameWindowsStarter.Controls
             _font = font;
 
             PenColour = ControlConstants.BUTTON_PENCOLOR;
+
+            BackColour = ControlConstants.BUTTON_BACKCOLOR;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            var colour = Color.White;
-
+            Color colour = BackColour;
             if (_isHovering)
-                colour = ControlConstants.BUTTON_HOVERING;
+                colour = new Color((int) (colour.R * .50f), (int)(colour.G * .50f), (int)(colour.B * .50f), (int)colour.A);
 
             spriteBatch.Draw(_texture, Location, colour);
 
             if (!string.IsNullOrEmpty(Text))
             {
-                CenterString(Text, _font, Position, Size, spriteBatch, ControlConstants.BUTTON_PENCOLOR);
+                CenterString(Text, _font, Position, Size, spriteBatch, PenColour);
             }
         }
 
