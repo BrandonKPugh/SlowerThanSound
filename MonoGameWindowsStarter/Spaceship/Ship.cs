@@ -14,7 +14,7 @@ namespace MonoGameWindowsStarter.Spaceship
     {
         // List of all components
         //      this will likely be a different data structure later
-        private List<Component> Components;
+        // private List<Component> Components;
         // Dictionary for component textures
         private Dictionary<Component.Component_Type, Texture2D> Textures;
 
@@ -113,7 +113,20 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public List<Component> GetComponents()
         {
-            return Components;
+            throw new NotImplementedException();
+        }
+
+        public bool AddComponent(Component c)
+        {
+            foreach(Room room in Rooms)
+            {
+                if(room.Contains(c.TilePosition))
+                {
+                    room.AddComponent(c);
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Just looks up the component's texture in the Dictionary. If it's not there, it (currently) throws an error
@@ -138,6 +151,27 @@ namespace MonoGameWindowsStarter.Spaceship
                 priorityDict.Add(priority, rectangle);
             }
             return priorityDict;
+        }
+
+        public bool AddRoom(Room room)
+        {
+            bool intersection = false;
+            foreach(Room a in Rooms)
+            {
+                if(a.GridLocation.Intersects(room.GridLocation))
+                {
+                    intersection = true;
+                }
+            }
+            if (!intersection)
+            {
+                Rooms.Add(room);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

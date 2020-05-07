@@ -21,13 +21,19 @@ namespace MonoGameWindowsStarter.States
         {
             None,
             Room,
+            PlacingRoom,
             Weapon,
-            Storage
+            PlacingWeapon,
+            Storage,
+            PlacingStorage,
         }
         public Ship Ship;
         private List<UI_Component> _uicomponents;
         private UIGroup _activeCanvas;
         private Placement_Type _placementType = Placement_Type.None;
+        private Room _temporaryRoom = null;
+        private Point _temporaryRoomStart;
+        private Component _temporaryComponent = null;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -103,7 +109,7 @@ namespace MonoGameWindowsStarter.States
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
 
             foreach (var component in _uicomponents)
                 component.Draw(gameTime, spriteBatch);
@@ -113,6 +119,19 @@ namespace MonoGameWindowsStarter.States
 
             spriteBatch.End();
             Ship.Draw(spriteBatch, ModeState.State.Build);
+
+            if(_temporaryRoom != null)
+            {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+                _temporaryRoom.Draw(spriteBatch, Ship.Grid.Info);
+                spriteBatch.End();
+            }
+            if(_temporaryComponent != null)
+            {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+                _temporaryComponent.Draw(spriteBatch, Ship.Grid.Info);
+                spriteBatch.End();
+            }
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -125,7 +144,13 @@ namespace MonoGameWindowsStarter.States
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 _game.ChangeState(new PauseState(_game, _graphicsDevice, _content, this));
 
-            switch(_placementType)
+            int x = Mouse.GetState().X;
+            int y = Mouse.GetState().Y;
+            bool mousePressed = (Mouse.GetState().LeftButton == ButtonState.Pressed);
+            bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
+            Point tileUnderMouse = new Point(tileX, tileY);
+
+            switch (_placementType)
             {
                 case Placement_Type.None:
                     {
@@ -133,61 +158,177 @@ namespace MonoGameWindowsStarter.States
                     }
                 case Placement_Type.Room:
                     {
-                        break;
-                    }
-                case Placement_Type.Storage:
-                case Placement_Type.Weapon:
-                    {
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                        if (mousePressed)
                         {
-                            int x = Mouse.GetState().X;
-                            int y = Mouse.GetState().Y;
-
-                            if (Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY))
+                            bool beginPlacement = false;
+                            bool foundRoom = false;
+                            if (mouseOnTile)
                             {
                                 foreach (Room room in Ship.Rooms)
                                 {
-                                    if (room.Contains(tileX, tileY))
+                                    if (room.Contains(tileUnderMouse))
                                     {
+                                        foundRoom = true;
                                         Component found = null;
                                         foreach (Component c in room.GetComponents())
                                         {
-                                            if (c.X == tileX && c.Y == tileY)
+                                            if (c.TilePosition == tileUnderMouse)
                                             {
                                                 found = c;
                                                 break;
                                             }
                                         }
-                                        if (found == null)
+                                        if(found != null && found.ComponentType == Component.Component_Type.Structure)
                                         {
-                                            if(Component.RoomTypeMatches(_placementType, room.RoomType))
-                                            {
-                                                Component newComponent;
-                                                switch (_placementType)
-                                                {
-                                                    case Placement_Type.Storage:
-                                                        {
-                                                            newComponent = new MaterialStorageComponent(tileX, tileY, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
-                                                            break;
-                                                        }
-                                                    case Placement_Type.Weapon:
-                                                        {
-                                                            newComponent = new WeaponComponent(tileX, tileY, ComponentConstants.COMPONENT_WEAPON_COLOR);
-                                                            break;
-                                                        }
-                                                    default:
-                                                        {
-                                                            throw new NotImplementedException("That component type doesn't exist!");
-                                                        }
-                                                }
-                                                room.AddComponent(newComponent);
-                                            }
+                                            beginPlacement = true;
                                         }
-                                        break;
                                     }
                                 }
+                                if (foundRoom == false)
+                                {
+                                    beginPlacement = true;
+                                }
+                                if(beginPlacement)
+                                {
+                                    _temporaryRoomStart = tileUnderMouse;
+                                    _temporaryRoom = new Room(Ship, Ship.Grid, tileUnderMouse, tileUnderMouse, Room.Room_Type.None);
+                                    foreach (Component component in _temporaryRoom.GetComponents())
+                                    {
+                                        Ship.LoadComponentTexture(component);
+                                    }
+                                    _placementType = Placement_Type.PlacingRoom;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case Placement_Type.PlacingRoom:
+                    {
+                        if (mousePressed && mouseOnTile)
+                        {
+                            var minX = Math.Min(tileX, _temporaryRoomStart.X);
+                            var minY = Math.Min(tileY, _temporaryRoomStart.Y);
+                            var maxX = Math.Max(tileX, _temporaryRoomStart.X);
+                            var maxY = Math.Max(tileY, _temporaryRoomStart.Y);
+                            Point p1 = new Point(minX, minY);
+                            Point p2 = new Point(maxX, maxY);
 
+                            _temporaryRoom = new Room(Ship, Ship.Grid, p1, p2, Room.Room_Type.None);
+                            foreach (Component component in _temporaryRoom.GetComponents())
+                            {
+                                Ship.LoadComponentTexture(component);
+                            }
+                        }
+                        else if(!mousePressed && mouseOnTile)
+                        {
+                            // Released mouse, finalize room
+                            _placementType = Placement_Type.Room;
+                            Ship.AddRoom(_temporaryRoom);
+                            _temporaryRoom = null;
+                        }
+                        break;
+                    }
+                case Placement_Type.Storage:
+                case Placement_Type.Weapon:
+                    {
+                        if (mousePressed && mouseOnTile)
+                        {
+                            foreach (Room room in Ship.Rooms)
+                            {
+                                if (room.Contains(tileUnderMouse))
+                                {
+                                    Component found = null;
+                                    foreach (Component c in room.GetComponents())
+                                    {
+                                        if (c.X == tileX && c.Y == tileY)
+                                        {
+                                            found = c;
+                                            break;
+                                        }
+                                    }
+                                    if (found == null)
+                                    {
+                                        if(Component.RoomTypeMatches(_placementType, room.RoomType))
+                                        {
+                                            switch (_placementType)
+                                            {
+                                                case Placement_Type.Storage:
+                                                    {
+                                                        _temporaryComponent = new MaterialStorageComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
+                                                        Ship.LoadComponentTexture(_temporaryComponent);
+                                                        _placementType = Placement_Type.PlacingStorage;
+                                                        break;
+                                                    }
+                                                case Placement_Type.Weapon:
+                                                    {
+                                                        _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
+                                                        Ship.LoadComponentTexture(_temporaryComponent);
+                                                        _placementType = Placement_Type.PlacingWeapon;
+                                                        break;
+                                                    }
+                                                default:
+                                                    {
+                                                        throw new NotImplementedException("That component type doesn't exist!");
+                                                    }
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case Placement_Type.PlacingStorage:
+                case Placement_Type.PlacingWeapon:
+                    {
+                        if (mousePressed && mouseOnTile)
+                        {
+                            foreach (Room room in Ship.Rooms)
+                            {
+                                if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
+                                {
+                                    Component found = null;
+                                    foreach (Component c in room.GetComponents())
+                                    {
+                                        if (c.TilePosition == tileUnderMouse)
+                                        {
+                                            found = c;
+                                            break;
+                                        }
+                                    }
+                                    // Another component isn't under the mouse already
+                                    if (found == null)
+                                    {
+                                        _temporaryComponent.TilePosition = tileUnderMouse;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        else if(!mousePressed)
+                        {
+                            if(mouseOnTile && tileUnderMouse == _temporaryComponent.TilePosition)
+                            {
+                                Ship.AddComponent(_temporaryComponent);
+                            }
+                            else 
+                            {
 
+                            }
+                            _temporaryComponent = null;
+                            switch(_placementType)
+                            {
+                                case Placement_Type.PlacingStorage:
+                                    {
+                                        _placementType = Placement_Type.Storage;
+                                        break;
+                                    }
+                                case Placement_Type.PlacingWeapon:
+                                    {
+                                        _placementType = Placement_Type.Weapon;
+                                        break;
+                                    }
                             }
                         }
                         break;

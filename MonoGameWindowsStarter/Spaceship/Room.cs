@@ -93,19 +93,24 @@ namespace MonoGameWindowsStarter.Spaceship
             return toReturn;
         }
 
-        // Determines if a grid coordinate is inside this room
+        // Determines if a grid coordinate is inside this room, this includes structures
         public bool Contains(int x, int y)
         {
             return (x >= GridLocation.X && x < GridLocation.X + GridLocation.Width && y >= GridLocation.Y && y < GridLocation.Y + GridLocation.Height);
         }
+        public bool Contains(Point p)
+        {
+            return Contains(p.X, p.Y);
+        }
 
         public void AddComponent(Component component)
         {
-            // Load the texture for it since the texture is null by default
-            Ship.LoadComponentTexture(component);
+            if(component.Texture == null)
+                Ship.LoadComponentTexture(component);
             Components.Add(component);
         }
 
+        // Gets all components including strucures
         public List<Component> GetComponents()
         {
             return Components;
