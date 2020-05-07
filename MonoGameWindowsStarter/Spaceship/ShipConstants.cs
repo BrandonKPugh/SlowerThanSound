@@ -12,7 +12,7 @@ namespace MonoGameWindowsStarter.Spaceship
     public static class ShipConstants
     {
         //public static List<Component> COMPONENTS = new List<Component>();
-        public static List<Tuple<Point,Point>> ROOMPOINTS = new List<Tuple<Point, Point>>();
+        public static List<Tuple<Point, Point>> ROOMPOINTS;
 
         public struct GRID_INFO
         {
@@ -112,7 +112,7 @@ namespace MonoGameWindowsStarter.Spaceship
             //{
             //    COMPONENTS.Add(new WeaponComponent(p.X, p.Y, ComponentConstants.COMPONENT_WEAPON_COLOR));
             //}
-
+            ROOMPOINTS = new List<Tuple<Point, Point>>();
             ROOMPOINTS.Add(new Tuple<Point, Point>(new Point(1, 1), new Point(9, 9)));
         }
     }
