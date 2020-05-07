@@ -351,6 +351,9 @@ namespace MonoGameWindowsStarter.States
         {
             BuildStateShipUI componentCanvas = new BuildStateShipUI(_content);
             _activeCanvas = componentCanvas;
+            _placementType = Placement_Type.None;
+            _temporaryRoom = null;
+            _temporaryComponent = null;
         }
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
@@ -364,6 +367,9 @@ namespace MonoGameWindowsStarter.States
         {
             BuildStateResearchUI componentCanvas = new BuildStateResearchUI(_content);
             _activeCanvas = componentCanvas;
+            _placementType = Placement_Type.None;
+            _temporaryRoom = null;
+            _temporaryComponent = null;
         }
 
         private void PlaceWeaponButton_Click(object sender, EventArgs e)
