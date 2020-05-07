@@ -44,6 +44,7 @@
     <Compile Include="AI\EnemyAI.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentConstants.cs" />
+    <Compile Include="Components\MaterialStorageComponent.cs" />
     <Compile Include="Controls\BorderBox.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\ControlConstants.cs" />

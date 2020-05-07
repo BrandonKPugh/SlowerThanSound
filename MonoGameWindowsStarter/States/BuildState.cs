@@ -145,7 +145,6 @@ namespace MonoGameWindowsStarter.States
 
                             if (Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY))
                             {
-                                Console.WriteLine("X: " + tileX + ", Y: " + tileY);
                                 foreach (Room room in Ship.Rooms)
                                 {
                                     if (room.Contains(tileX, tileY))
@@ -168,7 +167,8 @@ namespace MonoGameWindowsStarter.States
                                                 {
                                                     case Placement_Type.Storage:
                                                         {
-                                                            throw new NotImplementedException("Storage Components don't exist");
+                                                            newComponent = new MaterialStorageComponent(tileX, tileY, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
+                                                            break;
                                                         }
                                                     case Placement_Type.Weapon:
                                                         {

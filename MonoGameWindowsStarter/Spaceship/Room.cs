@@ -64,7 +64,7 @@ namespace MonoGameWindowsStarter.Spaceship
                 Components.Add(new StructureComponent(x, p1.Y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
                 Components.Add(new StructureComponent(x, p2.Y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
             }
-            for(int y = p1.Y; y <= p2.Y; y++)
+            for(int y = p1.Y + 1; y < p2.Y; y++)
             {
                 Components.Add(new StructureComponent(p1.X, y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
                 Components.Add(new StructureComponent(p2.X, y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));

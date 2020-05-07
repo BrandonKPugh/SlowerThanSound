@@ -27,7 +27,7 @@ namespace MonoGameWindowsStarter.Spaceship
 
         }
 
-        public void Initialize(List<Tuple<Point,Point>> rooms)
+        public void Initialize(List<Tuple<Point,Point, Room.Room_Type>> rooms)
         {
             Textures = new Dictionary<Component.Component_Type, Texture2D>();
 
@@ -35,9 +35,9 @@ namespace MonoGameWindowsStarter.Spaceship
 
             Rooms = new List<Room>();
 
-            foreach (Tuple<Point,Point> a in rooms)
+            foreach (Tuple<Point,Point, Room.Room_Type> a in rooms)
             {
-                Rooms.Add(new Room(this, Grid, a.Item1, a.Item2, Room.Room_Type.Weapon));
+                Rooms.Add(new Room(this, Grid, a.Item1, a.Item2, a.Item3));
             }
         }
 

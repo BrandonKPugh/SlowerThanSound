@@ -85,6 +85,8 @@ namespace MonoGameWindowsStarter.States
             textures.Add(Component.Component_Type.Weapon, weaponTexture);
             Texture2D structureTexture = _content.Load<Texture2D>("Structure");
             textures.Add(Component.Component_Type.Structure, structureTexture);
+            Texture2D materialStorageTexture = _content.Load<Texture2D>("Component_MaterialStorage");
+            textures.Add(Component.Component_Type.Material_Storage, materialStorageTexture);
 
             //SpriteFont font = content.Load<SpriteFont>("DebugFont");
             //Texture2D pixel = content.Load<Texture2D>("pixel");
