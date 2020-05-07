@@ -10,8 +10,8 @@ namespace MonoGameWindowsStarter.Controls
 {
     public abstract class UI_Component
     {
-        public Vector2 Position { get; set; }
-        public Vector2 Size { get; set; }
+        public virtual Vector2 Position { get; set; }
+        public virtual Vector2 Size { get; set; }
 
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);

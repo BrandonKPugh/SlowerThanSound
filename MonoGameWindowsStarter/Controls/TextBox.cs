@@ -14,6 +14,8 @@ namespace MonoGameWindowsStarter.Controls
         public Color Color { get; set; }
         public ControlConstants.TEXTBOX_INFO TextBoxInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Text = value.Text; Color = value.Color; } }
 
+        public Rectangle Location { get { return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y); } }
+
         private SpriteFont _font;
 
         public TextBox(SpriteFont font)

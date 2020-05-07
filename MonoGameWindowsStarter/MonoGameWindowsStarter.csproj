@@ -48,6 +48,9 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\ControlConstants.cs" />
     <Compile Include="Controls\TextBox.cs" />
+    <Compile Include="Controls\UIGroups\BuildStateComponentUI.cs" />
+    <Compile Include="Controls\UIGroups\BuildStateResearchUI.cs" />
+    <Compile Include="Controls\UIGroups\BuildStateShipUI.cs" />
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Spaceship\Grid.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="States\State.cs" />
     <Compile Include="Components\StructureComponent.cs" />
     <Compile Include="Components\WeaponComponent.cs" />
+    <Compile Include="Controls\UIGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

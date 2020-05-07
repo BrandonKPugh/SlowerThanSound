@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonoGameWindowsStarter.Controls;
+using MonoGameWindowsStarter.Controls.UIGroups;
+using System.ComponentModel.Design;
 
 namespace MonoGameWindowsStarter.States
 {
@@ -17,6 +19,7 @@ namespace MonoGameWindowsStarter.States
     {
         public Ship Ship;
         private List<UI_Component> _uicomponents;
+        private UIGroup _activeCanvas;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -64,6 +67,18 @@ namespace MonoGameWindowsStarter.States
 
             GridBox.SetPosition(Ship.Grid.Info.GridRectangle, ControlConstants.BUILDMODE_GRIDBOX.Padding);
 
+            BorderBox Canvas = new BorderBox(pixelTexture)
+            {
+                BorderBoxInfo = ControlConstants.BUILDMODE_CANVAS
+            };
+
+            BorderBox BuildModeTitleBox = new BorderBox(pixelTexture)
+            {
+                BorderBoxInfo = ControlConstants.BUILDMODE_TITLEBOX
+            };
+
+            BuildModeTitleBox.SetPosition(BuildModeTitle.Location, 0);
+
             _uicomponents = new List<UI_Component>()
             {
                 CombatModeButton,
@@ -71,7 +86,9 @@ namespace MonoGameWindowsStarter.States
                 ComponentBuildButton,
                 ResearchButton,
                 BuildModeTitle,
-                GridBox
+                GridBox,
+                Canvas,
+                BuildModeTitleBox
             };
 
         }
@@ -82,6 +99,9 @@ namespace MonoGameWindowsStarter.States
 
             foreach (var component in _uicomponents)
                 component.Draw(gameTime, spriteBatch);
+
+            if(_activeCanvas != null)
+                _activeCanvas.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
             Ship.Draw(spriteBatch, ModeState.State.Build);
@@ -134,6 +154,9 @@ namespace MonoGameWindowsStarter.States
 
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
+
+            if(_activeCanvas != null)
+                _activeCanvas.Update(gameTime);
         }
 
         private void CombatModeButton_Click(object sender, EventArgs e)
@@ -143,13 +166,21 @@ namespace MonoGameWindowsStarter.States
 
         private void ShipBuildButton_Click(object sender, EventArgs e)
         {
-            
+            BuildStateShipUI componentCanvas = new BuildStateShipUI(_content);
+            _activeCanvas = componentCanvas;
         }
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
-            
+            BuildStateComponentUI componentCanvas = new BuildStateComponentUI(_content);
+            _activeCanvas = componentCanvas;
         }
         private void ResearchButton_Click(object sender, EventArgs e)
+        {
+            BuildStateResearchUI componentCanvas = new BuildStateResearchUI(_content);
+            _activeCanvas = componentCanvas;
+        }
+
+        private void TestButton_Click(object sender, EventArgs e)
         {
 
         }
