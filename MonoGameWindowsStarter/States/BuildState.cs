@@ -19,6 +19,7 @@ namespace MonoGameWindowsStarter.States
     {
         public enum Placement_Type
         {
+            // Don't change the order, always A then placingA
             None,
             Room,
             PlacingRoom,
@@ -229,6 +230,7 @@ namespace MonoGameWindowsStarter.States
                         break;
                     }
                 case Placement_Type.Storage:
+                    // Drops through to Weapon
                 case Placement_Type.Weapon:
                     {
                         if (mousePressed && mouseOnTile)
@@ -248,7 +250,7 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     if (found == null)
                                     {
-                                        if(Component.RoomTypeMatches(_placementType, room.RoomType))
+                                        if(Component.RoomTypeMatches(_placementType, room.RoomType) || room.RoomType == Room.Room_Type.None)
                                         {
                                             switch (_placementType)
                                             {
@@ -256,14 +258,14 @@ namespace MonoGameWindowsStarter.States
                                                     {
                                                         _temporaryComponent = new MaterialStorageComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
                                                         Ship.LoadComponentTexture(_temporaryComponent);
-                                                        _placementType = Placement_Type.PlacingStorage;
+                                                        _placementType++;
                                                         break;
                                                     }
                                                 case Placement_Type.Weapon:
                                                     {
                                                         _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
                                                         Ship.LoadComponentTexture(_temporaryComponent);
-                                                        _placementType = Placement_Type.PlacingWeapon;
+                                                        _placementType++;
                                                         break;
                                                     }
                                                 default:
@@ -280,6 +282,7 @@ namespace MonoGameWindowsStarter.States
                         break;
                     }
                 case Placement_Type.PlacingStorage:
+                    // Drops through to PlacingWeapon
                 case Placement_Type.PlacingWeapon:
                     {
                         if (mousePressed && mouseOnTile)
@@ -304,6 +307,14 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     break;
                                 }
+                                /*
+                                // if the mouse leaves the room while still holding left click
+                                else if(room.Contains(_temporaryComponent.TilePosition))
+                                {
+                                    _temporaryComponent = null;
+                                    _placementType--;
+                                }
+                                */
                             }
                         }
                         else if(!mousePressed)
@@ -317,19 +328,8 @@ namespace MonoGameWindowsStarter.States
 
                             }
                             _temporaryComponent = null;
-                            switch(_placementType)
-                            {
-                                case Placement_Type.PlacingStorage:
-                                    {
-                                        _placementType = Placement_Type.Storage;
-                                        break;
-                                    }
-                                case Placement_Type.PlacingWeapon:
-                                    {
-                                        _placementType = Placement_Type.Weapon;
-                                        break;
-                                    }
-                            }
+
+                            _placementType--;
                         }
                         break;
                     }

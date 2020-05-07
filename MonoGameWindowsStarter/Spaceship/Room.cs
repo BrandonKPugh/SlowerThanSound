@@ -4,6 +4,7 @@ using MonoGameWindowsStarter.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -105,9 +106,33 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void AddComponent(Component component)
         {
+            if(RoomType == Room_Type.None)
+            {
+                RoomType = GetRoomType(component);
+            }
             if(component.Texture == null)
                 Ship.LoadComponentTexture(component);
             Components.Add(component);
+        }
+
+        private Room_Type GetRoomType(Component component)
+        {
+            switch(component.ComponentType)
+            {
+                case Component.Component_Type.Material_Storage:
+                    {
+                        return Room_Type.Material_Storage;
+                    }
+                case Component.Component_Type.Weapon:
+                    {
+                        return Room_Type.Weapon;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException("RoomType/ComponentType not associated.");
+                    }
+
+            }
         }
 
         // Gets all components including strucures
