@@ -321,7 +321,7 @@ namespace MonoGameWindowsStarter.States
                         {
                             foreach (Room room in Ship.Rooms)
                             {
-                                if (room.Contains(tileUnderMouse))
+                                if (room.InteriorContains(tileUnderMouse))
                                 {
                                     Ship.RemoveRoom(room);
                                     break;

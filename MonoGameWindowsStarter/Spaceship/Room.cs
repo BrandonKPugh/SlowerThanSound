@@ -104,6 +104,16 @@ namespace MonoGameWindowsStarter.Spaceship
             return Contains(p.X, p.Y);
         }
 
+        public bool InteriorContains(int x, int y)
+        {
+            return (x > GridLocation.X && x < GridLocation.X + GridLocation.Width && y > GridLocation.Y && y < GridLocation.Y + GridLocation.Height);
+        }
+
+        public bool InteriorContains(Point p)
+        {
+            return InteriorContains(p.X, p.Y);
+        }
+
         public void AddComponent(Component component)
         {
             if(RoomType == Room_Type.None)
