@@ -39,6 +39,7 @@ namespace MonoGameWindowsStarter.States
         private Room _temporaryRoom = null;
         private Point _temporaryRoomStart;
         private Component _temporaryComponent = null;
+        private bool _drawTemporaryComponent = false;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -131,7 +132,7 @@ namespace MonoGameWindowsStarter.States
                 _temporaryRoom.Draw(spriteBatch, Ship.Grid.Info);
                 spriteBatch.End();
             }
-            if(_temporaryComponent != null)
+            if(_temporaryComponent != null && _drawTemporaryComponent)
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
                 _temporaryComponent.Draw(spriteBatch, Ship.Grid.Info);
@@ -263,6 +264,7 @@ namespace MonoGameWindowsStarter.States
                                                     {
                                                         _temporaryComponent = new MaterialStorageComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
                                                         Ship.LoadComponentTexture(_temporaryComponent);
+                                                        _drawTemporaryComponent = true;
                                                         _placementType++;
                                                         break;
                                                     }
@@ -270,6 +272,7 @@ namespace MonoGameWindowsStarter.States
                                                     {
                                                         _temporaryComponent = new PowerGenerationComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_POWERGENERATOR_COLOR);
                                                         Ship.LoadComponentTexture(_temporaryComponent);
+                                                        _drawTemporaryComponent = true;
                                                         _placementType++;
                                                         break;
                                                     }
@@ -277,6 +280,7 @@ namespace MonoGameWindowsStarter.States
                                                     {
                                                         _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
                                                         Ship.LoadComponentTexture(_temporaryComponent);
+                                                        _drawTemporaryComponent = true;
                                                         _placementType++;
                                                         break;
                                                     }
@@ -339,6 +343,10 @@ namespace MonoGameWindowsStarter.States
                         {
                             foreach (Room room in Ship.Rooms)
                             {
+                                if(room.Contains(_temporaryComponent.TilePosition) && !room.InteriorContains(tileUnderMouse))
+                                {
+                                    _drawTemporaryComponent = false;
+                                }
                                 if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
                                 {
                                     Component found = null;
@@ -354,10 +362,15 @@ namespace MonoGameWindowsStarter.States
                                     if (found == null)
                                     {
                                         _temporaryComponent.TilePosition = tileUnderMouse;
+                                        _drawTemporaryComponent = true;
                                     }
                                     break;
                                 }
                             }
+                        }
+                        else if(mousePressed && !mouseOnTile)
+                        {
+                            _drawTemporaryComponent = false;
                         }
                         else if(!mousePressed)
                         {
@@ -369,13 +382,14 @@ namespace MonoGameWindowsStarter.States
                             {
                                 foreach (Room room in Ship.Rooms)
                                 {
-                                    if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
+                                    if (room.InteriorContains(tileUnderMouse) && room.InteriorContains(_temporaryComponent.TilePosition))
                                     {
                                         Ship.AddComponent(_temporaryComponent);
                                     }
                                 }
                             }
                             _temporaryComponent = null;
+                            _drawTemporaryComponent = false;
 
                             _placementType--;
                         }
@@ -402,6 +416,7 @@ namespace MonoGameWindowsStarter.States
             _placementType = Placement_Type.None;
             _temporaryRoom = null;
             _temporaryComponent = null;
+            _drawTemporaryComponent = false;
         }
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
@@ -421,6 +436,7 @@ namespace MonoGameWindowsStarter.States
             _placementType = Placement_Type.None;
             _temporaryRoom = null;
             _temporaryComponent = null;
+            _drawTemporaryComponent = false;
         }
 
         private void DeleteComponentButton_Click(object sender, EventArgs e)

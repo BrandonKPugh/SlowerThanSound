@@ -10,7 +10,7 @@ namespace MonoGameWindowsStarter.Components
     public static class ComponentConstants
     {
         //      Default health for now
-        public static int GENERIC_COMPONENT_HEALTH = 1000;
+        public static int GENERIC_COMPONENT_HEALTH = 50;
         //      List of components, including structure components
         public static Color COMPONENT_STRUCTURE_COLOR = Color.Black;
         public static Color COMPONENT_WEAPON_COLOR = Color.OrangeRed;
