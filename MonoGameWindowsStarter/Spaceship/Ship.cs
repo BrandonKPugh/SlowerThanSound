@@ -22,6 +22,12 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public List<Room> Rooms;
 
+        #region RESOURCES
+        public int Money;
+        public int Power;
+        public int Material;
+        #endregion
+
         public Ship()
         {
 
