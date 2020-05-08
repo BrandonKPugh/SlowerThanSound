@@ -157,7 +157,7 @@ namespace MonoGameWindowsStarter.Controls
 
         private const float _SPACINGX = 1 / 64f;
         private const float _SPACINGY = 1 / 64f;
-        private const int _BUTTON_COUNT = 5;
+        private const int _BUTTON_COUNT = 6;
         private const float BUTTON_X = _CANVAS_WIDTH - _SPACINGX * 2;
         private const float BUTTON_Y = (_CANVAS_HEIGHT - (_SPACINGY * (_BUTTON_COUNT + 1))) / _BUTTON_COUNT;
         public static BUTTON_INFO PLACE_COMPONENT_WEAPON = new BUTTON_INFO("Place Weapon", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY, BUTTON_X, BUTTON_Y);

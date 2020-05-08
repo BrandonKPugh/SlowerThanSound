@@ -97,7 +97,7 @@ namespace MonoGameWindowsStarter.Spaceship
         // Determines if a grid coordinate is inside this room, this includes structures
         public bool Contains(int x, int y)
         {
-            return (x >= GridLocation.X && x < GridLocation.X + GridLocation.Width && y >= GridLocation.Y && y < GridLocation.Y + GridLocation.Height);
+            return (x >= GridLocation.X && x <= GridLocation.X + GridLocation.Width && y >= GridLocation.Y && y <= GridLocation.Y + GridLocation.Height);
         }
         public bool Contains(Point p)
         {
