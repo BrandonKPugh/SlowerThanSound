@@ -157,7 +157,7 @@ namespace MonoGameWindowsStarter.Controls
 
         private const float _SPACINGX = 1 / 64f;
         private const float _SPACINGY = 1 / 64f;
-        private const int _BUTTON_COUNT = 4;
+        private const int _BUTTON_COUNT = 5;
         private const float BUTTON_X = _CANVAS_WIDTH - _SPACINGX * 2;
         private const float BUTTON_Y = (_CANVAS_HEIGHT - (_SPACINGY * (_BUTTON_COUNT + 1))) / _BUTTON_COUNT;
         public static BUTTON_INFO PLACE_COMPONENT_WEAPON = new BUTTON_INFO("Place Weapon", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY, BUTTON_X, BUTTON_Y);
@@ -165,6 +165,7 @@ namespace MonoGameWindowsStarter.Controls
         public static BUTTON_INFO PLACE_COMPONENT_GENERATOR = new BUTTON_INFO("Place Generator", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 2, BUTTON_X, BUTTON_Y);
         public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 3, BUTTON_X, BUTTON_Y);
         public static BUTTON_INFO DELETE_COMPONENT = new BUTTON_INFO("Delete Components", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 4, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO DELETE_ROOM = new BUTTON_INFO("Delete Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 5, BUTTON_X, BUTTON_Y);
         #endregion
         #region RESEARCH
         public static BUTTON_INFO BUILDMODE_RESEARCH = new BUTTON_INFO("Research", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);

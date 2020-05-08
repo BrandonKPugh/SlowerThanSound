@@ -21,6 +21,11 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
                 ButtonInfo = ControlConstants.DELETE_COMPONENT,
             };
 
+            Button DeleteRoom = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.DELETE_ROOM,
+            };
+
             Button PlaceStorage = new Button(buttonTexture, buttonFont)
             {
                 ButtonInfo = ControlConstants.PLACE_COMPONENT_STORAGE,
@@ -44,6 +49,7 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
             UI_Components = new List<UI_Component>()
             {
                 DeleteComponents,
+                DeleteRoom,
                 PlaceStorage,
                 PlaceWeapon,
                 PlaceGenerator,

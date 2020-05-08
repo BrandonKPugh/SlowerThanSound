@@ -43,7 +43,8 @@ namespace MonoGameWindowsStarter.AI
                     rect = pair.Item2;
                 }
             }
-            FireWeapon(rect);
+            if(priority > 0)
+                FireWeapon(rect);
         }
 
         private void FireWeapon(Rectangle target)

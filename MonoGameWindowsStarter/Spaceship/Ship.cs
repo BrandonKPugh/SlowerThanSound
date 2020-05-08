@@ -173,5 +173,9 @@ namespace MonoGameWindowsStarter.Spaceship
                 return false;
             }
         }
+        public void RemoveRoom(Room room)
+        {
+            Rooms.Remove(room);
+        }
     }
 }

@@ -22,7 +22,8 @@ namespace MonoGameWindowsStarter.States
             // Don't change the order, always A then placingA
             None,
             Room,
-            Delete,
+            DeleteComponent,
+            DeleteRoom,
             PlacingRoom,
             Weapon,
             PlacingWeapon,
@@ -292,7 +293,7 @@ namespace MonoGameWindowsStarter.States
                         }
                         break;
                     }
-                case Placement_Type.Delete:
+                case Placement_Type.DeleteComponent:
                     {
                         if (mousePressed && mouseOnTile)
                         {
@@ -300,15 +301,29 @@ namespace MonoGameWindowsStarter.States
                             {
                                 if (room.Contains(tileUnderMouse))
                                 {
-                                    Component found = null;
                                     foreach (Component c in room.GetComponents())
                                     {
-                                        if (c.X == tileX && c.Y == tileY)
+                                        if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
                                         {
                                             room.RemoveComponent(c);
                                             break;
                                         }
                                     }
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case Placement_Type.DeleteRoom:
+                    {
+                        if (mousePressed && mouseOnTile)
+                        {
+                            foreach (Room room in Ship.Rooms)
+                            {
+                                if (room.Contains(tileUnderMouse))
+                                {
+                                    Ship.RemoveRoom(room);
                                     break;
                                 }
                             }
@@ -398,6 +413,7 @@ namespace MonoGameWindowsStarter.States
             componentCanvas.InitializeButton(PlaceGeneratorButton_Click, ControlConstants.PLACE_COMPONENT_GENERATOR.Text);
             componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
             componentCanvas.InitializeButton(DeleteComponentButton_Click, ControlConstants.DELETE_COMPONENT.Text);
+            componentCanvas.InitializeButton(DeleteRoomButton_Click, ControlConstants.DELETE_ROOM.Text);
             _activeCanvas = componentCanvas;
         }
         private void ResearchButton_Click(object sender, EventArgs e)
@@ -411,8 +427,13 @@ namespace MonoGameWindowsStarter.States
 
         private void DeleteComponentButton_Click(object sender, EventArgs e)
         {
-            _placementType = Placement_Type.Delete;
+            _placementType = Placement_Type.DeleteComponent;
         }
+        private void DeleteRoomButton_Click(object sender, EventArgs e)
+        {
+            _placementType = Placement_Type.DeleteRoom;
+        }
+
         private void PlaceWeaponButton_Click(object sender, EventArgs e)
         {
             _placementType = Placement_Type.Weapon;
