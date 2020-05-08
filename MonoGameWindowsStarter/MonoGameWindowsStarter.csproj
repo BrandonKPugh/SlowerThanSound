@@ -55,6 +55,7 @@
     <Compile Include="Controls\UIGroups\BuildStateShipUI.cs" />
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="ModeState.cs" />
     <Compile Include="Spaceship\Grid.cs" />
     <Compile Include="Spaceship\Projectile.cs" />
     <Compile Include="States\BuildState.cs" />

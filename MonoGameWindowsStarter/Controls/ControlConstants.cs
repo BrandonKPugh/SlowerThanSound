@@ -164,6 +164,7 @@ namespace MonoGameWindowsStarter.Controls
         public static BUTTON_INFO PLACE_COMPONENT_STORAGE = new BUTTON_INFO("Place Storage", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 1, BUTTON_X, BUTTON_Y);
         public static BUTTON_INFO PLACE_COMPONENT_GENERATOR = new BUTTON_INFO("Place Generator", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 2, BUTTON_X, BUTTON_Y);
         public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 3, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO DELETE_COMPONENT = new BUTTON_INFO("Delete Components", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 4, BUTTON_X, BUTTON_Y);
         #endregion
         #region RESEARCH
         public static BUTTON_INFO BUILDMODE_RESEARCH = new BUTTON_INFO("Research", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);

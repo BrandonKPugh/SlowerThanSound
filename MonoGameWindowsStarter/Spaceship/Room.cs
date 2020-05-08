@@ -127,6 +127,10 @@ namespace MonoGameWindowsStarter.Spaceship
                     {
                         return Room_Type.Weapon;
                     }
+                case Component.Component_Type.Power_Generation:
+                    {
+                        return Room_Type.Power_Generation;
+                    }
                 default:
                     {
                         throw new NotImplementedException("RoomType/ComponentType not associated.");

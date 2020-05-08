@@ -98,6 +98,10 @@ namespace MonoGameWindowsStarter.Components
                     {
                         return (roomType == Room.Room_Type.Material_Storage);
                     }
+                case Placement_Type.Generator:
+                    {
+                        return (roomType == Room.Room_Type.Power_Generation);
+                    }
                 default:
                     {
                         throw new NotImplementedException("Unknown placement type");

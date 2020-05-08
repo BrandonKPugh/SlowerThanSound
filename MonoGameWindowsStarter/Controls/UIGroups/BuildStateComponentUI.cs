@@ -16,6 +16,11 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
+            Button DeleteComponents = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.DELETE_COMPONENT,
+            };
+
             Button PlaceStorage = new Button(buttonTexture, buttonFont)
             {
                 ButtonInfo = ControlConstants.PLACE_COMPONENT_STORAGE,
@@ -38,6 +43,7 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
 
             UI_Components = new List<UI_Component>()
             {
+                DeleteComponents,
                 PlaceStorage,
                 PlaceWeapon,
                 PlaceGenerator,

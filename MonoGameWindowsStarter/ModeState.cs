@@ -11,14 +11,14 @@ namespace MonoGameWindowsStarter
     /// </summary>
     public abstract class ModeState
     {
-        
+
         public enum State
         {
             Main,
             Build,
             Combat
         }
-        
+
 
     }
 }

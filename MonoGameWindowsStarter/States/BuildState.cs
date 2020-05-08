@@ -232,7 +232,8 @@ namespace MonoGameWindowsStarter.States
                         break;
                     }
                 case Placement_Type.Storage:
-                    // Drops through to Weapon
+                case Placement_Type.Generator:
+                // Drops through to Weapon
                 case Placement_Type.Weapon:
                     {
                         if (mousePressed && mouseOnTile)
@@ -265,7 +266,7 @@ namespace MonoGameWindowsStarter.States
                                                     }
                                                 case Placement_Type.Generator:
                                                     {
-                                                        _temporaryComponent = new PowerGenerationComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
+                                                        _temporaryComponent = new PowerGenerationComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_POWERGENERATOR_COLOR);
                                                         Ship.LoadComponentTexture(_temporaryComponent);
                                                         _placementType++;
                                                         break;
@@ -290,6 +291,29 @@ namespace MonoGameWindowsStarter.States
                         }
                         break;
                     }
+                //case Placement_Type.Delete:
+                //    {
+                //        if (mousePressed && mouseOnTile)
+                //        {
+                //            foreach (Room room in Ship.Rooms)
+                //            {
+                //                if (room.Contains(tileUnderMouse))
+                //                {
+                //                    Component found = null;
+                //                    foreach (Component c in room.GetComponents())
+                //                    {
+                //                        if (c.X == tileX && c.Y == tileY)
+                //                        {
+                //                            found = c;
+                //                            break;
+                //                        }
+                //                    }
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //        break;
+                //    }
                 case Placement_Type.PlacingStorage:
                 case Placement_Type.PlacingGenerator:
                 // Drops through to PlacingWeapon
@@ -372,6 +396,7 @@ namespace MonoGameWindowsStarter.States
             componentCanvas.InitializeButton(PlaceStorageButton_Click, ControlConstants.PLACE_COMPONENT_STORAGE.Text);
             componentCanvas.InitializeButton(PlaceGeneratorButton_Click, ControlConstants.PLACE_COMPONENT_GENERATOR.Text);
             componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
+            componentCanvas.InitializeButton(DeleteComponentButton_Click, ControlConstants.DELETE_COMPONENT.Text);
             _activeCanvas = componentCanvas;
         }
         private void ResearchButton_Click(object sender, EventArgs e)
@@ -383,6 +408,10 @@ namespace MonoGameWindowsStarter.States
             _temporaryComponent = null;
         }
 
+        private void DeleteComponentButton_Click(object sender, EventArgs e)
+        {
+            _placementType = Placement_Type.Weapon;
+        }
         private void PlaceWeaponButton_Click(object sender, EventArgs e)
         {
             _placementType = Placement_Type.Weapon;
