@@ -29,7 +29,7 @@ namespace MonoGameWindowsStarter.Components
         public int X;
         public int Y;
 
-        public int cost = 1;
+        public int value = 1;
         public Point TilePosition { get { return new Point(X, Y); } set { X = value.X; Y = value.Y; } }
 
         public Component_Type ComponentType;

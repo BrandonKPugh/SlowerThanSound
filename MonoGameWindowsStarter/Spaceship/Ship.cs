@@ -135,6 +135,8 @@ namespace MonoGameWindowsStarter.Spaceship
             return false;
         }
 
+
+
         // Just looks up the component's texture in the Dictionary. If it's not there, it (currently) throws an error
         public void LoadComponentTexture(Component component)
         {
@@ -185,6 +187,14 @@ namespace MonoGameWindowsStarter.Spaceship
         }
         public void RemoveRoom(Room room)
         {
+            var removeComponentList = new List<Component>();
+            foreach(Component component in room.GetComponents())
+            {
+                if (component.ComponentType != Component.Component_Type.Structure)
+                    removeComponentList.Add(component);
+            }
+            foreach (Component component1 in removeComponentList)
+                room.RemoveComponent(component1);
             Rooms.Remove(room);
         }
     }
