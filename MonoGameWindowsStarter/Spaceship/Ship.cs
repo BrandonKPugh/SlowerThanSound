@@ -142,15 +142,15 @@ namespace MonoGameWindowsStarter.Spaceship
             }
         }
 
-        public Dictionary<uint,Rectangle> GetRoomPriorities()
+        public List<Tuple<int, Rectangle>> GetRoomPriorities()
         {
-            Dictionary<uint, Rectangle> priorityDict = new Dictionary<uint, Rectangle>();
+            List<Tuple<int, Rectangle>> priorityList = new List<Tuple<int, Rectangle>>();
             foreach (Room room in Rooms){
                 var priority = room.GetPriority();
                 var rectangle = room.GetInteriorArea();
-                priorityDict.Add(priority, rectangle);
+                priorityList.Add(new Tuple<int,Rectangle>(priority, rectangle));
             }
-            return priorityDict;
+            return priorityList;
         }
 
         public bool AddRoom(Room room)

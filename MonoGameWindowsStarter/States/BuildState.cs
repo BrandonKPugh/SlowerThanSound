@@ -27,6 +27,8 @@ namespace MonoGameWindowsStarter.States
             PlacingWeapon,
             Storage,
             PlacingStorage,
+            Generator,
+            PlacingGenerator
         }
         public Ship Ship;
         private List<UI_Component> _uicomponents;
@@ -261,6 +263,13 @@ namespace MonoGameWindowsStarter.States
                                                         _placementType++;
                                                         break;
                                                     }
+                                                case Placement_Type.Generator:
+                                                    {
+                                                        _temporaryComponent = new PowerGenerationComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
+                                                        Ship.LoadComponentTexture(_temporaryComponent);
+                                                        _placementType++;
+                                                        break;
+                                                    }
                                                 case Placement_Type.Weapon:
                                                     {
                                                         _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
@@ -282,7 +291,8 @@ namespace MonoGameWindowsStarter.States
                         break;
                     }
                 case Placement_Type.PlacingStorage:
-                    // Drops through to PlacingWeapon
+                case Placement_Type.PlacingGenerator:
+                // Drops through to PlacingWeapon
                 case Placement_Type.PlacingWeapon:
                     {
                         if (mousePressed && mouseOnTile)
@@ -360,6 +370,7 @@ namespace MonoGameWindowsStarter.States
             BuildStateComponentUI componentCanvas = new BuildStateComponentUI(_content);
             componentCanvas.InitializeButton(PlaceWeaponButton_Click, ControlConstants.PLACE_COMPONENT_WEAPON.Text);
             componentCanvas.InitializeButton(PlaceStorageButton_Click, ControlConstants.PLACE_COMPONENT_STORAGE.Text);
+            componentCanvas.InitializeButton(PlaceGeneratorButton_Click, ControlConstants.PLACE_COMPONENT_GENERATOR.Text);
             componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
             _activeCanvas = componentCanvas;
         }
@@ -382,7 +393,11 @@ namespace MonoGameWindowsStarter.States
             _placementType = Placement_Type.Storage;
 
         }
+        private void PlaceGeneratorButton_Click(object sender, EventArgs e)
+        {
+            _placementType = Placement_Type.Generator;
 
+        }
         private void CreateRoomButton_Click(object sender, EventArgs e)
         {
             _placementType = Placement_Type.Room;

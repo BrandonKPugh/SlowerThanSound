@@ -32,9 +32,17 @@ namespace MonoGameWindowsStarter.AI
 
         private void AttackPlayer()
         {
-            var priorityDict = _playerShip.GetRoomPriorities();
-            Rectangle rect; 
-            priorityDict.TryGetValue(priorityDict.Keys.Max(), out rect);
+            var priorityList = _playerShip.GetRoomPriorities();
+            Rectangle rect = new Rectangle();
+            int priority = 0;
+            foreach (Tuple<int, Rectangle> pair in priorityList)
+            {
+                if(pair.Item1 > priority)
+                {
+                    priority = pair.Item1;
+                    rect = pair.Item2;
+                }
+            }
             FireWeapon(rect);
         }
 

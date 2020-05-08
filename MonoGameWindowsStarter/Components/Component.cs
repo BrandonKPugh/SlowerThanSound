@@ -28,6 +28,8 @@ namespace MonoGameWindowsStarter.Components
         // These are the coordinates in the grid, not the pixel coordinates
         public int X;
         public int Y;
+
+        public int cost = 1;
         public Point TilePosition { get { return new Point(X, Y); } set { X = value.X; Y = value.Y; } }
 
         public Component_Type ComponentType;
@@ -63,6 +65,8 @@ namespace MonoGameWindowsStarter.Components
             if (Health < 0)
                 Health = 0;
         }
+
+        public abstract int getValue();
 
         public virtual void Draw(SpriteBatch spriteBatch, Grid.GridInfo gridInfo)
         {

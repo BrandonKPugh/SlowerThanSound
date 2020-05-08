@@ -15,5 +15,6 @@ namespace MonoGameWindowsStarter.Components
         public static Color COMPONENT_STRUCTURE_COLOR = Color.Black;
         public static Color COMPONENT_WEAPON_COLOR = Color.OrangeRed;
         public static Color COMPONENT_MATERIALSTORAGE_COLOR = Color.DarkSeaGreen;
+        public static Color COMPONENT_POWERGENERATOR_COLOR = Color.Yellow;
     }
 }

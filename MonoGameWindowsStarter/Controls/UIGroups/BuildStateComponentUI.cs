@@ -25,17 +25,22 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
             {
                 ButtonInfo = ControlConstants.PLACE_COMPONENT_WEAPON,
             };
-            
+
+            Button PlaceGenerator = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.PLACE_COMPONENT_GENERATOR,
+            };
+
             Button CreateRoom = new Button(buttonTexture, buttonFont)
             {
                 ButtonInfo = ControlConstants.CREATE_ROOM,
             };
 
-
             UI_Components = new List<UI_Component>()
             {
                 PlaceStorage,
                 PlaceWeapon,
+                PlaceGenerator,
                 CreateRoom
             };
         }

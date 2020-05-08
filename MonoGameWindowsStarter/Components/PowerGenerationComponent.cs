@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 namespace MonoGameWindowsStarter.Components
 {
     // Inherits from abstract Component class
-    public class MaterialStorageComponent : Component
+    public class PowerGenerationComponent : Component
     {
-        public int maxStorage = 1;
-        public int storageAmount = 1;
-        public MaterialStorageComponent(int x, int y, Color color) : base(x, y, color)
+        public int generationAmount = 1;
+        public PowerGenerationComponent(int x, int y, Color color) : base(x, y, color)
         {
             this.X = x;
             this.Y = y;
             this.Color = color;
-            this.ComponentType = Component_Type.Material_Storage;
+            this.ComponentType = Component_Type.Power_Generation;
         }
 
         public override void Initialize()
@@ -32,7 +31,7 @@ namespace MonoGameWindowsStarter.Components
 
         public override int getValue()
         {
-            return cost + storageAmount;
+            return cost;
         }
     }
 }

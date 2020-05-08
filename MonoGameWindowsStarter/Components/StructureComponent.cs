@@ -32,5 +32,10 @@ namespace MonoGameWindowsStarter.Components
         {
 
         }
+
+        public override int getValue()
+        {
+            return cost;
+        }
     }
 }
