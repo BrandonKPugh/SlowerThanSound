@@ -114,6 +114,17 @@ namespace MonoGameWindowsStarter.Spaceship
                 Ship.LoadComponentTexture(component);
             Components.Add(component);
         }
+        public void RemoveComponent(Component component)
+        {
+            Components.Remove(component);
+            foreach(Component comp in Components)
+            {
+                if (comp.ComponentType != Component.Component_Type.Structure)
+                    return;
+                else
+                    SetRoomType(Room_Type.None);
+            }
+        }
 
         private Room_Type GetRoomType(Component component)
         {

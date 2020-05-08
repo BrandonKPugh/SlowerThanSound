@@ -22,6 +22,7 @@ namespace MonoGameWindowsStarter.States
             // Don't change the order, always A then placingA
             None,
             Room,
+            Delete,
             PlacingRoom,
             Weapon,
             PlacingWeapon,
@@ -291,29 +292,29 @@ namespace MonoGameWindowsStarter.States
                         }
                         break;
                     }
-                //case Placement_Type.Delete:
-                //    {
-                //        if (mousePressed && mouseOnTile)
-                //        {
-                //            foreach (Room room in Ship.Rooms)
-                //            {
-                //                if (room.Contains(tileUnderMouse))
-                //                {
-                //                    Component found = null;
-                //                    foreach (Component c in room.GetComponents())
-                //                    {
-                //                        if (c.X == tileX && c.Y == tileY)
-                //                        {
-                //                            found = c;
-                //                            break;
-                //                        }
-                //                    }
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //        break;
-                //    }
+                case Placement_Type.Delete:
+                    {
+                        if (mousePressed && mouseOnTile)
+                        {
+                            foreach (Room room in Ship.Rooms)
+                            {
+                                if (room.Contains(tileUnderMouse))
+                                {
+                                    Component found = null;
+                                    foreach (Component c in room.GetComponents())
+                                    {
+                                        if (c.X == tileX && c.Y == tileY)
+                                        {
+                                            room.RemoveComponent(c);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
                 case Placement_Type.PlacingStorage:
                 case Placement_Type.PlacingGenerator:
                 // Drops through to PlacingWeapon
@@ -410,7 +411,7 @@ namespace MonoGameWindowsStarter.States
 
         private void DeleteComponentButton_Click(object sender, EventArgs e)
         {
-            _placementType = Placement_Type.Weapon;
+            _placementType = Placement_Type.Delete;
         }
         private void PlaceWeaponButton_Click(object sender, EventArgs e)
         {
