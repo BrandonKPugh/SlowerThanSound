@@ -161,6 +161,10 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public bool AddRoom(Room room)
         {
+            if(room.GetInteriorArea().Width < 1 || room.GetInteriorArea().Height < 1)
+            {
+                return false;
+            }
             bool intersection = false;
             foreach(Room a in Rooms)
             {

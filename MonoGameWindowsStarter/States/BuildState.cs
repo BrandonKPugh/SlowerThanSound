@@ -357,25 +357,23 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     break;
                                 }
-                                /*
-                                // if the mouse leaves the room while still holding left click
-                                else if(room.Contains(_temporaryComponent.TilePosition))
-                                {
-                                    _temporaryComponent = null;
-                                    _placementType--;
-                                }
-                                */
                             }
                         }
                         else if(!mousePressed)
                         {
-                            if(mouseOnTile && tileUnderMouse == _temporaryComponent.TilePosition)
+                            if (mouseOnTile && (tileUnderMouse == _temporaryComponent.TilePosition))
                             {
                                 Ship.AddComponent(_temporaryComponent);
                             }
                             else 
                             {
-
+                                foreach (Room room in Ship.Rooms)
+                                {
+                                    if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
+                                    {
+                                        Ship.AddComponent(_temporaryComponent);
+                                    }
+                                }
                             }
                             _temporaryComponent = null;
 
