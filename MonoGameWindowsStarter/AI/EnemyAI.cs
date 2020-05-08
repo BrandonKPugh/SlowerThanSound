@@ -52,7 +52,7 @@ namespace MonoGameWindowsStarter.AI
             Random rand = new Random();
             var x = rand.Next(target.X, target.X + target.Width);
             var y = rand.Next(target.Y, target.Y + target.Height);
-            _combatState.AddProjectile(new Projectile(new Point(x, y), new Vector2(1000, 1000)));
+            _combatState.AddProjectile(new Projectile(new Point(x, y), new Vector2(1000, 1000), _combatState));
         }
 
         public void Update(GameTime gameTime)
