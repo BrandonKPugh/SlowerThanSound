@@ -33,7 +33,7 @@ namespace MonoGameWindowsStarter.Components
 
         public override int getValue()
         {
-            return cost + (int)WeaponDamage;
+            return 1 + (int)WeaponDamage;
         }
     }
 }
