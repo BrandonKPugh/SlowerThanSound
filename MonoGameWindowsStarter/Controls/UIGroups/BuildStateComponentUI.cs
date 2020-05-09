@@ -41,6 +41,11 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
                 ButtonInfo = ControlConstants.PLACE_COMPONENT_GENERATOR,
             };
 
+            Button PlaceBattery = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.PLACE_COMPONENT_BATTERY,
+            };
+
             Button CreateRoom = new Button(buttonTexture, buttonFont)
             {
                 ButtonInfo = ControlConstants.CREATE_ROOM,
@@ -53,6 +58,7 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
                 PlaceStorage,
                 PlaceWeapon,
                 PlaceGenerator,
+                PlaceBattery,
                 CreateRoom
             };
         }

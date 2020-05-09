@@ -46,6 +46,8 @@
     <Compile Include="Components\ComponentConstants.cs" />
     <Compile Include="Components\PowerGenerationComponent.cs" />
     <Compile Include="Components\MaterialStorageComponent.cs" />
+    <Compile Include="Components\PowerStorageComponent.cs" />
+    <Compile Include="Controls\UIBox.cs" />
     <Compile Include="Controls\BorderBox.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\ControlConstants.cs" />

@@ -30,7 +30,9 @@ namespace MonoGameWindowsStarter.States
             Storage,
             PlacingStorage,
             Generator,
-            PlacingGenerator
+            PlacingGenerator,
+            Battery,
+            PlacingBattery
         }
         private enum Tab_State
         {
@@ -123,7 +125,7 @@ namespace MonoGameWindowsStarter.States
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
 
             foreach (var component in _uicomponents)
                 component.Draw(gameTime, spriteBatch);
@@ -250,6 +252,7 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     break;
                                 }
+                            case Placement_Type.Battery:
                             case Placement_Type.Storage:
                             case Placement_Type.Generator:
                             // Drops through to Weapon
@@ -295,6 +298,14 @@ namespace MonoGameWindowsStarter.States
                                                             case Placement_Type.Weapon:
                                                                 {
                                                                     _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
+                                                                    Ship.LoadComponentTexture(_temporaryComponent);
+                                                                    _drawTemporaryComponent = true;
+                                                                    _placementType++;
+                                                                    break;
+                                                                }
+                                                            case Placement_Type.Battery:
+                                                                {
+                                                                    _temporaryComponent = new PowerStorageComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_POWERSTORAGE_COLOR);
                                                                     Ship.LoadComponentTexture(_temporaryComponent);
                                                                     _drawTemporaryComponent = true;
                                                                     _placementType++;
@@ -350,6 +361,7 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     break;
                                 }
+                            case Placement_Type.PlacingBattery:
                             case Placement_Type.PlacingStorage:
                             case Placement_Type.PlacingGenerator:
                             // Drops through to PlacingWeapon
@@ -462,6 +474,7 @@ namespace MonoGameWindowsStarter.States
             componentCanvas.InitializeButton(PlaceWeaponButton_Click, ControlConstants.PLACE_COMPONENT_WEAPON.Text);
             componentCanvas.InitializeButton(PlaceStorageButton_Click, ControlConstants.PLACE_COMPONENT_STORAGE.Text);
             componentCanvas.InitializeButton(PlaceGeneratorButton_Click, ControlConstants.PLACE_COMPONENT_GENERATOR.Text);
+            componentCanvas.InitializeButton(PlaceBatteryButton_Click, ControlConstants.PLACE_COMPONENT_BATTERY.Text);
             componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
             componentCanvas.InitializeButton(DeleteComponentButton_Click, ControlConstants.DELETE_COMPONENT.Text);
             componentCanvas.InitializeButton(DeleteRoomButton_Click, ControlConstants.DELETE_ROOM.Text);
@@ -502,6 +515,10 @@ namespace MonoGameWindowsStarter.States
         {
             _placementType = Placement_Type.Generator;
 
+        }
+        private void PlaceBatteryButton_Click(object sender, EventArgs e)
+        {
+            _placementType = Placement_Type.Battery;
         }
         private void CreateRoomButton_Click(object sender, EventArgs e)
         {

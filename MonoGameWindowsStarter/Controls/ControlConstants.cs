@@ -57,6 +57,46 @@ namespace MonoGameWindowsStarter.Controls
             public Color Color { get { return color; } }
         }
 
+        public struct UIBOX_INFO
+        {
+            private float x, y, width, height;
+            private Color color;
+            public UIBOX_INFO(float x_percent, float y_percent, float width_percent, float height_percent, Color color, int alpha = 255)
+            {
+                this.x = x_percent;
+                this.y = y_percent;
+                this.width = width_percent;
+                this.height = height_percent;
+                if(alpha < 255)
+                {
+                    Vector4 v = color.ToVector4();
+                    v.W = alpha;
+                    color = new Color(v);
+                }
+                this.color = color;
+            }
+
+            public UIBOX_INFO(Color color, int alpha = 255)
+            {
+                this.x = 0;
+                this.y = 0;
+                this.width = 0;
+                this.height = 0;
+                if (alpha < 255)
+                {
+                    Vector4 v = color.ToVector4();
+                    v.W = alpha;
+                    color = new Color(v);
+                }
+                this.color = color;
+            }
+            public int X { get { return (int)(this.x * Config.GAME_WIDTH); } }
+            public int Y { get { return (int)(this.y * Config.GAME_HEIGHT); } }
+            public int Width { get { return (int)(this.width * Config.GAME_WIDTH); } }
+            public int Height { get { return (int)(this.height * Config.GAME_HEIGHT); } }
+            public Color Color { get { return color; } }
+        }
+
         public struct BORDERBOX_INFO
         {
             private float x, y, width, height;
@@ -157,20 +197,26 @@ namespace MonoGameWindowsStarter.Controls
 
         private const float _SPACINGX = 1 / 64f;
         private const float _SPACINGY = 1 / 64f;
-        private const int _BUTTON_COUNT = 6;
+        private const int _BUTTON_COUNT = 7;
         private const float BUTTON_X = _CANVAS_WIDTH - _SPACINGX * 2;
         private const float BUTTON_Y = (_CANVAS_HEIGHT - (_SPACINGY * (_BUTTON_COUNT + 1))) / _BUTTON_COUNT;
+        private static int _buttonCounter = 0;
         public static BUTTON_INFO PLACE_COMPONENT_WEAPON = new BUTTON_INFO("Place Weapon", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO PLACE_COMPONENT_STORAGE = new BUTTON_INFO("Place Storage", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 1, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO PLACE_COMPONENT_GENERATOR = new BUTTON_INFO("Place Generator", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 2, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 3, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO DELETE_COMPONENT = new BUTTON_INFO("Delete Components", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 4, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO DELETE_ROOM = new BUTTON_INFO("Delete Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 5, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_STORAGE = new BUTTON_INFO("Place Storage", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_GENERATOR = new BUTTON_INFO("Place Generator", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_BATTERY = new BUTTON_INFO("Place Battery", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+
+
+        public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO DELETE_COMPONENT = new BUTTON_INFO("Delete Components", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO DELETE_ROOM = new BUTTON_INFO("Delete Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
         #endregion
-        #region RESEARCH
+        #region ROOM
         public static BUTTON_INFO BUILDMODE_ROOMS = new BUTTON_INFO("Rooms", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);
         public static BUTTON_INFO RESEARCH_TEST = new BUTTON_INFO("Research Item", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f) / 2);
         public static TEXTBOX_INFO ROOM_INFO_TEXTBOX = new TEXTBOX_INFO("Select a room", Color.Black, _CANVAS_X, _CANVAS_Y, _CANVAS_WIDTH, _CANVAS_HEIGHT);
+        public static UIBOX_INFO ROOM_INFO_BOX = new UIBOX_INFO();
+        public const int ROOM_INFO_BOX_ALPHA = 75;
         #endregion
 
 
@@ -180,6 +226,8 @@ namespace MonoGameWindowsStarter.Controls
         // BORDERBOX_INFO(penWeight, color, padding)
         // Position/size is later set using BorderBox.SetPosition() so that it is aligned with the grid.
         public static BORDERBOX_INFO BUILDMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
+
+
 
         #endregion
 

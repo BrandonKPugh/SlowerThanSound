@@ -201,7 +201,7 @@ namespace MonoGameWindowsStarter.Spaceship
                 {
                     return room;
                 }
-                else if(room.Contains(x, y))
+                else if(!interiorOnly && room.Contains(x, y))
                 {
                     return room;
                 }

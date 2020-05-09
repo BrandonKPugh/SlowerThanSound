@@ -152,6 +152,10 @@ namespace MonoGameWindowsStarter.Spaceship
                     {
                         return Room_Type.Power_Generation;
                     }
+                case Component.Component_Type.Power_Storage:
+                    {
+                        return Room_Type.Power_Storage;
+                    }
                 default:
                     {
                         throw new NotImplementedException("RoomType/ComponentType not associated.");
@@ -229,6 +233,7 @@ namespace MonoGameWindowsStarter.Spaceship
                     {
                         string s = "Room Type: Battery";
                         s += "\nComponents: " + Components.Count;
+                        s += "\nPower Capacity: " + string.Format("{0:0}", PowerStorageCapacity());
                         return s;
                     }
                 case Room_Type.Power_Generation:
@@ -272,6 +277,19 @@ namespace MonoGameWindowsStarter.Spaceship
                 if (c.ComponentType == Component.Component_Type.Power_Generation)
                 {
                     power += ((PowerGenerationComponent)c).PowerPerSecond;
+                }
+            }
+            return (float)(Math.Pow(power, 1.5f));
+        }
+
+        private float PowerStorageCapacity()
+        {
+            float power = 0f;
+            foreach (Component c in Components)
+            {
+                if (c.ComponentType == Component.Component_Type.Power_Storage)
+                {
+                    power += ((PowerStorageComponent)c).PowerCapacity;
                 }
             }
             return (float)(Math.Pow(power, 1.5f));
@@ -324,6 +342,37 @@ namespace MonoGameWindowsStarter.Spaceship
         private float PowerUsePerSecond()
         {
             return PowerPerShot() * ShotsPerSecond();
+        }
+
+        public Color GetColor()
+        {
+            switch (RoomType)
+            {
+                case Room_Type.None:
+                    {
+                        return ComponentConstants.COMPONENT_DEFAULT_COLOR;
+                    }
+                case Room_Type.Weapon:
+                    {
+                        return ComponentConstants.COMPONENT_WEAPON_COLOR;
+                    }
+                case Room_Type.Material_Storage:
+                    {
+                        return ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR;
+                    }
+                case Room_Type.Power_Generation:
+                    {
+                        return ComponentConstants.COMPONENT_POWERGENERATOR_COLOR;
+                    }
+                case Room_Type.Power_Storage:
+                    {
+                        return ComponentConstants.COMPONENT_POWERSTORAGE_COLOR;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
+            }
         }
 
     }

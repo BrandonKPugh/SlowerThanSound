@@ -89,6 +89,8 @@ namespace MonoGameWindowsStarter.States
             textures.Add(Component.Component_Type.Material_Storage, materialStorageTexture);
             Texture2D powerGeneratorTexture = _content.Load<Texture2D>("Component_MaterialStorage");
             textures.Add(Component.Component_Type.Power_Generation, powerGeneratorTexture);
+            Texture2D powerStorageTexture = _content.Load<Texture2D>("Component_MaterialStorage");
+            textures.Add(Component.Component_Type.Power_Storage, powerStorageTexture);
 
             //SpriteFont font = content.Load<SpriteFont>("DebugFont");
             //Texture2D pixel = content.Load<Texture2D>("pixel");

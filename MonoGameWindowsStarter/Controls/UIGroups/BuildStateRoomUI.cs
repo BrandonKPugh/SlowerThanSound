@@ -16,6 +16,7 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
         public Room SelectedRoom;
         private Room _oldSelectedRoom;
         private TextBox _roomInfo;
+        private UIBox _roomOutline;
         public BuildStateRoomUI(ContentManager _content)
         {
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
@@ -27,9 +28,15 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
                 TextBoxInfo = ControlConstants.ROOM_INFO_TEXTBOX
             };
 
+            _roomOutline = new UIBox(pixelTexture)
+            {
+                UIBoxInfo = ControlConstants.ROOM_INFO_BOX
+            };
+
             UI_Components = new List<UI_Component>()
             {
-                _roomInfo
+                _roomInfo,
+                _roomOutline
             };
         }
 
@@ -39,6 +46,8 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
             {
                 _oldSelectedRoom = SelectedRoom;
                 _roomInfo.Text = SelectedRoom.GetInfo();
+                _roomOutline.SetPosition(SelectedRoom.GetInteriorArea());
+                _roomOutline.Color = new Color(SelectedRoom.GetColor(), ControlConstants.ROOM_INFO_BOX_ALPHA);
             }
 
             foreach (UI_Component ui_component in UI_Components)
