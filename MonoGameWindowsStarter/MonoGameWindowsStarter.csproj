@@ -46,12 +46,14 @@
     <Compile Include="Components\ComponentConstants.cs" />
     <Compile Include="Components\PowerGenerationComponent.cs" />
     <Compile Include="Components\MaterialStorageComponent.cs" />
+    <Compile Include="Components\PowerStorageComponent.cs" />
+    <Compile Include="Controls\UIBox.cs" />
     <Compile Include="Controls\BorderBox.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\ControlConstants.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\UIGroups\BuildStateComponentUI.cs" />
-    <Compile Include="Controls\UIGroups\BuildStateResearchUI.cs" />
+    <Compile Include="Controls\UIGroups\BuildStateRoomUI.cs" />
     <Compile Include="Controls\UIGroups\BuildStateShipUI.cs" />
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
