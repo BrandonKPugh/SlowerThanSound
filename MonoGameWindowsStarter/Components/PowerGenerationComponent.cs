@@ -10,7 +10,7 @@ namespace MonoGameWindowsStarter.Components
     // Inherits from abstract Component class
     public class PowerGenerationComponent : Component
     {
-        public int generationAmount = 1;
+        public float PowerPerSecond = 1;
         public PowerGenerationComponent(int x, int y, Color color) : base(x, y, color)
         {
             this.X = x;

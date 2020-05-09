@@ -32,9 +32,17 @@ namespace MonoGameWindowsStarter.States
             Generator,
             PlacingGenerator
         }
+        private enum Tab_State
+        {
+            None,
+            Ship,
+            Component,
+            Room
+        }
         public Ship Ship;
         private List<UI_Component> _uicomponents;
         private UIGroup _activeCanvas;
+        private Tab_State _tabState = Tab_State.None;
         private Placement_Type _placementType = Placement_Type.None;
         private Room _temporaryRoom = null;
         private Point _temporaryRoomStart;
@@ -70,10 +78,10 @@ namespace MonoGameWindowsStarter.States
 
             Button ResearchButton = new Button(buttonTexture, buttonFont)
             {
-                ButtonInfo = ControlConstants.BUILDMODE_RESEARCH,
+                ButtonInfo = ControlConstants.BUILDMODE_ROOMS,
             };
 
-            ResearchButton.Click += ResearchButton_Click;
+            ResearchButton.Click += RoomButton_Click;
 
             TextBox BuildModeTitle = new TextBox(buttonFont)
             {
@@ -155,247 +163,276 @@ namespace MonoGameWindowsStarter.States
             bool mousePressed = (Mouse.GetState().LeftButton == ButtonState.Pressed);
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
-
-            switch (_placementType)
+            
+            switch (_tabState)
             {
-                case Placement_Type.None:
+                case Tab_State.None:
                     {
                         break;
                     }
-                case Placement_Type.Room:
+                case Tab_State.Component:
                     {
-                        if (mousePressed)
+                        switch (_placementType)
                         {
-                            bool beginPlacement = false;
-                            bool foundRoom = false;
-                            if (mouseOnTile)
-                            {
-                                foreach (Room room in Ship.Rooms)
+                            case Placement_Type.None:
                                 {
-                                    if (room.Contains(tileUnderMouse))
+                                    break;
+                                }
+                            case Placement_Type.Room:
+                                {
+                                    if (mousePressed)
                                     {
-                                        foundRoom = true;
-                                        Component found = null;
-                                        foreach (Component c in room.GetComponents())
+                                        bool beginPlacement = false;
+                                        bool foundRoom = false;
+                                        if (mouseOnTile)
                                         {
-                                            if (c.TilePosition == tileUnderMouse)
+                                            foreach (Room room in Ship.Rooms)
                                             {
-                                                found = c;
+                                                if (room.Contains(tileUnderMouse))
+                                                {
+                                                    foundRoom = true;
+                                                    Component found = null;
+                                                    foreach (Component c in room.GetComponents())
+                                                    {
+                                                        if (c.TilePosition == tileUnderMouse)
+                                                        {
+                                                            found = c;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (found != null && found.ComponentType == Component.Component_Type.Structure)
+                                                    {
+                                                        beginPlacement = true;
+                                                    }
+                                                }
+                                            }
+                                            if (foundRoom == false)
+                                            {
+                                                beginPlacement = true;
+                                            }
+                                            if (beginPlacement)
+                                            {
+                                                _temporaryRoomStart = tileUnderMouse;
+                                                _temporaryRoom = new Room(Ship, Ship.Grid, tileUnderMouse, tileUnderMouse, Room.Room_Type.None);
+                                                foreach (Component component in _temporaryRoom.GetComponents())
+                                                {
+                                                    Ship.LoadComponentTexture(component);
+                                                }
+                                                _placementType = Placement_Type.PlacingRoom;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            case Placement_Type.PlacingRoom:
+                                {
+                                    if (mousePressed && mouseOnTile)
+                                    {
+                                        var minX = Math.Min(tileX, _temporaryRoomStart.X);
+                                        var minY = Math.Min(tileY, _temporaryRoomStart.Y);
+                                        var maxX = Math.Max(tileX, _temporaryRoomStart.X);
+                                        var maxY = Math.Max(tileY, _temporaryRoomStart.Y);
+                                        Point p1 = new Point(minX, minY);
+                                        Point p2 = new Point(maxX, maxY);
+
+                                        _temporaryRoom = new Room(Ship, Ship.Grid, p1, p2, Room.Room_Type.None);
+                                        foreach (Component component in _temporaryRoom.GetComponents())
+                                        {
+                                            Ship.LoadComponentTexture(component);
+                                        }
+                                    }
+                                    else if (!mousePressed && mouseOnTile)
+                                    {
+                                        // Released mouse, finalize room
+                                        _placementType = Placement_Type.Room;
+                                        Ship.AddRoom(_temporaryRoom);
+                                        _temporaryRoom = null;
+                                    }
+                                    break;
+                                }
+                            case Placement_Type.Storage:
+                            case Placement_Type.Generator:
+                            // Drops through to Weapon
+                            case Placement_Type.Weapon:
+                                {
+                                    if (mousePressed && mouseOnTile)
+                                    {
+                                        foreach (Room room in Ship.Rooms)
+                                        {
+                                            if (room.Contains(tileUnderMouse))
+                                            {
+                                                Component found = null;
+                                                foreach (Component c in room.GetComponents())
+                                                {
+                                                    if (c.X == tileX && c.Y == tileY)
+                                                    {
+                                                        found = c;
+                                                        break;
+                                                    }
+                                                }
+                                                if (found == null)
+                                                {
+                                                    if (Component.RoomTypeMatches(_placementType, room.RoomType) || room.RoomType == Room.Room_Type.None)
+                                                    {
+                                                        switch (_placementType)
+                                                        {
+                                                            case Placement_Type.Storage:
+                                                                {
+                                                                    _temporaryComponent = new MaterialStorageComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
+                                                                    Ship.LoadComponentTexture(_temporaryComponent);
+                                                                    _drawTemporaryComponent = true;
+                                                                    _placementType++;
+                                                                    break;
+                                                                }
+                                                            case Placement_Type.Generator:
+                                                                {
+                                                                    _temporaryComponent = new PowerGenerationComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_POWERGENERATOR_COLOR);
+                                                                    Ship.LoadComponentTexture(_temporaryComponent);
+                                                                    _drawTemporaryComponent = true;
+                                                                    _placementType++;
+                                                                    break;
+                                                                }
+                                                            case Placement_Type.Weapon:
+                                                                {
+                                                                    _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
+                                                                    Ship.LoadComponentTexture(_temporaryComponent);
+                                                                    _drawTemporaryComponent = true;
+                                                                    _placementType++;
+                                                                    break;
+                                                                }
+                                                            default:
+                                                                {
+                                                                    throw new NotImplementedException("That component type doesn't exist!");
+                                                                }
+                                                        }
+                                                    }
+                                                }
                                                 break;
                                             }
                                         }
-                                        if(found != null && found.ComponentType == Component.Component_Type.Structure)
-                                        {
-                                            beginPlacement = true;
-                                        }
                                     }
+                                    break;
                                 }
-                                if (foundRoom == false)
+                            case Placement_Type.DeleteComponent:
                                 {
-                                    beginPlacement = true;
-                                }
-                                if(beginPlacement)
-                                {
-                                    _temporaryRoomStart = tileUnderMouse;
-                                    _temporaryRoom = new Room(Ship, Ship.Grid, tileUnderMouse, tileUnderMouse, Room.Room_Type.None);
-                                    foreach (Component component in _temporaryRoom.GetComponents())
+                                    if (mousePressed && mouseOnTile)
                                     {
-                                        Ship.LoadComponentTexture(component);
-                                    }
-                                    _placementType = Placement_Type.PlacingRoom;
-                                }
-                            }
-                        }
-                        break;
-                    }
-                case Placement_Type.PlacingRoom:
-                    {
-                        if (mousePressed && mouseOnTile)
-                        {
-                            var minX = Math.Min(tileX, _temporaryRoomStart.X);
-                            var minY = Math.Min(tileY, _temporaryRoomStart.Y);
-                            var maxX = Math.Max(tileX, _temporaryRoomStart.X);
-                            var maxY = Math.Max(tileY, _temporaryRoomStart.Y);
-                            Point p1 = new Point(minX, minY);
-                            Point p2 = new Point(maxX, maxY);
-
-                            _temporaryRoom = new Room(Ship, Ship.Grid, p1, p2, Room.Room_Type.None);
-                            foreach (Component component in _temporaryRoom.GetComponents())
-                            {
-                                Ship.LoadComponentTexture(component);
-                            }
-                        }
-                        else if(!mousePressed && mouseOnTile)
-                        {
-                            // Released mouse, finalize room
-                            _placementType = Placement_Type.Room;
-                            Ship.AddRoom(_temporaryRoom);
-                            _temporaryRoom = null;
-                        }
-                        break;
-                    }
-                case Placement_Type.Storage:
-                case Placement_Type.Generator:
-                // Drops through to Weapon
-                case Placement_Type.Weapon:
-                    {
-                        if (mousePressed && mouseOnTile)
-                        {
-                            foreach (Room room in Ship.Rooms)
-                            {
-                                if (room.Contains(tileUnderMouse))
-                                {
-                                    Component found = null;
-                                    foreach (Component c in room.GetComponents())
-                                    {
-                                        if (c.X == tileX && c.Y == tileY)
+                                        foreach (Room room in Ship.Rooms)
                                         {
-                                            found = c;
-                                            break;
-                                        }
-                                    }
-                                    if (found == null)
-                                    {
-                                        if(Component.RoomTypeMatches(_placementType, room.RoomType) || room.RoomType == Room.Room_Type.None)
-                                        {
-                                            switch (_placementType)
+                                            if (room.Contains(tileUnderMouse))
                                             {
-                                                case Placement_Type.Storage:
+                                                foreach (Component c in room.GetComponents())
+                                                {
+                                                    if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
                                                     {
-                                                        _temporaryComponent = new MaterialStorageComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_MATERIALSTORAGE_COLOR);
-                                                        Ship.LoadComponentTexture(_temporaryComponent);
-                                                        _drawTemporaryComponent = true;
-                                                        _placementType++;
+                                                        room.RemoveComponent(c);
                                                         break;
                                                     }
-                                                case Placement_Type.Generator:
-                                                    {
-                                                        _temporaryComponent = new PowerGenerationComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_POWERGENERATOR_COLOR);
-                                                        Ship.LoadComponentTexture(_temporaryComponent);
-                                                        _drawTemporaryComponent = true;
-                                                        _placementType++;
-                                                        break;
-                                                    }
-                                                case Placement_Type.Weapon:
-                                                    {
-                                                        _temporaryComponent = new WeaponComponent(tileUnderMouse.X, tileUnderMouse.Y, ComponentConstants.COMPONENT_WEAPON_COLOR);
-                                                        Ship.LoadComponentTexture(_temporaryComponent);
-                                                        _drawTemporaryComponent = true;
-                                                        _placementType++;
-                                                        break;
-                                                    }
-                                                default:
-                                                    {
-                                                        throw new NotImplementedException("That component type doesn't exist!");
-                                                    }
+                                                }
+                                                break;
                                             }
                                         }
                                     }
                                     break;
                                 }
-                            }
-                        }
-                        break;
-                    }
-                case Placement_Type.DeleteComponent:
-                    {
-                        if (mousePressed && mouseOnTile)
-                        {
-                            foreach (Room room in Ship.Rooms)
-                            {
-                                if (room.Contains(tileUnderMouse))
+                            case Placement_Type.DeleteRoom:
                                 {
-                                    foreach (Component c in room.GetComponents())
+                                    if (mousePressed && mouseOnTile)
                                     {
-                                        if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
+                                        foreach (Room room in Ship.Rooms)
                                         {
-                                            room.RemoveComponent(c);
-                                            break;
+                                            if (room.InteriorContains(tileUnderMouse))
+                                            {
+                                                Ship.RemoveRoom(room);
+                                                break;
+                                            }
                                         }
                                     }
                                     break;
                                 }
-                            }
-                        }
-                        break;
-                    }
-                case Placement_Type.DeleteRoom:
-                    {
-                        if (mousePressed && mouseOnTile)
-                        {
-                            foreach (Room room in Ship.Rooms)
-                            {
-                                if (room.InteriorContains(tileUnderMouse))
+                            case Placement_Type.PlacingStorage:
+                            case Placement_Type.PlacingGenerator:
+                            // Drops through to PlacingWeapon
+                            case Placement_Type.PlacingWeapon:
                                 {
-                                    Ship.RemoveRoom(room);
-                                    break;
-                                }
-                            }
-                        }
-                        break;
-                    }
-                case Placement_Type.PlacingStorage:
-                case Placement_Type.PlacingGenerator:
-                // Drops through to PlacingWeapon
-                case Placement_Type.PlacingWeapon:
-                    {
-                        if (mousePressed && mouseOnTile)
-                        {
-                            foreach (Room room in Ship.Rooms)
-                            {
-                                if(room.Contains(_temporaryComponent.TilePosition) && !room.InteriorContains(tileUnderMouse))
-                                {
-                                    _drawTemporaryComponent = false;
-                                }
-                                if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
-                                {
-                                    Component found = null;
-                                    foreach (Component c in room.GetComponents())
+                                    if (mousePressed && mouseOnTile)
                                     {
-                                        if (c.TilePosition == tileUnderMouse)
+                                        foreach (Room room in Ship.Rooms)
                                         {
-                                            found = c;
-                                            break;
+                                            if (room.Contains(_temporaryComponent.TilePosition) && !room.InteriorContains(tileUnderMouse))
+                                            {
+                                                _drawTemporaryComponent = false;
+                                            }
+                                            if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
+                                            {
+                                                Component found = null;
+                                                foreach (Component c in room.GetComponents())
+                                                {
+                                                    if (c.TilePosition == tileUnderMouse)
+                                                    {
+                                                        found = c;
+                                                        break;
+                                                    }
+                                                }
+                                                // Another component isn't under the mouse already
+                                                if (found == null)
+                                                {
+                                                    _temporaryComponent.TilePosition = tileUnderMouse;
+                                                    _drawTemporaryComponent = true;
+                                                }
+                                                break;
+                                            }
                                         }
                                     }
-                                    // Another component isn't under the mouse already
-                                    if (found == null)
+                                    else if (mousePressed && !mouseOnTile)
                                     {
-                                        _temporaryComponent.TilePosition = tileUnderMouse;
-                                        _drawTemporaryComponent = true;
+                                        _drawTemporaryComponent = false;
                                     }
-                                    break;
-                                }
-                            }
-                        }
-                        else if(mousePressed && !mouseOnTile)
-                        {
-                            _drawTemporaryComponent = false;
-                        }
-                        else if(!mousePressed)
-                        {
-                            if (mouseOnTile && (tileUnderMouse == _temporaryComponent.TilePosition))
-                            {
-                                Ship.AddComponent(_temporaryComponent);
-                            }
-                            else 
-                            {
-                                foreach (Room room in Ship.Rooms)
-                                {
-                                    if (room.InteriorContains(tileUnderMouse) && room.InteriorContains(_temporaryComponent.TilePosition))
+                                    else if (!mousePressed)
                                     {
-                                        Ship.AddComponent(_temporaryComponent);
-                                    }
-                                }
-                            }
-                            _temporaryComponent = null;
-                            _drawTemporaryComponent = false;
+                                        if (mouseOnTile && (tileUnderMouse == _temporaryComponent.TilePosition))
+                                        {
+                                            Ship.AddComponent(_temporaryComponent);
+                                        }
+                                        else
+                                        {
+                                            foreach (Room room in Ship.Rooms)
+                                            {
+                                                if (room.InteriorContains(tileUnderMouse) && room.InteriorContains(_temporaryComponent.TilePosition))
+                                                {
+                                                    Ship.AddComponent(_temporaryComponent);
+                                                }
+                                            }
+                                        }
+                                        _temporaryComponent = null;
+                                        _drawTemporaryComponent = false;
 
-                            _placementType--;
+                                        _placementType--;
+                                    }
+                                    break;
+                                }
                         }
                         break;
+                    }
+                case Tab_State.Room:
+                    {
+                        if(mousePressed && mouseOnTile)
+                        {
+                            Room room = Ship.GetRoom(tileUnderMouse, true);
+                            ((BuildStateRoomUI)_activeCanvas).SelectedRoom = room;
+                        }
+                        break;
+                    }
+                case Tab_State.Ship:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
                     }
             }
+            
 
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
@@ -417,6 +454,7 @@ namespace MonoGameWindowsStarter.States
             _temporaryRoom = null;
             _temporaryComponent = null;
             _drawTemporaryComponent = false;
+            _tabState = Tab_State.Ship;
         }
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
@@ -428,15 +466,17 @@ namespace MonoGameWindowsStarter.States
             componentCanvas.InitializeButton(DeleteComponentButton_Click, ControlConstants.DELETE_COMPONENT.Text);
             componentCanvas.InitializeButton(DeleteRoomButton_Click, ControlConstants.DELETE_ROOM.Text);
             _activeCanvas = componentCanvas;
+            _tabState = Tab_State.Component;
         }
-        private void ResearchButton_Click(object sender, EventArgs e)
+        private void RoomButton_Click(object sender, EventArgs e)
         {
-            BuildStateResearchUI componentCanvas = new BuildStateResearchUI(_content);
+            BuildStateRoomUI componentCanvas = new BuildStateRoomUI(_content);
             _activeCanvas = componentCanvas;
             _placementType = Placement_Type.None;
             _temporaryRoom = null;
             _temporaryComponent = null;
             _drawTemporaryComponent = false;
+            _tabState = Tab_State.Room;
         }
 
         private void DeleteComponentButton_Click(object sender, EventArgs e)

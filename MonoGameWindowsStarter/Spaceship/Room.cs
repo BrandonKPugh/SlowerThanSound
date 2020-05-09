@@ -198,5 +198,133 @@ namespace MonoGameWindowsStarter.Spaceship
         {
             RoomType = type;
         }
+
+        public string GetInfo()
+        {
+            switch (RoomType)
+            {
+                case Room_Type.None:
+                    {
+                        return "Room Type: None";
+                    }
+                case Room_Type.Weapon:
+                    {
+                        string s = "Room Type: Weapon";
+                        s += "\nComponents: " + Components.Count;
+                        s += "\nDamage per shot: " + string.Format("{0:0.00}", DamagePerShot());
+                        s += "\nShots per second: " + string.Format("{0:0.00}", ShotsPerSecond());
+                        s += "\nDamage per second: " + string.Format("{0:0.00}", DamagePerSecond());
+                        s += "\nPower per shot: " + string.Format("{0:0.00}", PowerPerShot());
+                        s += "\nPower per second: " + string.Format("{0:0.00}", PowerUsePerSecond());
+                        return s;
+                    }
+                case Room_Type.Material_Storage:
+                    {
+                        string s = "Room Type: Material Storage";
+                        s += "\nComponents: " + Components.Count;
+                        s += "\nStorage Capacity: " + string.Format("{0:0}", MaterialStorageCapacity());
+                        return s;
+                    }
+                case Room_Type.Power_Storage:
+                    {
+                        string s = "Room Type: Battery";
+                        s += "\nComponents: " + Components.Count;
+                        return s;
+                    }
+                case Room_Type.Power_Generation:
+                    {
+                        string s = "Room Type: Generator";
+                        s += "\nComponents: " + Components.Count;
+                        s += "\nPower per second: " + string.Format("{0:0.00}", PowerGenerationPerSecond());
+                        return s;
+                    }
+                case Room_Type.Shield:
+                    {
+                        string s = "Room Type: Shield";
+                        s += "\nComponents: " + Components.Count;
+                        return s;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
+            }
+        }
+
+        private int MaterialStorageCapacity()
+        {
+            int capacity = 0;
+            foreach (Component c in Components)
+            {
+                if (c.ComponentType == Component.Component_Type.Material_Storage)
+                {
+                    capacity += ((MaterialStorageComponent)c).StorageCapacity;
+                }
+            }
+            return (int)(Math.Pow(capacity, 1.5f));
+        }
+
+        private float PowerGenerationPerSecond()
+        {
+            float power = 0f;
+            foreach (Component c in Components)
+            {
+                if (c.ComponentType == Component.Component_Type.Power_Generation)
+                {
+                    power += ((PowerGenerationComponent)c).PowerPerSecond;
+                }
+            }
+            return (float)(Math.Pow(power, 1.5f));
+        }
+
+        private float DamagePerShot()
+        {
+            float damage = 0f;
+            foreach (Component c in Components)
+            {
+                if(c.ComponentType == Component.Component_Type.Weapon)
+                {
+                    damage += ((WeaponComponent)c).WeaponDamage;
+                }
+            }
+            return (float)Math.Sqrt(damage);
+        }
+
+        private float ShotsPerSecond()
+        {
+            float sps = 0f;
+            foreach(Component c in Components)
+            {
+                if(c.ComponentType == Component.Component_Type.Weapon)
+                {
+                    sps += ((WeaponComponent)c).ShotsPerSecond;
+                }
+            }
+            return (float)Math.Sqrt(sps);
+        }
+
+        private float PowerPerShot()
+        {
+            float pps = 0f;
+            foreach (Component c in Components)
+            {
+                if (c.ComponentType == Component.Component_Type.Weapon)
+                {
+                    pps += ((WeaponComponent)c).PowerPerShot;
+                }
+            }
+            return pps;
+        }
+
+        private float DamagePerSecond()
+        {
+            return ShotsPerSecond() * DamagePerShot();
+        }
+
+        private float PowerUsePerSecond()
+        {
+            return PowerPerShot() * ShotsPerSecond();
+        }
+
     }
 }

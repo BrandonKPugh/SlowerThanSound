@@ -187,5 +187,26 @@ namespace MonoGameWindowsStarter.Spaceship
         {
             Rooms.Remove(room);
         }
+
+        public Room GetRoom(Point tilePosition, bool interiorOnly)
+        {
+            return GetRoom(tilePosition.X, tilePosition.Y, interiorOnly);
+        }
+
+        public Room GetRoom(int x, int y, bool interiorOnly)
+        {
+            foreach(Room room in Rooms)
+            {
+                if (interiorOnly && room.InteriorContains(x, y))
+                {
+                    return room;
+                }
+                else if(room.Contains(x, y))
+                {
+                    return room;
+                }
+            }
+            return null;
+        }
     }
 }

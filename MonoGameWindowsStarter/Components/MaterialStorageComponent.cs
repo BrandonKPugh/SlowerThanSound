@@ -10,8 +10,8 @@ namespace MonoGameWindowsStarter.Components
     // Inherits from abstract Component class
     public class MaterialStorageComponent : Component
     {
-        public int maxStorage = 1;
-        public int storageAmount = 1;
+        public int StorageCapacity = 1;
+        public int MaterialStored = 1;
         public MaterialStorageComponent(int x, int y, Color color) : base(x, y, color)
         {
             this.X = x;
@@ -32,7 +32,7 @@ namespace MonoGameWindowsStarter.Components
 
         public override int getValue()
         {
-            return cost + storageAmount;
+            return cost + MaterialStored;
         }
     }
 }

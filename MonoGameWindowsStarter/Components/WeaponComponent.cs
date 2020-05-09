@@ -10,7 +10,9 @@ namespace MonoGameWindowsStarter.Components
     // Inherits from abstract Component class
     public class WeaponComponent : Component
     {
-        public int weaponDamage = 2;
+        public float WeaponDamage = 2f;
+        public float ShotsPerSecond = 0.5f;
+        public float PowerPerShot = 2f;
         public WeaponComponent(int x, int y, Color color) : base(x, y, color)
         {
             this.X = x;
@@ -31,7 +33,7 @@ namespace MonoGameWindowsStarter.Components
 
         public override int getValue()
         {
-            return cost + weaponDamage;
+            return cost + (int)WeaponDamage;
         }
     }
 }

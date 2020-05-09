@@ -168,8 +168,9 @@ namespace MonoGameWindowsStarter.Controls
         public static BUTTON_INFO DELETE_ROOM = new BUTTON_INFO("Delete Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * 5, BUTTON_X, BUTTON_Y);
         #endregion
         #region RESEARCH
-        public static BUTTON_INFO BUILDMODE_RESEARCH = new BUTTON_INFO("Research", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);
+        public static BUTTON_INFO BUILDMODE_ROOMS = new BUTTON_INFO("Rooms", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);
         public static BUTTON_INFO RESEARCH_TEST = new BUTTON_INFO("Research Item", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f) / 2);
+        public static TEXTBOX_INFO ROOM_INFO_TEXTBOX = new TEXTBOX_INFO("Select a room", Color.Black, _CANVAS_X, _CANVAS_Y, _CANVAS_WIDTH, _CANVAS_HEIGHT);
         #endregion
 
 
