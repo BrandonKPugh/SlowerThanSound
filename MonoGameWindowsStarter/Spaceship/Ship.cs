@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MonoGameWindowsStarter.Components;
 using MonoGameWindowsStarter.Spaceship;
 using Microsoft.Xna.Framework;
+using MonoGameWindowsStarter.Rendering;
 
 namespace MonoGameWindowsStarter.Spaceship
 {
@@ -17,6 +18,7 @@ namespace MonoGameWindowsStarter.Spaceship
         // private List<Component> Components;
         // Dictionary for component textures
         private Dictionary<Component.Component_Type, Texture2D> Textures;
+        private Dictionary<Component.Component_Type, Sprite> Sprites;
 
         public Grid Grid;
 
@@ -36,6 +38,7 @@ namespace MonoGameWindowsStarter.Spaceship
         public void Initialize(List<Tuple<Point,Point, Room.Room_Type>> rooms)
         {
             Textures = new Dictionary<Component.Component_Type, Texture2D>();
+            Sprites = new Dictionary<Component.Component_Type, Sprite>();
 
             Grid = new Grid(ShipConstants.SHIP_GRID);
 
@@ -51,6 +54,7 @@ namespace MonoGameWindowsStarter.Spaceship
         public void Initialize(List<Component> components)
         {
             Textures = new Dictionary<Component.Component_Type, Texture2D>();
+            Sprites = new Dictionary<Component.Component_Type, Sprite>();
 
             Grid = new Grid(ShipConstants.SHIP_GRID);
 
@@ -73,6 +77,26 @@ namespace MonoGameWindowsStarter.Spaceship
             }
             // Loop through all components on the ship and set their textures
             foreach(Room room in Rooms)
+            {
+                foreach (Component component in room.GetComponents())
+                {
+                    LoadComponentTexture(component);
+                }
+            }
+        }
+
+        public void LoadContent(Dictionary<Component.Component_Type, Sprite> textures, Texture2D TileTexture)
+        {
+            Grid.LoadContent(TileTexture);
+
+            // Loop through each texture that was just passed in and add it to the ship's dictionary
+            foreach (KeyValuePair<Component.Component_Type, Sprite> pair in textures)
+            {
+                if (!Sprites.ContainsKey(pair.Key))
+                    Sprites.Add(pair.Key, pair.Value);
+            }
+            // Loop through all components on the ship and set their textures
+            foreach (Room room in Rooms)
             {
                 foreach (Component component in room.GetComponents())
                 {
@@ -140,9 +164,22 @@ namespace MonoGameWindowsStarter.Spaceship
         // Just looks up the component's texture in the Dictionary. If it's not there, it (currently) throws an error
         public void LoadComponentTexture(Component component)
         {
-            if (Textures.ContainsKey(component.ComponentType))
+            if (Sprites.ContainsKey(component.ComponentType))
             {
-                component.LoadContent(Textures[component.ComponentType]);
+                //component.LoadContent(Textures[component.ComponentType]);
+                component.LoadContent(Sprites[component.ComponentType]);
+            }
+            else
+            {
+                throw new Exception("Component's texture was not found. ComponentType: " + component.ComponentType.ToString());
+            }
+        }
+
+        public void LoadComponentSprite(Component component)
+        {
+            if (Sprites.ContainsKey(component.ComponentType))
+            {
+                component.LoadContent(Sprites[component.ComponentType]);
             }
             else
             {

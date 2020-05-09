@@ -12,7 +12,7 @@ namespace MonoGameWindowsStarter.Rendering
         private Rectangle source;
 
         // The sprite's texture
-        private Texture2D texture;
+        public Texture2D texture;
 
         /// <summary>
         /// Gets the sprite's width

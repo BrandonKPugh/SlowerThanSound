@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameWindowsStarter.Rendering;
 using MonoGameWindowsStarter.States;
 using System.Collections.Generic;
 
@@ -17,6 +18,7 @@ namespace MonoGameWindowsStarter
         private State _currentState;
 
         private State _nextState;
+
 
         public void ChangeState(State state)
         {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MonoGameWindowsStarter.Spaceship;
 using static MonoGameWindowsStarter.States.BuildState;
+using MonoGameWindowsStarter.Rendering;
 
 namespace MonoGameWindowsStarter.Components
 {
@@ -40,6 +41,7 @@ namespace MonoGameWindowsStarter.Components
 
         public Color Color;
         public Texture2D Texture;
+        public Sprite Sprite;
 
         public Component(int x, int y, Color color)
         {
@@ -55,6 +57,10 @@ namespace MonoGameWindowsStarter.Components
         public virtual void LoadContent(Texture2D texture)
         {
             Texture = texture;
+        }
+        public virtual void LoadContent(Sprite sprite)
+        {
+            Sprite = sprite;
         }
 
         public abstract void Update(GameTime gameTime);
@@ -77,7 +83,8 @@ namespace MonoGameWindowsStarter.Components
             }
             else
             {
-                spriteBatch.Draw(Texture, gridInfo.TileBounds(X, Y), Color);
+                //spriteBatch.Draw(Texture, gridInfo.TileBounds(X, Y), Color);
+                Sprite.Draw(spriteBatch, gridInfo.TileBounds(X, Y), Color.White);
             }
         }
 

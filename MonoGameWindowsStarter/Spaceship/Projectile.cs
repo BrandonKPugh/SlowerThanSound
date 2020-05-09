@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameWindowsStarter.Components;
+using MonoGameWindowsStarter.Rendering;
 using MonoGameWindowsStarter.States;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace MonoGameWindowsStarter.Spaceship
         private int _speed;
         private int _damage;
         public Texture2D _texture;
+        public Sprite _sprite;
         public bool AtTarget = false;
         private CombatState _combatState;
 
