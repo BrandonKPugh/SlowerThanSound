@@ -11,6 +11,7 @@ using MonoGameWindowsStarter.Controls;
 using MonoGameWindowsStarter.Components;
 using MonoGameWindowsStarter.Spaceship;
 using MonoGameWindowsStarter.AI;
+using MonoGameWindowsStarter.Controls.UIGroups;
 
 namespace MonoGameWindowsStarter.States
 {
@@ -21,8 +22,12 @@ namespace MonoGameWindowsStarter.States
         private EnemyAI enemyAI;
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
+        private CombatStateTargetUI _canvas;
 
         private Texture2D projectileTexture;
+        private Texture2D _pixelTexture;
+
+        private Dictionary<uint, UIBox> _roomHealthBoxes = new Dictionary<uint, UIBox>();
 
         public CombatState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship)
           : base(game, graphicsDevice, content)
@@ -36,7 +41,7 @@ namespace MonoGameWindowsStarter.States
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D tileTexture = content.Load<Texture2D>("Tile");
-            Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
+            _pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
             Dictionary<Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
             Texture2D weaponTexture = content.Load<Texture2D>("Component_Weapon");
@@ -44,55 +49,26 @@ namespace MonoGameWindowsStarter.States
             Texture2D structureTexture = content.Load<Texture2D>("Structure");
             textures.Add(Component.Component_Type.Structure, structureTexture);
 
+            _canvas = new CombatStateTargetUI(content);
+            _canvas.SetShipGridLocation(Ship.Grid.Info.GridRectangle);
+            _canvas.InitializeButton(TargetEnemyShipButton_Click, ControlConstants.COMBATMODE_TARGETENEMYSHIP.Text);
+            _canvas.InitializeButton(TargetStoragesButton_Click, ControlConstants.COMBATMODE_TARGETSTORAGES.Text);
+            _canvas.InitializeButton(TargetWeaponsButton_Click, ControlConstants.COMBATMODE_TARGETWEAPONS.Text);
+            _canvas.InitializeButton(TargetPowerGenButton_Click, ControlConstants.COMBATMODE_TARGETPOWERGEN.Text);
+            _canvas.InitializeButton(TargetPowerStorageButton_Click, ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text);
+
             Button BuildModeButton = new Button(buttonTexture, buttonFont)
             {
-                ButtonInfo = ControlConstants.COMBATMODE_BUILDMODE,
+                ButtonInfo = ControlConstants.COMBATMODE_BUILDMODE
             };
 
             BuildModeButton.Click += BuildModeButton_Click;
 
-            Button TargetStoragesButton = new Button(buttonTexture, buttonFont)
-            {
-                ButtonInfo = ControlConstants.COMBATMODE_TARGETSTORAGES,
-            };
-
-            TargetStoragesButton.Click += TargetStoragesButton_Click;
-
-            Button TargetWeaponsButton = new Button(buttonTexture, buttonFont)
-            {
-                ButtonInfo = ControlConstants.COMBATMODE_TARGETWEAPONS,
-            };
-
-            TargetWeaponsButton.Click += TargetWeaponsButton_Click;
-
-            Button TargetPowerButton = new Button(buttonTexture, buttonFont)
-            {
-                ButtonInfo = ControlConstants.COMBATMODE_TARGETPOWER,
-            };
-
-            TargetPowerButton.Click += TargetPowerButton_Click;
-
-            TextBox CombatModeTitle = new TextBox(buttonFont)
-            {
-                TextBoxInfo = ControlConstants.COMBATMODE_TITLE,
-            };
-
-            BorderBox GridBox = new BorderBox(pixelTexture)
-            {
-                BorderBoxInfo = ControlConstants.BUILDMODE_GRIDBOX
-            };
-            GridBox.SetPosition(Ship.Grid.Info.GridRectangle, ControlConstants.BUILDMODE_GRIDBOX.Padding);
-
-            _uicomponents = new List<UI_Component>()
+            _uicomponents = new List<UI_Component>
             {
                 BuildModeButton,
-                CombatModeTitle,
-                GridBox,
-                TargetStoragesButton,
-                TargetWeaponsButton,
-                TargetPowerButton
+                _canvas
             };
-
 
             Ship.LoadContent(textures, tileTexture);
             this.Ship = ship;
@@ -107,12 +83,16 @@ namespace MonoGameWindowsStarter.States
         {
             Ship.Draw(spriteBatch, ModeState.State.Combat);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
 
             foreach (var component in _uicomponents)
                 component.Draw(gameTime, spriteBatch);
             foreach (var projectile in projectiles)
                 projectile.Draw(spriteBatch);
+            foreach(UI_Component ui in _roomHealthBoxes.Values)
+            {
+                ui.Draw(gameTime, spriteBatch);
+            }
 
             spriteBatch.End();
         }
@@ -126,6 +106,12 @@ namespace MonoGameWindowsStarter.States
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 _game.ChangeState(new PauseState(_game, _graphicsDevice, _content, this));
+
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETENEMYSHIP.Text, 0.55f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETWEAPONS.Text, 0.775f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETSTORAGES.Text, 0.65f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERGEN.Text, 0.45f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text, 0.35f);
 
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
@@ -142,7 +128,20 @@ namespace MonoGameWindowsStarter.States
             {
                 projectiles.Remove(projectile);
             }
-
+            foreach(Room room in Ship.Rooms)
+            {
+                if(_roomHealthBoxes.ContainsKey(room.RoomID))
+                {
+                    _roomHealthBoxes[room.RoomID].Color = new Color(ControlConstants.COMBATMODE_ROOMHEALTHCOLOR, room.GetHealthAlpha());
+                }
+                else
+                {
+                    UIBox toAdd = new UIBox(_pixelTexture);
+                    toAdd.SetPosition(room.GetInteriorArea());
+                    toAdd.Color = new Color(ControlConstants.COMBATMODE_ROOMHEALTHCOLOR, room.GetHealthAlpha());
+                    _roomHealthBoxes.Add(room.RoomID, toAdd);
+                }
+            }
         }
 
         public void AddProjectile(Projectile projectile)
@@ -165,7 +164,17 @@ namespace MonoGameWindowsStarter.States
 
         }
 
-        private void TargetPowerButton_Click(object sender, EventArgs e)
+        private void TargetPowerGenButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TargetPowerStorageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TargetEnemyShipButton_Click(object sender, EventArgs e)
         {
 
         }

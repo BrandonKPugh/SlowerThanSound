@@ -60,7 +60,7 @@ namespace MonoGameWindowsStarter.Controls
         {
             foreach(UI_Component component in UI_Components)
             {
-                if(component.GetType() == typeof(Button))
+                if(component.GetType() == typeof(Button) || component.GetType() == typeof(ProgressBarButton))
                 {
                     Button button = (Button)component;
                     if(button.Text == buttonText)
@@ -82,8 +82,20 @@ namespace MonoGameWindowsStarter.Controls
                 {
                     ((Button)component).BackColour = ControlConstants.BUTTON_BACKCOLOR;
                 }
+                if (component.GetType() == typeof(ProgressBarButton))
+                {
+                    ((ProgressBarButton)component).BackColour = ControlConstants.PROGRESSBUTTON_BACKCOLOR;
+                    ((ProgressBarButton)component).FrontColour = ControlConstants.PROGRESSBUTTON_FRONTCOLOR;
+                }
             }
-            ((Button)sender).BackColour = ControlConstants.BUTTON_SELECTED;
+            if (sender.GetType() == typeof(ProgressBarButton))
+            {
+                ((ProgressBarButton)sender).Selected();
+            }
+            else if (sender.GetType() == typeof(Button))
+            {
+                ((Button)sender).Selected();
+            }
         }
     }
 }

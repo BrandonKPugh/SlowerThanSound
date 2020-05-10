@@ -48,6 +48,7 @@
     <Compile Include="Components\PowerGenerationComponent.cs" />
     <Compile Include="Components\MaterialStorageComponent.cs" />
     <Compile Include="Components\PowerStorageComponent.cs" />
+    <Compile Include="Controls\ProgressBarButton.cs" />
     <Compile Include="Controls\UIBox.cs" />
     <Compile Include="Controls\BorderBox.cs" />
     <Compile Include="Controls\Button.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Controls\UIGroups\BuildStateComponentUI.cs" />
     <Compile Include="Controls\UIGroups\BuildStateRoomUI.cs" />
     <Compile Include="Controls\UIGroups\BuildStateShipUI.cs" />
+    <Compile Include="Controls\UIGroups\CombatStateTargetUI.cs" />
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="ModeState.cs" />

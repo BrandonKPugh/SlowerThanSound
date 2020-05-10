@@ -102,12 +102,14 @@ namespace MonoGameWindowsStarter.States
                 BorderBoxInfo = ControlConstants.BUILDMODE_CANVAS
             };
 
+            /*
             BorderBox BuildModeTitleBox = new BorderBox(pixelTexture)
             {
                 BorderBoxInfo = ControlConstants.BUILDMODE_TITLEBOX
             };
 
             BuildModeTitleBox.SetPosition(BuildModeTitle.Location, 0);
+            */
 
             _uicomponents = new List<UI_Component>()
             {
@@ -118,7 +120,7 @@ namespace MonoGameWindowsStarter.States
                 BuildModeTitle,
                 GridBox,
                 Canvas,
-                BuildModeTitleBox
+                //BuildModeTitleBox
             };
 
         }

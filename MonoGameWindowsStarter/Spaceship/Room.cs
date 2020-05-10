@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameWindowsStarter.Components;
+using MonoGameWindowsStarter.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -37,6 +38,8 @@ namespace MonoGameWindowsStarter.Spaceship
         public uint RoomID;
 
         private int roomHealth;
+        private int maxRoomHealth;
+        public int RoomHealth { get { return roomHealth; } }
         public bool isBroken;
 
 
@@ -170,6 +173,11 @@ namespace MonoGameWindowsStarter.Spaceship
             }
         }
 
+        public int GetHealthAlpha()
+        {
+            return (int)((1f - ((float)roomHealth / (float)maxRoomHealth)) * ControlConstants.COMBATMODE_ROOMHEALTHALPHA);
+        }
+
         // Gets all components including strucures
         public List<Component> GetComponents()
         {
@@ -229,6 +237,7 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 roomHealth += 1;
             }
+            maxRoomHealth = roomHealth;
             return roomHealth;
         }
 

@@ -136,6 +136,10 @@ namespace MonoGameWindowsStarter.Controls
         public const string BUTTON_FONT = "DebugFont";
         public static Color BUTTON_PENCOLOR = Color.Black;
         public static Color BUTTON_BACKCOLOR = Color.White;
+        public static Color PROGRESSBUTTON_BACKCOLOR = Color.DarkGray;
+        public static Color PROGRESSBUTTON_FRONTCOLOR = Color.White;
+        public static Color PROGRESSBUTTON_SELECTEDBACKCOLOR = Color.SlateGray;
+        public static Color PROGRESSBUTTON_SELECTEDFRONTCOLOR = Color.LightBlue;
         public static Color BUTTON_HOVERING = Color.Gray;
         public const float BUTTON_PADDING_RATIO = 0.90f;
         public static Color BUTTON_SELECTED = Color.SkyBlue;
@@ -161,16 +165,37 @@ namespace MonoGameWindowsStarter.Controls
         #endregion
 
         #region COMBATMODE
-
-        public static BUTTON_INFO COMBATMODE_BUILDMODE = new BUTTON_INFO("Build Mode", 0.625f, 0.775f, 0.25f, 0.125f);
-        public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.125f);
-        // BORDERBOX_INFO(penWeight, color, padding)
-        // Position/size is later set using BorderBox.SetPosition() so that it is aligned with the grid.
+        public static Color COMBATMODE_ROOMHEALTHCOLOR = new Color(255, 0, 0);
+        public const int COMBATMODE_ROOMHEALTHALPHA = 100;
         public static BORDERBOX_INFO COMBATMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
 
-        public static BUTTON_INFO COMBATMODE_TARGETSTORAGES = new BUTTON_INFO("Material Storage", 0.625f, 0.275f, 0.25f, 0.1f);
-        public static BUTTON_INFO COMBATMODE_TARGETWEAPONS = new BUTTON_INFO("Weapon Systems", 0.625f, 0.425f, 0.25f, 0.1f);
-        public static BUTTON_INFO COMBATMODE_TARGETPOWER = new BUTTON_INFO("Power Generation", 0.625f, 0.575f, 0.25f, 0.1f);
+        public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.05f);
+
+        private const float COMBATMODE_CANVAS_WIDTH = .38125f;
+        private const float COMBATMODE_CANVAS_HEIGHT = 0.675f;
+        private const float COMBATMODE_CANVAS_X = 0.5625f;
+        private const float COMBATMODE_CANVAS_Y = 0.125f;
+        private const float COMBATMODE_SHIP_RATIO = COMBATMODE_CANVAS_WIDTH * 14f / 64f;
+        private const float COMBATMODE_COMPONENT_RATIO = COMBATMODE_CANVAS_WIDTH * 27f / 64f;
+        private const float COMBATMODE_RESEARCH_RATIO = COMBATMODE_CANVAS_WIDTH * 22f / 64f;
+        private const float COMBATMODE_GAP_RATIO = (COMBATMODE_CANVAS_WIDTH - (COMBATMODE_SHIP_RATIO + COMBATMODE_COMPONENT_RATIO + COMBATMODE_RESEARCH_RATIO)) / 2;
+
+        public static BORDERBOX_INFO COMBATMODE_CANVAS = new BORDERBOX_INFO(3, Color.Black, COMBATMODE_CANVAS_X, COMBATMODE_CANVAS_Y, COMBATMODE_CANVAS_WIDTH, COMBATMODE_CANVAS_HEIGHT, 5);
+
+        private const float COMBATMODE_SPACINGX = 1 / 64f;
+        private const float COMBATMODE_SPACINGY = 1 / 64f;
+        private const int COMBATMODE_BUTTON_COUNT = 7;
+        private const float COMBATMODE_BUTTON_X = COMBATMODE_CANVAS_WIDTH - COMBATMODE_SPACINGX * 2;
+        private const float COMBATMODE_BUTTON_Y = (COMBATMODE_CANVAS_HEIGHT - (COMBATMODE_SPACINGY * (COMBATMODE_BUTTON_COUNT + 1))) / COMBATMODE_BUTTON_COUNT;
+        private static int COMBATMODE_buttonCounter = 0;
+
+        public static BUTTON_INFO COMBATMODE_TARGETENEMYSHIP = new BUTTON_INFO("Enemy Ship", COMBATMODE_CANVAS_X + COMBATMODE_SPACINGX, COMBATMODE_CANVAS_Y + COMBATMODE_SPACINGY + (COMBATMODE_SPACINGY + COMBATMODE_BUTTON_Y) * ++COMBATMODE_buttonCounter, COMBATMODE_BUTTON_X, COMBATMODE_BUTTON_Y);
+        public static BUTTON_INFO COMBATMODE_TARGETSTORAGES = new BUTTON_INFO("Material Storage", COMBATMODE_CANVAS_X + COMBATMODE_SPACINGX, COMBATMODE_CANVAS_Y + COMBATMODE_SPACINGY + (COMBATMODE_SPACINGY + COMBATMODE_BUTTON_Y) * ++COMBATMODE_buttonCounter, COMBATMODE_BUTTON_X, COMBATMODE_BUTTON_Y);
+        public static BUTTON_INFO COMBATMODE_TARGETWEAPONS = new BUTTON_INFO("Weapon Systems", COMBATMODE_CANVAS_X + COMBATMODE_SPACINGX, COMBATMODE_CANVAS_Y + COMBATMODE_SPACINGY + (COMBATMODE_SPACINGY + COMBATMODE_BUTTON_Y) * ++COMBATMODE_buttonCounter, COMBATMODE_BUTTON_X, COMBATMODE_BUTTON_Y);
+        public static BUTTON_INFO COMBATMODE_TARGETPOWERGEN = new BUTTON_INFO("Power Generation", COMBATMODE_CANVAS_X + COMBATMODE_SPACINGX, COMBATMODE_CANVAS_Y + COMBATMODE_SPACINGY + (COMBATMODE_SPACINGY + COMBATMODE_BUTTON_Y) * ++COMBATMODE_buttonCounter, COMBATMODE_BUTTON_X, COMBATMODE_BUTTON_Y);
+        public static BUTTON_INFO COMBATMODE_TARGETPOWERSTORAGE = new BUTTON_INFO("Power Storage", COMBATMODE_CANVAS_X + COMBATMODE_SPACINGX, COMBATMODE_CANVAS_Y + COMBATMODE_SPACINGY + (COMBATMODE_SPACINGY + COMBATMODE_BUTTON_Y) * ++COMBATMODE_buttonCounter, COMBATMODE_BUTTON_X, COMBATMODE_BUTTON_Y);
+
+        public static BUTTON_INFO COMBATMODE_BUILDMODE = new BUTTON_INFO("Build Mode", 0.625f, 0.825f, 0.25f, 0.125f);
 
         #endregion
 
@@ -178,43 +203,43 @@ namespace MonoGameWindowsStarter.Controls
 
         public static BUTTON_INFO BUILDMODE_COMBATMODE = new BUTTON_INFO("Combat Mode", 0.625f, 0.825f, 0.25f, 0.125f);
 
-        private const float _CANVAS_WIDTH = .38125f;
-        private const float _CANVAS_HEIGHT = 0.6f;
-        private const float _CANVAS_X = 0.5625f;
-        private const float _CANVAS_Y = 0.2f;
-        private const float _SHIP_RATIO = _CANVAS_WIDTH * 14f / 64f;
-        private const float _COMPONENT_RATIO = _CANVAS_WIDTH * 27f / 64f;
-        private const float _RESEARCH_RATIO = _CANVAS_WIDTH * 22f / 64f;
-        private const float _GAP_RATIO = (_CANVAS_WIDTH - (_SHIP_RATIO + _COMPONENT_RATIO + _RESEARCH_RATIO)) / 2;
+        private const float BUILDMODE_CANVAS_WIDTH = .38125f;
+        private const float BUILDMODE_CANVAS_HEIGHT = 0.6f;
+        private const float BUILDMODE_CANVAS_X = 0.5625f;
+        private const float BUILDMODE_CANVAS_Y = 0.2f;
+        private const float BUILDMODE_SHIP_RATIO = BUILDMODE_CANVAS_WIDTH * 14f / 64f;
+        private const float BUILDMODE_COMPONENT_RATIO = BUILDMODE_CANVAS_WIDTH * 27f / 64f;
+        private const float BUILDMODE_RESEARCH_RATIO = BUILDMODE_CANVAS_WIDTH * 22f / 64f;
+        private const float BUILDMODE_GAP_RATIO = (BUILDMODE_CANVAS_WIDTH - (BUILDMODE_SHIP_RATIO + BUILDMODE_COMPONENT_RATIO + BUILDMODE_RESEARCH_RATIO)) / 2;
 
-        public static BORDERBOX_INFO BUILDMODE_CANVAS = new BORDERBOX_INFO(3, Color.Black, _CANVAS_X, _CANVAS_Y, _CANVAS_WIDTH, _CANVAS_HEIGHT, 5);
+        public static BORDERBOX_INFO BUILDMODE_CANVAS = new BORDERBOX_INFO(3, Color.Black, BUILDMODE_CANVAS_X, BUILDMODE_CANVAS_Y, BUILDMODE_CANVAS_WIDTH, BUILDMODE_CANVAS_HEIGHT, 5);
         #region SHIPBUILD
-        public static BUTTON_INFO BUILDMODE_SHIPBUILD = new BUTTON_INFO("Ship", _CANVAS_X, 0.125f, _SHIP_RATIO, .06875f);
-        public static BUTTON_INFO SHIPBUILD_TEST = new BUTTON_INFO("View Ship", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f)/2);
+        public static BUTTON_INFO BUILDMODE_SHIPBUILD = new BUTTON_INFO("Ship", BUILDMODE_CANVAS_X, 0.125f, BUILDMODE_SHIP_RATIO, .06875f);
+        public static BUTTON_INFO SHIPBUILD_TEST = new BUTTON_INFO("View Ship", BUILDMODE_CANVAS_X + 0.05f, 0.25f, BUILDMODE_CANVAS_WIDTH - 0.1f, (BUILDMODE_CANVAS_WIDTH - 0.1f)/2);
         #endregion
         #region COMPONENTBUILD
-        public static BUTTON_INFO BUILDMODE_COMPONENTBUILD = new BUTTON_INFO("Components", _CANVAS_X + _SHIP_RATIO + _GAP_RATIO, 0.125f, _COMPONENT_RATIO, .06875f);
+        public static BUTTON_INFO BUILDMODE_COMPONENTBUILD = new BUTTON_INFO("Components", BUILDMODE_CANVAS_X + BUILDMODE_SHIP_RATIO + BUILDMODE_GAP_RATIO, 0.125f, BUILDMODE_COMPONENT_RATIO, .06875f);
 
         private const float _SPACINGX = 1 / 64f;
         private const float _SPACINGY = 1 / 64f;
         private const int _BUTTON_COUNT = 7;
-        private const float BUTTON_X = _CANVAS_WIDTH - _SPACINGX * 2;
-        private const float BUTTON_Y = (_CANVAS_HEIGHT - (_SPACINGY * (_BUTTON_COUNT + 1))) / _BUTTON_COUNT;
+        private const float BUTTON_X = BUILDMODE_CANVAS_WIDTH - _SPACINGX * 2;
+        private const float BUTTON_Y = (BUILDMODE_CANVAS_HEIGHT - (_SPACINGY * (_BUTTON_COUNT + 1))) / _BUTTON_COUNT;
         private static int _buttonCounter = 0;
-        public static BUTTON_INFO PLACE_COMPONENT_WEAPON = new BUTTON_INFO("Place Weapon", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO PLACE_COMPONENT_STORAGE = new BUTTON_INFO("Place Storage", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO PLACE_COMPONENT_GENERATOR = new BUTTON_INFO("Place Generator", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO PLACE_COMPONENT_BATTERY = new BUTTON_INFO("Place Battery", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_WEAPON = new BUTTON_INFO("Place Weapon", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_STORAGE = new BUTTON_INFO("Place Storage", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_GENERATOR = new BUTTON_INFO("Place Generator", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO PLACE_COMPONENT_BATTERY = new BUTTON_INFO("Place Battery", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
 
 
-        public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO DELETE_COMPONENT = new BUTTON_INFO("Delete Components", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
-        public static BUTTON_INFO DELETE_ROOM = new BUTTON_INFO("Delete Room", _CANVAS_X + _SPACINGX, _CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO CREATE_ROOM = new BUTTON_INFO("Create Room", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO DELETE_COMPONENT = new BUTTON_INFO("Delete Components", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
+        public static BUTTON_INFO DELETE_ROOM = new BUTTON_INFO("Delete Room", BUILDMODE_CANVAS_X + _SPACINGX, BUILDMODE_CANVAS_Y + _SPACINGY + (_SPACINGY + BUTTON_Y) * ++_buttonCounter, BUTTON_X, BUTTON_Y);
         #endregion
         #region ROOM
-        public static BUTTON_INFO BUILDMODE_ROOMS = new BUTTON_INFO("Rooms", _CANVAS_X + _SHIP_RATIO + _COMPONENT_RATIO + _GAP_RATIO * 2, 0.125f, _RESEARCH_RATIO, .06875f);
-        public static BUTTON_INFO RESEARCH_TEST = new BUTTON_INFO("Research Item", _CANVAS_X + 0.05f, 0.25f, _CANVAS_WIDTH - 0.1f, (_CANVAS_WIDTH - 0.1f) / 2);
-        public static TEXTBOX_INFO ROOM_INFO_TEXTBOX = new TEXTBOX_INFO("Select a room", Color.Black, _CANVAS_X, _CANVAS_Y, _CANVAS_WIDTH, _CANVAS_HEIGHT);
+        public static BUTTON_INFO BUILDMODE_ROOMS = new BUTTON_INFO("Rooms", BUILDMODE_CANVAS_X + BUILDMODE_SHIP_RATIO + BUILDMODE_COMPONENT_RATIO + BUILDMODE_GAP_RATIO * 2, 0.125f, BUILDMODE_RESEARCH_RATIO, .06875f);
+        public static BUTTON_INFO RESEARCH_TEST = new BUTTON_INFO("Research Item", BUILDMODE_CANVAS_X + 0.05f, 0.25f, BUILDMODE_CANVAS_WIDTH - 0.1f, (BUILDMODE_CANVAS_WIDTH - 0.1f) / 2);
+        public static TEXTBOX_INFO ROOM_INFO_TEXTBOX = new TEXTBOX_INFO("Select a room", Color.Black, BUILDMODE_CANVAS_X, BUILDMODE_CANVAS_Y, BUILDMODE_CANVAS_WIDTH, BUILDMODE_CANVAS_HEIGHT);
         public static UIBOX_INFO ROOM_INFO_BOX = new UIBOX_INFO();
         public const int ROOM_INFO_BOX_ALPHA = 75;
         #endregion

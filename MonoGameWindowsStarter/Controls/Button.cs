@@ -13,15 +13,15 @@ namespace MonoGameWindowsStarter.Controls
     {
         #region Fields
 
-        private MouseState _currentMouse;
+        protected MouseState _currentMouse;
 
-        private SpriteFont _font;
+        protected SpriteFont _font;
 
-        private bool _isHovering;
+        protected bool _isHovering;
 
-        private MouseState _previousMouse;
+        protected MouseState _previousMouse;
 
-        private Texture2D _texture;
+        protected Texture2D _texture;
 
         #endregion
 
@@ -93,6 +93,11 @@ namespace MonoGameWindowsStarter.Controls
                     Click?.Invoke(this, new EventArgs());
                 }
             }
+        }
+
+        public virtual void Selected()
+        {
+            BackColour = ControlConstants.BUTTON_SELECTED;
         }
 
         #endregion

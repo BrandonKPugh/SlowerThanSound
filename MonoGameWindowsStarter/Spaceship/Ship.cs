@@ -254,7 +254,13 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 MaxHealth += room.SetRoomHealth();
             }
-            var healthDifference = MaxHealth / PreviousHealth;
+            float healthDifference;
+            if (PreviousHealth != 0)
+                healthDifference = MaxHealth / PreviousHealth;
+            else
+            {
+                healthDifference = 0;
+            }
             CurrentHealth = (int)(CurrentHealth * healthDifference);
         }
 
