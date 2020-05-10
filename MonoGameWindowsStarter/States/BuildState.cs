@@ -467,6 +467,7 @@ namespace MonoGameWindowsStarter.States
             _temporaryComponent = null;
             _drawTemporaryComponent = false;
             _tabState = Tab_State.Ship;
+            SetActiveButton(ControlConstants.BUILDMODE_SHIPBUILD.Text);
         }
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
@@ -480,6 +481,7 @@ namespace MonoGameWindowsStarter.States
             componentCanvas.InitializeButton(DeleteRoomButton_Click, ControlConstants.DELETE_ROOM.Text);
             _activeCanvas = componentCanvas;
             _tabState = Tab_State.Component;
+            SetActiveButton(ControlConstants.BUILDMODE_COMPONENTBUILD.Text);
         }
         private void RoomButton_Click(object sender, EventArgs e)
         {
@@ -490,6 +492,7 @@ namespace MonoGameWindowsStarter.States
             _temporaryComponent = null;
             _drawTemporaryComponent = false;
             _tabState = Tab_State.Room;
+            SetActiveButton(ControlConstants.BUILDMODE_ROOMS.Text);
         }
 
         private void DeleteComponentButton_Click(object sender, EventArgs e)
@@ -524,6 +527,24 @@ namespace MonoGameWindowsStarter.States
         {
             _placementType = Placement_Type.Room;
 
+        }
+
+        private void SetActiveButton(string text)
+        {
+            foreach (UI_Component component in _uicomponents)
+            {
+                if (component.GetType() == typeof(Button))
+                {
+                    if (((Button)component).Text == text)
+                    {
+                        ((Button)component).BackColour = ControlConstants.BUTTON_SELECTED;
+                    }
+                    else
+                    {
+                        ((Button)component).BackColour = ControlConstants.BUTTON_BACKCOLOR;
+                    }
+                }
+            }
         }
     }
 }
