@@ -39,6 +39,7 @@ namespace MonoGameWindowsStarter.Spaceship
         private int roomHealth;
         public bool isBroken;
 
+
         /// <param name="gridLocation">Location is in grid coordinates, not pixel coordinates</param>
         public Room(Ship ship, Rectangle gridLocation, Room_Type roomType)
         {
@@ -192,6 +193,19 @@ namespace MonoGameWindowsStarter.Spaceship
             return new Rectangle(x, y, width, height);
         }
 
+        public Vector2 GetCenter()
+        {
+            var info = Grid.Info;
+            var topLeft = info.TileBounds(GridLocation.X, GridLocation.Y);
+            var bottomRight = info.TileBounds(GridLocation.X + GridLocation.Width, GridLocation.Y + GridLocation.Height);
+            var x = topLeft.X + topLeft.Width;
+            var y = topLeft.Y + topLeft.Height;
+            var width = bottomRight.X - x;
+            var height = bottomRight.Y - y;
+
+            return new Vector2(x+(width/2), y+(height/2));
+        }
+
         public int GetPriority()
         {
             var priority = 1;
@@ -333,7 +347,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return (float)(Math.Pow(power, 1.5f));
         }
 
-        private float DamagePerShot()
+        public float DamagePerShot()
         {
             float damage = 0f;
             foreach (Component c in Components)

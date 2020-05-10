@@ -14,6 +14,14 @@ namespace MonoGameWindowsStarter.Spaceship
 {
     public class Projectile
     {
+        public enum Attack_Against
+        {
+            Player,
+            EnemyWeapon,
+            EnemyStorage,
+            EnemyGenerator
+        }
+
         private Point _target;
         private Vector2 _position;
         private int _speed;
@@ -22,14 +30,18 @@ namespace MonoGameWindowsStarter.Spaceship
         public Sprite _sprite;
         public bool AtTarget = false;
         private CombatState _combatState;
+        private Attack_Against _against;
 
-        public Projectile(Point target, Vector2 position, CombatState combatState)
+        
+
+        public Projectile(Point target, Vector2 position, int damage, Attack_Against against,CombatState combatState)
         {
             _target = target;
             _position = position;
             _speed = 10;
-            _damage = 10;
+            _damage = damage;
             _combatState = combatState;
+            _against = against;
         }
 
         public void Update(GameTime gameTime)
@@ -61,22 +73,34 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void HitTarget(Point target)
         {
-            bool hitOnTile = _combatState.Ship.Grid.PixelToTile(target.X, target.Y, out int tileX, out int tileY);
-            Point tileHit = new Point(tileX, tileY);
-            foreach (Room room in _combatState.Ship.Rooms)
+
+            switch (_against)
             {
-                if (room.Contains(tileHit))
-                {
-                    room.AlterHealth(_damage);
-                    //foreach (Component c in room.GetComponents())
-                    //{
-                    //    if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
-                    //    {
-                    //        c.AlterHealth(_damage);
-                    //        break;
-                    //    }
-                    //}
-                }
+                case (Attack_Against.EnemyGenerator):
+                    {
+                        break;
+                    }
+                case (Attack_Against.EnemyStorage):
+                    {
+                        break;
+                    }
+                case (Attack_Against.EnemyWeapon):
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        bool hitOnTile = _combatState.Ship.Grid.PixelToTile(target.X, target.Y, out int tileX, out int tileY);
+                        Point tileHit = new Point(tileX, tileY);
+                        foreach (Room room in _combatState.Ship.Rooms)
+                        {
+                            if (room.Contains(tileHit))
+                            {
+                                room.AlterHealth(_damage);
+                            }
+                        }
+                        break;
+                    }
             }
         }
     }

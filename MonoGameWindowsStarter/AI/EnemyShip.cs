@@ -14,7 +14,7 @@ namespace MonoGameWindowsStarter.AI
         public int powerGeneratorHealth;
 
         public int materialStored;
-        public int weaponDamage;
+        public int weaponDamage = 10;
         public int weaponFireRate;
         public int weaponPowerNeeded;
         public int weaponCooldown;

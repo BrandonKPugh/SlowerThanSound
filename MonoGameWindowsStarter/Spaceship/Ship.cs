@@ -8,6 +8,7 @@ using MonoGameWindowsStarter.Components;
 using MonoGameWindowsStarter.Spaceship;
 using Microsoft.Xna.Framework;
 using MonoGameWindowsStarter.Rendering;
+using MonoGameWindowsStarter.States;
 
 namespace MonoGameWindowsStarter.Spaceship
 {
@@ -163,7 +164,6 @@ namespace MonoGameWindowsStarter.Spaceship
         }
 
 
-
         // Just looks up the component's texture in the Dictionary. If it's not there, it (currently) throws an error
         public void LoadComponentTexture(Component component)
         {
@@ -239,6 +239,11 @@ namespace MonoGameWindowsStarter.Spaceship
             foreach (Component component1 in removeComponentList)
                 room.RemoveComponent(component1);
             Rooms.Remove(room);
+        }
+
+        public void AttackEnemy(Room weapon, CombatState combatState, Projectile.Attack_Against against)
+        {
+            combatState.AddProjectile(new Projectile(new Point(1000,1000),weapon.GetCenter(),(int)weapon.DamagePerShot(),against,combatState));
         }
 
         public void SetShipHealth()
