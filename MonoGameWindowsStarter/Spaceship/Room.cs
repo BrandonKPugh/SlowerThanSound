@@ -41,6 +41,15 @@ namespace MonoGameWindowsStarter.Spaceship
         private int maxRoomHealth;
         public int RoomHealth { get { return roomHealth; } }
         public bool isBroken;
+        public bool isRepairing;
+
+        public enum Room_State
+        {
+            None,
+            Repairing,
+            Charging
+        }
+        public Room_State room_State;
 
 
         /// <param name="gridLocation">Location is in grid coordinates, not pixel coordinates</param>
@@ -83,7 +92,27 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void Update()
         {
-
+            switch (room_State)
+            {
+                case (Room_State.None):
+                    {
+                        break;
+                    }
+                case (Room_State.Charging):
+                    {
+                        break;
+                    }
+                case (Room_State.Repairing):
+                    {
+                        roomHealth += 1;
+                        if(roomHealth >= maxRoomHealth)
+                        {
+                            isBroken = false;
+                            room_State = Room_State.None;
+                        }
+                        break;
+                    }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, Grid.GridInfo gridInfo)
@@ -248,6 +277,14 @@ namespace MonoGameWindowsStarter.Spaceship
                 roomHealth = 0;
             if (roomHealth == 0)
                 isBroken = true;
+        }
+
+        public void Repair()
+        {
+            if (isBroken && room_State != Room_State.Repairing)
+            {
+                room_State = Room_State.Repairing;
+            }
         }
 
         public string GetInfo()
