@@ -39,6 +39,14 @@ namespace MonoGameWindowsStarter.Spaceship
 
         }
 
+        public void Update(GameTime gameTime)
+        {
+            foreach(Room room in Rooms)
+            {
+                room.Update();
+            }
+        }
+
         public void Initialize(List<Tuple<Point,Point, Room.Room_Type>> rooms)
         {
             Textures = new Dictionary<Component.Component_Type, Texture2D>();
