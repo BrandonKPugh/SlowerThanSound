@@ -166,7 +166,8 @@ namespace MonoGameWindowsStarter.Controls
 
         #region COMBATMODE
         public static Color COMBATMODE_ROOMHEALTHCOLOR = new Color(255, 0, 0);
-        public const int COMBATMODE_ROOMHEALTHALPHA = 100;
+        public const int COMBATMODE_ROOMHEALTHALPHA = 50;
+        public const int COMBATMODE_ROOMFLASHINGFRAMES = 30;
         public static BORDERBOX_INFO COMBATMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
 
         public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.05f);

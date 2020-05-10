@@ -167,7 +167,8 @@ namespace MonoGameWindowsStarter.States
             bool mousePressed = (Mouse.GetState().LeftButton == ButtonState.Pressed);
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
-            
+            Ship.Update(gameTime);
+
             switch (_tabState)
             {
                 case Tab_State.None:

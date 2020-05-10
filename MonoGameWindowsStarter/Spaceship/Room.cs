@@ -28,6 +28,13 @@ namespace MonoGameWindowsStarter.Spaceship
         }
         // Used for getting the next room id. Use GetNextRoomID() to avoid errors.
         private static uint NextRoomID = 0;
+        private int roomFlashingFrames = 0;
+        private enum Room_Flashing_State
+        {
+            Bright,
+            Dim
+        }
+        private Room_Flashing_State roomFlashingState = Room_Flashing_State.Bright;
 
         private List<Component> Components;
         private Ship Ship;
@@ -92,6 +99,19 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void Update()
         {
+            if (roomFlashingFrames <= 0)
+            {
+                roomFlashingFrames = ControlConstants.COMBATMODE_ROOMFLASHINGFRAMES;
+                if(roomFlashingState == Room_Flashing_State.Bright)
+                {
+                    roomFlashingState = Room_Flashing_State.Dim;
+                }
+                else if(roomFlashingState == Room_Flashing_State.Dim)
+                {
+                    roomFlashingState = Room_Flashing_State.Bright;
+                }
+            }
+            roomFlashingFrames--;
             switch (room_State)
             {
                 case (Room_State.None):
@@ -204,7 +224,19 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public int GetHealthAlpha()
         {
-            return (int)((1f - ((float)roomHealth / (float)maxRoomHealth)) * ControlConstants.COMBATMODE_ROOMHEALTHALPHA);
+            if(roomHealth > 0)
+                return (int)((1f - ((float)roomHealth / (float)maxRoomHealth)) * ControlConstants.COMBATMODE_ROOMHEALTHALPHA);
+            else
+            {
+                if(roomFlashingState == Room_Flashing_State.Bright)
+                {
+                    return ControlConstants.COMBATMODE_ROOMHEALTHALPHA * 2;
+                }
+                else
+                {
+                    return ControlConstants.COMBATMODE_ROOMHEALTHALPHA;
+                }
+            }    
         }
 
         // Gets all components including strucures

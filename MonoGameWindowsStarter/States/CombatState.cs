@@ -169,6 +169,7 @@ namespace MonoGameWindowsStarter.States
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERGEN.Text, 0.45f);
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text, 0.35f);
 
+
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
 
@@ -198,6 +199,8 @@ namespace MonoGameWindowsStarter.States
                     _roomHealthBoxes.Add(room.RoomID, toAdd);
                 }
             }
+
+            Ship.Update(gameTime);
         }
 
         public void AddProjectile(Projectile projectile)
