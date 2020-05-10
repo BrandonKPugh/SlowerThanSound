@@ -154,7 +154,9 @@ namespace MonoGameWindowsStarter.States
         }
         private void BuildModeButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new BuildState(_game, _graphicsDevice, _content, Ship));
+            ReviewState.CombatInfo info = new ReviewState.CombatInfo();
+            info.MetalCollected = 10;
+            _game.ChangeState(new ReviewState(_game, _graphicsDevice, _content, Ship, info));
         }
 
         private void TargetStoragesButton_Click(object sender, EventArgs e)

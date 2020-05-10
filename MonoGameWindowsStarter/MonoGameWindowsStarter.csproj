@@ -58,6 +58,7 @@
     <Compile Include="Controls\UIGroups\BuildStateRoomUI.cs" />
     <Compile Include="Controls\UIGroups\BuildStateShipUI.cs" />
     <Compile Include="Controls\UIGroups\CombatStateTargetUI.cs" />
+    <Compile Include="Controls\UIGroups\ReviewStateStats.cs" />
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="ModeState.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="States\CombatState.cs" />
     <Compile Include="States\PauseState.cs" />
     <Compile Include="States\MainMenuState.cs" />
+    <Compile Include="States\ReviewState.cs" />
     <Compile Include="States\State.cs" />
     <Compile Include="Components\StructureComponent.cs" />
     <Compile Include="Components\WeaponComponent.cs" />

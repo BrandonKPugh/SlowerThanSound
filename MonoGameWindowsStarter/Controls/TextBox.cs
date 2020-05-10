@@ -37,5 +37,10 @@ namespace MonoGameWindowsStarter.Controls
         {
 
         }
+
+        public void SetText(string text)
+        {
+            Text = text;
+        }
     }
 }

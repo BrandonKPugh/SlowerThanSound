@@ -12,8 +12,7 @@ namespace MonoGameWindowsStarter.Controls
 {
     public static class ControlConstants
     {
-        #region BUTTONS
-
+        #region GENERAL
         // Button info is created with Text, and four floats (representing percentages of the screen's width/height. 0.1f = 10% from the edge and 0.5f = the center of the screen)
         // BUTTON_INFO(Text, X, Y, Width, Height)
         public struct BUTTON_INFO
@@ -145,6 +144,7 @@ namespace MonoGameWindowsStarter.Controls
         public static Color BUTTON_SELECTED = Color.SkyBlue;
 
         public static Color BAR_PENCOLOR = Color.Black;
+        #endregion
 
         #region MAINMENU
 
@@ -257,6 +257,22 @@ namespace MonoGameWindowsStarter.Controls
 
         #endregion
 
+        #region REVIEW
+        private const int _STATSCOUNT = 2;
+        private const float _STATSX = 0.3f;
+        private const float _STATSY = 0.2f;
+        private const float _STATSW = 0.4f;
+        private const float _STATSH = 0.5f;
+        private const float _STATS_RATIO = 0.75f;
+
+        private static float _STATS_PERH = _STATSH / _STATSCOUNT;
+        private static int _STATS_COUNTER = 0;
+
+        public static TEXTBOX_INFO REVIEW_METAL_GATHERED_TEXT = new TEXTBOX_INFO("Metal Collected: ", Color.White, _STATSX, _STATSY + (_STATS_PERH * _STATS_COUNTER), _STATSW * _STATS_RATIO, _STATS_PERH);
+        public static TEXTBOX_INFO REVIEW_METAL_GATHERED_VALUE = new TEXTBOX_INFO("0", Color.White, _STATSX + (_STATSW * _STATS_RATIO), _STATSY + (_STATS_PERH * _STATS_COUNTER++), _STATSW * (1f -_STATS_RATIO), _STATS_PERH);
+
+
+        public static BUTTON_INFO REVIEW_BUILD_BUTTON = new BUTTON_INFO("Build Phase", .3f, .75f, .4f, 0.4f * 16f / 9f / 4f);
         #endregion
     }
 }
