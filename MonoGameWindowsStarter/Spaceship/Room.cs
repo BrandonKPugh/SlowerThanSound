@@ -35,6 +35,9 @@ namespace MonoGameWindowsStarter.Spaceship
         public Room_Type RoomType;
         public uint RoomID;
 
+        private int roomHealth;
+        public bool isBroken;
+
         /// <param name="gridLocation">Location is in grid coordinates, not pixel coordinates</param>
         public Room(Ship ship, Rectangle gridLocation, Room_Type roomType)
         {
@@ -202,6 +205,25 @@ namespace MonoGameWindowsStarter.Spaceship
         public void SetRoomType(Room_Type type)
         {
             RoomType = type;
+        }
+
+        public int SetRoomHealth()
+        {
+            roomHealth = 0;
+            foreach (Component component in Components)
+            {
+                roomHealth += 1;
+            }
+            return roomHealth;
+        }
+
+        public void AlterHealth(int damage)
+        {
+            roomHealth -= damage;
+            if (roomHealth < 0)
+                roomHealth = 0;
+            if (roomHealth == 0)
+                isBroken = true;
         }
 
         public string GetInfo()

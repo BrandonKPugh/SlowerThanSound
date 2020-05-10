@@ -18,11 +18,6 @@ namespace MonoGameWindowsStarter.Components
             this.Color = color;
         }
 
-        public override void AlterHealth(int damage)
-        {
-            // Doesn't (currently) have health, so don't allow alterations
-        }
-
         public override void Initialize()
         {
 

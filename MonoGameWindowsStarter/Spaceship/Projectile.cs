@@ -67,14 +67,15 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 if (room.Contains(tileHit))
                 {
-                    foreach (Component c in room.GetComponents())
-                    {
-                        if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
-                        {
-                            c.AlterHealth(_damage);
-                            break;
-                        }
-                    }
+                    room.AlterHealth(_damage);
+                    //foreach (Component c in room.GetComponents())
+                    //{
+                    //    if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
+                    //    {
+                    //        c.AlterHealth(_damage);
+                    //        break;
+                    //    }
+                    //}
                 }
             }
         }

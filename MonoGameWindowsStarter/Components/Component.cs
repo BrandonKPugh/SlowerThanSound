@@ -35,9 +35,9 @@ namespace MonoGameWindowsStarter.Components
 
         public Component_Type ComponentType;
 
-        // Health of this specific component
-        public int Health;
-        public bool Broken { get { return Health <= 0; } }
+        //// Health of this specific component
+        //public int Health;
+        //public bool Broken { get { return Health <= 0; } }
 
         public Color Color;
         public Texture2D Texture;
@@ -49,7 +49,7 @@ namespace MonoGameWindowsStarter.Components
             this.Y = y;
             this.Color = color;
             // For now, grabs the generic health value
-            this.Health = ComponentConstants.GENERIC_COMPONENT_HEALTH;
+            //this.Health = ComponentConstants.GENERIC_COMPONENT_HEALTH;
         }
 
         public abstract void Initialize();
@@ -65,27 +65,13 @@ namespace MonoGameWindowsStarter.Components
 
         public abstract void Update(GameTime gameTime);
 
-        public virtual void AlterHealth(int damage)
-        {
-            Health -= damage;
-            if (Health < 0)
-                Health = 0;
-        }
 
         public abstract int getValue();
 
         public virtual void Draw(SpriteBatch spriteBatch, Grid.GridInfo gridInfo)
         {
-            if (Broken)
-            {
-                // Not sure how to handle this yet
-                throw new Exception("Component is broken!");
-            }
-            else
-            {
                 //spriteBatch.Draw(Texture, gridInfo.TileBounds(X, Y), Color);
                 Sprite.Draw(spriteBatch, gridInfo.TileBounds(X, Y), Color.White);
-            }
         }
 
         internal static bool RoomTypeMatches(Placement_Type placementType, Room.Room_Type roomType)

@@ -28,6 +28,9 @@ namespace MonoGameWindowsStarter.Spaceship
         public int Money;
         public int Power;
         public int Material;
+        public int MaxHealth = 100;
+        public int CurrentHealth;
+        private int PreviousHealth;
         #endregion
 
         public Ship()
@@ -191,9 +194,12 @@ namespace MonoGameWindowsStarter.Spaceship
         {
             List<Tuple<int, Rectangle>> priorityList = new List<Tuple<int, Rectangle>>();
             foreach (Room room in Rooms){
-                var priority = room.GetPriority();
-                var rectangle = room.GetInteriorArea();
-                priorityList.Add(new Tuple<int,Rectangle>(priority, rectangle));
+                if (!room.isBroken)
+                {
+                    var priority = room.GetPriority();
+                    var rectangle = room.GetInteriorArea();
+                    priorityList.Add(new Tuple<int, Rectangle>(priority, rectangle));
+                }
             }
             return priorityList;
         }
@@ -233,6 +239,18 @@ namespace MonoGameWindowsStarter.Spaceship
             foreach (Component component1 in removeComponentList)
                 room.RemoveComponent(component1);
             Rooms.Remove(room);
+        }
+
+        public void SetShipHealth()
+        {
+            PreviousHealth = MaxHealth;
+            MaxHealth = 0;
+            foreach (Room room in Rooms)
+            {
+                MaxHealth += room.SetRoomHealth();
+            }
+            var healthDifference = MaxHealth / PreviousHealth;
+            CurrentHealth = (int)(CurrentHealth * healthDifference);
         }
 
         public Room GetRoom(Point tilePosition, bool interiorOnly)
