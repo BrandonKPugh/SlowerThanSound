@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameWindowsStarter.Components;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -215,7 +216,7 @@ namespace MonoGameWindowsStarter.Spaceship
                 case Room_Type.Weapon:
                     {
                         string s = "Room Type: Weapon";
-                        s += "\nComponents: " + Components.Count;
+                        s += "\nComponents: " + ComponentCount();
                         s += "\nDamage per shot: " + string.Format("{0:0.00}", DamagePerShot());
                         s += "\nShots per second: " + string.Format("{0:0.00}", ShotsPerSecond());
                         s += "\nDamage per second: " + string.Format("{0:0.00}", DamagePerSecond());
@@ -226,28 +227,28 @@ namespace MonoGameWindowsStarter.Spaceship
                 case Room_Type.Material_Storage:
                     {
                         string s = "Room Type: Material Storage";
-                        s += "\nComponents: " + Components.Count;
+                        s += "\nComponents: " + ComponentCount();
                         s += "\nStorage Capacity: " + string.Format("{0:0}", MaterialStorageCapacity());
                         return s;
                     }
                 case Room_Type.Power_Storage:
                     {
                         string s = "Room Type: Battery";
-                        s += "\nComponents: " + Components.Count;
+                        s += "\nComponents: " + ComponentCount();
                         s += "\nPower Capacity: " + string.Format("{0:0}", PowerStorageCapacity());
                         return s;
                     }
                 case Room_Type.Power_Generation:
                     {
                         string s = "Room Type: Generator";
-                        s += "\nComponents: " + Components.Count;
+                        s += "\nComponents: " + ComponentCount();
                         s += "\nPower per second: " + string.Format("{0:0.00}", PowerGenerationPerSecond());
                         return s;
                     }
                 case Room_Type.Shield:
                     {
                         string s = "Room Type: Shield";
-                        s += "\nComponents: " + Components.Count;
+                        s += "\nComponents: " + ComponentCount();
                         return s;
                     }
                 default:
@@ -255,6 +256,20 @@ namespace MonoGameWindowsStarter.Spaceship
                         throw new NotImplementedException();
                     }
             }
+        }
+
+        // Excludes structures
+        public int ComponentCount()
+        {
+            int count = 0;
+            foreach(Component c in Components)
+            {
+                if(c.ComponentType != Component.Component_Type.Structure)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         private int MaterialStorageCapacity()

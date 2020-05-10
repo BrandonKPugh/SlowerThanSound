@@ -113,8 +113,8 @@ namespace MonoGameWindowsStarter.Spaceship
             //    COMPONENTS.Add(new WeaponComponent(p.X, p.Y, ComponentConstants.COMPONENT_WEAPON_COLOR));
             //}
             ROOMPOINTS = new List<Tuple<Point, Point, Room.Room_Type>>();
-            ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(0, 0), new Point(4, 6), Room.Room_Type.None));
-            ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(4, 0), new Point(8, 6), Room.Room_Type.None));
+            //ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(0, 0), new Point(4, 6), Room.Room_Type.None));
+            //ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(4, 0), new Point(8, 6), Room.Room_Type.None));
         }
     }
 }
