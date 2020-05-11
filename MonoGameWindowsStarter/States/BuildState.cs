@@ -61,6 +61,8 @@ namespace MonoGameWindowsStarter.States
         private Room_State roomState = Room_State.None;
         private TextBox _metalAmount;
         private Tooltip _tooltip;
+        private Button _combatModeButton;
+        private bool _hoveringCombatButton = false;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -68,12 +70,12 @@ namespace MonoGameWindowsStarter.States
             SpriteFont buttonFont = _content.Load<SpriteFont>(ControlConstants.BUTTON_FONT);
             Texture2D pixelTexture = _content.Load<Texture2D>(Config.PIXEL_TEXTURE);
 
-            Button CombatModeButton = new Button(buttonTexture, buttonFont)
+            _combatModeButton = new Button(buttonTexture, buttonFont)
             {
                 ButtonInfo = ControlConstants.BUILDMODE_COMBATMODE,
             };
 
-            CombatModeButton.Click += CombatModeButton_Click;
+            _combatModeButton.Click += CombatModeButton_Click;
 
             TextBox MetalAmountText = new TextBox(buttonFont)
             {
@@ -127,7 +129,7 @@ namespace MonoGameWindowsStarter.States
 
             _uicomponents = new List<UI_Component>()
             {
-                CombatModeButton,
+                _combatModeButton,
                 RoomButton,
                 ComponentBuildButton,
                 ShipButton,
@@ -167,6 +169,21 @@ namespace MonoGameWindowsStarter.States
                 spriteBatch.End();
             }
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+
+            if (_combatModeButton.Location.Intersects(new Rectangle((Mouse.GetState().Position), new Point(1, 1))))
+            {
+                _hoveringCombatButton = true;
+                if (!_combatModeButton.IsActive)
+                {
+                    _tooltip.SetText("Invalid Ship!");
+                    _tooltip.Show = true;
+                }
+            }
+            else if(_hoveringCombatButton)
+            {
+                _hoveringCombatButton = false;
+                _tooltip.Show = false;
+            }
             _tooltip.Draw(gameTime, spriteBatch);
             spriteBatch.End();
         }
@@ -530,6 +547,15 @@ namespace MonoGameWindowsStarter.States
 
             if (_activeCanvas != null)
                 _activeCanvas.Update(gameTime);
+
+            if(Ship.IsValidShip())
+            {
+                _combatModeButton.IsActive = true;
+            }
+            else
+            {
+                _combatModeButton.IsActive = false;
+            }
         }
 
         private void CombatModeButton_Click(object sender, EventArgs e)

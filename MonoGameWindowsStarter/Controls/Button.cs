@@ -33,6 +33,7 @@ namespace MonoGameWindowsStarter.Controls
 
         public Color PenColour { get; set; }
         public Color BackColour { get; set; }
+        public bool IsActive = true;
 
         public ControlConstants.BUTTON_INFO ButtonInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Text = value.Text; } }
 
@@ -64,7 +65,7 @@ namespace MonoGameWindowsStarter.Controls
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Color colour = BackColour;
-            if (_isHovering)
+            if (_isHovering || !IsActive)
                 colour = new Color((int) (colour.R * .50f), (int)(colour.G * .50f), (int)(colour.B * .50f), (int)colour.A);
 
             spriteBatch.Draw(_texture, Location, colour);
@@ -77,20 +78,23 @@ namespace MonoGameWindowsStarter.Controls
 
         public override void Update(GameTime gameTime)
         {
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
-
-            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
-
-            _isHovering = false;
-
-            if (mouseRectangle.Intersects(Location))
+            if (IsActive)
             {
-                _isHovering = true;
+                _previousMouse = _currentMouse;
+                _currentMouse = Mouse.GetState();
 
-                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed)
+                var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+
+                _isHovering = false;
+
+                if (mouseRectangle.Intersects(Location))
                 {
-                    Click?.Invoke(this, new EventArgs());
+                    _isHovering = true;
+
+                    if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Click?.Invoke(this, new EventArgs());
+                    }
                 }
             }
         }
