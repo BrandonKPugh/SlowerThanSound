@@ -40,6 +40,18 @@ namespace MonoGameWindowsStarter.AI
         {
             _playerShip = playerShip;
             _combatState = combatState;
+            var scale = _playerShip.MaxHealth * 0.01;
+
+            shipHealth = (int)(shipHealth * scale);
+            weaponHealth = (int)(weaponHealth * scale);
+            materialStorageHealth = (int)(materialStorageHealth * scale);
+            powerGeneratorHealth = (int)(powerGeneratorHealth * scale);
+            materialStored = (int)(materialStored * scale);
+            weaponDamage = (int)(weaponDamage * scale);
+            weaponFireRate = (int)(weaponFireRate * scale);
+            weaponPowerNeeded = (int)(weaponPowerNeeded * scale);
+            powerGeneration = (int)(powerGeneration * scale);
+
             timer = new TimeSpan();
         }
 
@@ -71,7 +83,7 @@ namespace MonoGameWindowsStarter.AI
         public void Update(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime;
-            if (timer.TotalSeconds > 1)
+            if (timer.TotalSeconds > weaponFireRate)
             {
                 AttackPlayer();
                 timer = new TimeSpan();
