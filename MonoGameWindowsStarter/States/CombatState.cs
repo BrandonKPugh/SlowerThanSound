@@ -23,9 +23,11 @@ namespace MonoGameWindowsStarter.States
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
         private CombatStateTargetUI _canvas;
-        private TextBox _powerAmount;
+        //private TextBox _powerAmount;
         private Tooltip _tooltip;
         private UIBox _selectedRoomBox;
+        private ProgressBar _playerHealthBar;
+        private ProgressBar _playerPowerBar;
 
         private Texture2D projectileTexture;
         private Texture2D _pixelTexture;
@@ -85,26 +87,44 @@ namespace MonoGameWindowsStarter.States
                 Color = new Color(Color.White, ControlConstants.ROOM_INFO_BOX_ALPHA)
             };
 
+            /*
             TextBox PowerAmountText = new TextBox(buttonFont)
             {
                 TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX,
                 Text = "Power: "
             };
+            */
 
+            _playerHealthBar = new ProgressBar(_pixelTexture, buttonFont)
+            {
+                ProgressBarInfo = ControlConstants.PLAYER_HEALTHBAR
+            };
+            _playerHealthBar.Value = 0.5f;
+
+            /*
             _powerAmount = new TextBox(buttonFont)
             {
                 TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX_VALUE
             };
+            */
+
+            _playerPowerBar = new ProgressBar(_pixelTexture, buttonFont)
+            {
+                ProgressBarInfo = ControlConstants.PLAYER_POWERBAR
+            };
+
 
             BuildModeButton.Click += BuildModeButton_Click;
 
             _uicomponents = new List<UI_Component>
             {
                 BuildModeButton,
-                PowerAmountText,
-                _powerAmount,
+                //PowerAmountText,
+                //_powerAmount,
                 _canvas,
-                _selectedRoomBox
+                _selectedRoomBox,
+                _playerHealthBar,
+                _playerPowerBar
             };
 
             _tooltip = new Tooltip(_pixelTexture, buttonFont);
@@ -156,7 +176,9 @@ namespace MonoGameWindowsStarter.States
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
 
-            _powerAmount.Text = Ship.Power.ToString();
+            //_powerAmount.Text = Ship.Power.ToString();
+            _playerPowerBar.Value = ((float)Ship.Power / (float)Ship.maxPower);
+            _playerPowerBar.SetText("Power: " + Ship.Power + " / " + Ship.maxPower);
 
             _tooltip.Show = false;
             switch (clicked_State)
@@ -249,6 +271,7 @@ namespace MonoGameWindowsStarter.States
             Ship.Update(gameTime);
             if (Ship.CurrentHealth < 0)
                 LoseGame();
+            _playerHealthBar.Value = ((float)Ship.CurrentHealth / (float)Ship.MaxHealth);
         }
 
         public void AddProjectile(Projectile projectile)

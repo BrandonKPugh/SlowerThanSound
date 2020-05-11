@@ -131,6 +131,35 @@ namespace MonoGameWindowsStarter.Controls
             public int Padding { get { return padding; } }
         }
 
+        public struct PROGRESSBAR_INFO
+        {
+            private float x, y, width, height;
+            private string text;
+            private Color backColor;
+            private Color frontColor;
+            private int penWeight;
+            public PROGRESSBAR_INFO(float x_percent, float y_percent, float width_percent, float height_percent, Color backColor, Color frontColor, int penWeight, string text = "")
+            {
+                this.x = x_percent;
+                this.y = y_percent;
+                this.width = width_percent;
+                this.height = height_percent;
+                this.text = text;
+                this.backColor = backColor;
+                this.frontColor = frontColor;
+                this.penWeight = penWeight;
+            }
+            public int X { get { return (int)(this.x * Config.GAME_WIDTH); } }
+            public int Y { get { return (int)(this.y * Config.GAME_HEIGHT); } }
+            public int Width { get { return (int)(this.width * Config.GAME_WIDTH); } }
+            public int Height { get { return (int)(this.height * Config.GAME_HEIGHT); } }
+            public string Text { get { return text; } }
+            public Color FrontColor { get { return frontColor; } }
+            public Color BackColor { get { return backColor; } }
+            public Rectangle Location { get { return new Rectangle(X, Y, Width, Height); } }
+            public int PenWeight { get { return penWeight; } }
+        }
+
         public const string BUTTON_TEXTURE = "Button";
         public const string BUTTON_FONT = "DebugFont";
         public static Color BUTTON_PENCOLOR = Color.Black;
@@ -176,6 +205,9 @@ namespace MonoGameWindowsStarter.Controls
         public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.05f);
         public static TEXTBOX_INFO PRIMARY_TEXTBOX = new TEXTBOX_INFO("Metal:", Color.Black, 0.3f, 0.025f, 0.075f, 0.05f);
         public static TEXTBOX_INFO PRIMARY_TEXTBOX_VALUE = new TEXTBOX_INFO("n/a", Color.Black, 0.375f, 0.025f, 0.075f, 0.05f);
+        public static PROGRESSBAR_INFO PLAYER_POWERBAR= new PROGRESSBAR_INFO(0.3f, 0.025f, 0.2f, 0.05f, Color.DarkGray, Color.White, 3, "Power: 0 / 0");
+
+        public static PROGRESSBAR_INFO PLAYER_HEALTHBAR = new PROGRESSBAR_INFO(0.05f, 0.025f, 0.2f, 0.05f, Color.DarkGray, Color.White, 3, "Ship Health");
 
         private const float COMBATMODE_CANVAS_WIDTH = .38125f;
         private const float COMBATMODE_CANVAS_HEIGHT = 0.675f;

@@ -12,6 +12,8 @@ namespace MonoGameWindowsStarter.Controls
     // Use to create/render a progress bar (i.e. health bar, ammo bar)
     public class ProgressBar : UI_Component
     {
+        private BorderBox _borderBox;
+        public ControlConstants.PROGRESSBAR_INFO ProgressBarInfo { set { this.BackgroundColor = value.BackColor; this.ProgressionColor = value.FrontColor; this.Location = value.Location; this.Text = value.Text; _borderBox.Location = value.Location; _borderBox.Color = Color.Black; _borderBox.PenWeight = value.PenWeight; } }
         // Between 0 and 1, represents the progress
         //      Moves from left (0) to right (1)
         private float _value;
@@ -47,12 +49,23 @@ namespace MonoGameWindowsStarter.Controls
 
         // Creates a progress bar
         //      Value and text are optional
+        /*
         public ProgressBar(Rectangle location, Color backgroundColor, Color progressionColor, float value = 1.0f, string text = "")
         {
             this.Location = location;
             this.BackgroundColor = backgroundColor;
             this.ProgressionColor = progressionColor;
             this.Text = text;
+        }
+        */
+
+        public ProgressBar(Texture2D pixelTexture, SpriteFont font)
+        {
+            //this.BarTexture = pixelTexture;
+            this.ProgressionTexture = pixelTexture;
+            this.BackgroundTexture = pixelTexture;
+            this.Font = font;
+            _borderBox = new BorderBox(pixelTexture);
         }
 
         public void Initialize()
@@ -76,16 +89,21 @@ namespace MonoGameWindowsStarter.Controls
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
 
             Rectangle progressionDest = new Rectangle(Location.X, Location.Y, (int) (Location.Width * Value), Location.Height);
             spriteBatch.Draw(BackgroundTexture, Location, BackgroundColor);
             spriteBatch.Draw(ProgressionTexture, progressionDest, ProgressionColor);
-            spriteBatch.Draw(BarTexture, Location, Color.Black);
-            Button.CenterString(Text, Font, Position, Size, spriteBatch, ControlConstants.BAR_PENCOLOR);
+            //spriteBatch.Draw(BarTexture, Location, Color.Black);
+            Button.CenterString(Text, Font, new Vector2(Location.X, Location.Y), new Vector2(Location.Width, Location.Height), spriteBatch, ControlConstants.BAR_PENCOLOR);
 
-            spriteBatch.End();
+            //spriteBatch.End();
 
+        }
+
+        public void SetText(string text)
+        {
+            this.Text = text;
         }
     }
 }
