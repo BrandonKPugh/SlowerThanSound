@@ -23,7 +23,9 @@ namespace MonoGameWindowsStarter.States
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
         private CombatStateTargetUI _canvas;
-        private TextBox _metalAmount;
+        private TextBox _powerAmount;
+        private Tooltip _tooltip;
+        private UIBox _selectedRoomBox;
 
         private Texture2D projectileTexture;
         private Texture2D _pixelTexture;
@@ -47,6 +49,7 @@ namespace MonoGameWindowsStarter.States
             ShipConstants.Initialize();
             
             Ship = ship;
+
             //Ship.Initialize(ShipConstants.COMPONENTS);
             projectileTexture = _content.Load<Texture2D>("Pixel");
 
@@ -76,14 +79,21 @@ namespace MonoGameWindowsStarter.States
                 ButtonInfo = ControlConstants.COMBATMODE_BUILDMODE
             };
 
-            TextBox MetalAmountText = new TextBox(buttonFont)
+            _selectedRoomBox = new UIBox(_pixelTexture)
             {
-                TextBoxInfo = ControlConstants.METAL_AMOUNT_TEXT
+                UIBoxInfo = ControlConstants.ROOM_INFO_BOX,
+                Color = new Color(Color.White, ControlConstants.ROOM_INFO_BOX_ALPHA)
             };
 
-            _metalAmount = new TextBox(buttonFont)
+            TextBox PowerAmountText = new TextBox(buttonFont)
             {
-                TextBoxInfo = ControlConstants.METAL_AMOUNT_VALUE
+                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX,
+                Text = "Power: "
+            };
+
+            _powerAmount = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX_VALUE
             };
 
             BuildModeButton.Click += BuildModeButton_Click;
@@ -91,10 +101,13 @@ namespace MonoGameWindowsStarter.States
             _uicomponents = new List<UI_Component>
             {
                 BuildModeButton,
-                MetalAmountText,
-                _metalAmount,
-                _canvas
+                PowerAmountText,
+                _powerAmount,
+                _canvas,
+                _selectedRoomBox
             };
+
+            _tooltip = new Tooltip(_pixelTexture, buttonFont);
 
             Ship.LoadContent(textures, tileTexture);
             this.Ship = ship;
@@ -121,6 +134,8 @@ namespace MonoGameWindowsStarter.States
                 ui.Draw(gameTime, spriteBatch);
             }
 
+            _tooltip.Draw(gameTime, spriteBatch);
+
             spriteBatch.End();
         }
 
@@ -139,8 +154,10 @@ namespace MonoGameWindowsStarter.States
             bool mousePressed = (Mouse.GetState().LeftButton == ButtonState.Pressed);
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
-            _metalAmount.Text = Ship.Material.ToString();
 
+            _powerAmount.Text = Ship.Power.ToString();
+
+            _tooltip.Show = false;
             switch (clicked_State)
             {
                 case (Clicked_State.None):
@@ -149,6 +166,17 @@ namespace MonoGameWindowsStarter.States
                     }
                 case (Clicked_State.SetAttack):
                     {
+                        if(mouseOnTile)
+                        {
+                            foreach(Room room in Ship.Rooms)
+                            {
+                                if(room.RoomType == Room.Room_Type.Weapon && room.InteriorContains(tileUnderMouse))
+                                {
+                                    _tooltip.Show = true;
+                                    _tooltip.SetText("DPS: " + room.DamagePerSecond());
+                                }
+                            }
+                        }
                         if (mousePressed & mouseOnTile)
                         {
                             foreach (Room room in Ship.Rooms)
@@ -157,6 +185,8 @@ namespace MonoGameWindowsStarter.States
                                 {
                                     attackingRoom = room;
                                     clicked_State = Clicked_State.Attacking;
+                                    _selectedRoomBox.SetPosition(room.GetInteriorArea());
+                                    _selectedRoomBox.Show = true;
                                 }
                             }
                         }
@@ -245,6 +275,7 @@ namespace MonoGameWindowsStarter.States
                 Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyStorage);
                 clicked_State = Clicked_State.None;
                 attackingRoom = null;
+                _selectedRoomBox.Show = false;
             }
         }
 
@@ -255,6 +286,7 @@ namespace MonoGameWindowsStarter.States
                 Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyWeapon);
                 clicked_State = Clicked_State.None;
                 attackingRoom = null;
+                _selectedRoomBox.Show = false;
             }
         }
 
@@ -265,6 +297,7 @@ namespace MonoGameWindowsStarter.States
                 Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyGenerator);
                 clicked_State = Clicked_State.None;
                 attackingRoom = null;
+                _selectedRoomBox.Show = false;
             }
         }
 
@@ -275,6 +308,7 @@ namespace MonoGameWindowsStarter.States
                 Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyPowerStorage);
                 clicked_State = Clicked_State.None;
                 attackingRoom = null;
+                _selectedRoomBox.Show = false;
             }
         }
 
@@ -285,6 +319,7 @@ namespace MonoGameWindowsStarter.States
                 Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyHull);
                 clicked_State = Clicked_State.None;
                 attackingRoom = null;
+                _selectedRoomBox.Show = false;
             }
         }
 
