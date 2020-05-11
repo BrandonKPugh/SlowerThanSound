@@ -58,6 +58,7 @@ namespace MonoGameWindowsStarter.States
         private Component _temporaryComponent = null;
         private bool _drawTemporaryComponent = false;
         private Room_State roomState = Room_State.None;
+        private TextBox _metalAmount;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -71,6 +72,16 @@ namespace MonoGameWindowsStarter.States
             };
 
             CombatModeButton.Click += CombatModeButton_Click;
+
+            TextBox MetalAmountText = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.METAL_AMOUNT_TEXT
+            };
+
+            _metalAmount = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.METAL_AMOUNT_VALUE
+            };
 
             Button RoomButton = new Button(buttonTexture, buttonFont)
             {
@@ -128,6 +139,8 @@ namespace MonoGameWindowsStarter.States
                 BuildModeTitle,
                 GridBox,
                 Canvas,
+                MetalAmountText,
+                _metalAmount
                 //BuildModeTitleBox
             };
 
@@ -176,6 +189,7 @@ namespace MonoGameWindowsStarter.States
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
             Ship.Update(gameTime);
+            _metalAmount.Text = Ship.Material.ToString();
 
             switch (_tabState)
             {

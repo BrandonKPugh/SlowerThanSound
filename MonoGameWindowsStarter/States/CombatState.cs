@@ -23,6 +23,7 @@ namespace MonoGameWindowsStarter.States
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
         private CombatStateTargetUI _canvas;
+        private TextBox _metalAmount;
 
         private Texture2D projectileTexture;
         private Texture2D _pixelTexture;
@@ -75,11 +76,23 @@ namespace MonoGameWindowsStarter.States
                 ButtonInfo = ControlConstants.COMBATMODE_BUILDMODE
             };
 
+            TextBox MetalAmountText = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.METAL_AMOUNT_TEXT
+            };
+
+            _metalAmount = new TextBox(buttonFont)
+            {
+                TextBoxInfo = ControlConstants.METAL_AMOUNT_VALUE
+            };
+
             BuildModeButton.Click += BuildModeButton_Click;
 
             _uicomponents = new List<UI_Component>
             {
                 BuildModeButton,
+                MetalAmountText,
+                _metalAmount,
                 _canvas
             };
 
@@ -126,6 +139,7 @@ namespace MonoGameWindowsStarter.States
             bool mousePressed = (Mouse.GetState().LeftButton == ButtonState.Pressed);
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
+            _metalAmount.Text = Ship.Material.ToString();
 
             switch (clicked_State)
             {

@@ -171,6 +171,8 @@ namespace MonoGameWindowsStarter.Controls
         public static BORDERBOX_INFO COMBATMODE_GRIDBOX = new BORDERBOX_INFO(3, Color.Black, 5);
 
         public static TEXTBOX_INFO COMBATMODE_TITLE = new TEXTBOX_INFO("Combat Mode", Color.LightSkyBlue, 0.625f, 0.05f, 0.25f, 0.05f);
+        public static TEXTBOX_INFO METAL_AMOUNT_TEXT = new TEXTBOX_INFO("Metal:", Color.Black, 0.3f, 0.025f, 0.075f, 0.05f);
+        public static TEXTBOX_INFO METAL_AMOUNT_VALUE = new TEXTBOX_INFO("n/a", Color.Black, 0.375f, 0.025f, 0.075f, 0.05f);
 
         private const float COMBATMODE_CANVAS_WIDTH = .38125f;
         private const float COMBATMODE_CANVAS_HEIGHT = 0.675f;
