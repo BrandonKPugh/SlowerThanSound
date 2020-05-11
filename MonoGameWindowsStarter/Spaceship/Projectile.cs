@@ -80,14 +80,17 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 case (Attack_Against.EnemyGenerator):
                     {
+                        _combatState.enemyAI.powerGeneratorHealth -= _damage;
                         break;
                     }
                 case (Attack_Against.EnemyStorage):
                     {
+                        _combatState.enemyAI.materialStorageHealth -= _damage;
                         break;
                     }
                 case (Attack_Against.EnemyWeapon):
                     {
+                        _combatState.enemyAI.weaponHealth -= _damage;
                         break;
                     }
                 default:

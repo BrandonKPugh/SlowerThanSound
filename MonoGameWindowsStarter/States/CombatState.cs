@@ -19,7 +19,7 @@ namespace MonoGameWindowsStarter.States
     {
         public Spaceship.Ship Ship;
         private List<UI_Component> _uicomponents;
-        private EnemyAI enemyAI;
+        public EnemyAI enemyAI;
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
         private CombatStateTargetUI _canvas;
@@ -209,9 +209,9 @@ namespace MonoGameWindowsStarter.States
             }
 
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETENEMYSHIP.Text, 0.55f);
-            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETWEAPONS.Text, 0.775f);
-            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETSTORAGES.Text, 0.65f);
-            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERGEN.Text, 0.45f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETWEAPONS.Text, ((float)enemyAI.weaponHealth / (float)enemyAI.weaponMaxHealth));
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETSTORAGES.Text, ((float)enemyAI.materialStorageHealth / (float)enemyAI.materialMaxHealth));
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERGEN.Text, ((float)enemyAI.powerGeneratorHealth / (float)enemyAI.generatorMaxHealth));
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text, 0.35f);
 
 

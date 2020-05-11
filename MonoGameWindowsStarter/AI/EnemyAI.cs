@@ -13,8 +13,6 @@ namespace MonoGameWindowsStarter.AI
     {
         #region Fields
 
-        //protected Ship _enemyShip;
-
         protected Ship _playerShip;
 
         protected CombatState _combatState;
@@ -24,12 +22,15 @@ namespace MonoGameWindowsStarter.AI
 
         public int shipHealth = 100;
         public int weaponHealth = 10;
+        public int weaponMaxHealth;
         public int materialStorageHealth = 10;
+        public int materialMaxHealth;
         public int powerGeneratorHealth = 10;
+        public int generatorMaxHealth;
 
         public int materialStored = 100;
         public int weaponDamage = 10;
-        public int weaponFireRate = 5;
+        public int weaponFireRate = 10;
         public int weaponPowerNeeded = 5;
         public int weaponCooldown = 5;
 
@@ -48,27 +49,32 @@ namespace MonoGameWindowsStarter.AI
             powerGeneratorHealth = (int)(powerGeneratorHealth * scale);
             materialStored = (int)(materialStored * scale);
             weaponDamage = (int)(weaponDamage * scale);
-            weaponFireRate = (int)(weaponFireRate * scale);
+            weaponFireRate = (int)(weaponFireRate / scale);
             weaponPowerNeeded = (int)(weaponPowerNeeded * scale);
             powerGeneration = (int)(powerGeneration * scale);
+
+            weaponMaxHealth = weaponHealth;
+            materialMaxHealth = materialStorageHealth;
+            generatorMaxHealth = powerGeneratorHealth;
 
             timer = new TimeSpan();
         }
 
         private void AttackPlayer()
         {
+
             var priorityList = _playerShip.GetRoomPriorities();
             Rectangle rect = new Rectangle();
             int priority = 0;
             foreach (Tuple<int, Rectangle> pair in priorityList)
             {
-                if(pair.Item1 > priority)
+                if (pair.Item1 > priority)
                 {
                     priority = pair.Item1;
                     rect = pair.Item2;
                 }
             }
-            if(priority > 0)
+            if (priority > 0)
                 FireWeapon(rect);
         }
 
@@ -85,7 +91,10 @@ namespace MonoGameWindowsStarter.AI
             timer += gameTime.ElapsedGameTime;
             if (timer.TotalSeconds > weaponFireRate)
             {
-                AttackPlayer();
+                if (weaponHealth > 0)
+                {
+                    AttackPlayer();
+                }
                 timer = new TimeSpan();
             }
         }
