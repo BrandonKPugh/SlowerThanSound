@@ -12,6 +12,7 @@ namespace MonoGameWindowsStarter.Controls
     {
         private Texture2D _texture;
         public Color Color;
+        public bool Show = true;
 
         public ControlConstants.UIBOX_INFO UIBoxInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Color = value.Color; } }
 
@@ -22,7 +23,8 @@ namespace MonoGameWindowsStarter.Controls
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y), Color);
+            if(Show)
+                spriteBatch.Draw(_texture, new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y), Color);
         }
 
         public override void Update(GameTime gameTime)

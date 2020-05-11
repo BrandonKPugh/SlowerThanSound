@@ -474,7 +474,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return pps;
         }
 
-        private float DamagePerSecond()
+        public float DamagePerSecond()
         {
             return ShotsPerSecond() * DamagePerShot();
         }
