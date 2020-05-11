@@ -131,7 +131,6 @@ namespace MonoGameWindowsStarter.States
             {
                 case (Clicked_State.None):
                     {
-
                         break;
                     }
                 case (Clicked_State.SetAttack):
@@ -140,10 +139,10 @@ namespace MonoGameWindowsStarter.States
                         {
                             foreach (Room room in Ship.Rooms)
                             {
-                                if (room.Contains(tileUnderMouse) & room.RoomType == Room.Room_Type.Weapon)
+                                if (room.Contains(tileUnderMouse) & room.RoomType == Room.Room_Type.Weapon && !room.isBroken)
                                 {
                                     attackingRoom = room;
-                                    clicked_State = Clicked_State.None;
+                                    clicked_State = Clicked_State.Attacking;
                                 }
                             }
                         }
@@ -217,16 +216,6 @@ namespace MonoGameWindowsStarter.States
             _game.ChangeState(new ReviewState(_game, _graphicsDevice, _content, Ship, info));
         }
 
-        private void AttackButton_Click(object sender, EventArgs e)
-        {
-            clicked_State = Clicked_State.SetAttack;
-        }
-
-        private void RepairButton_Click(object sender, EventArgs e)
-        {
-            clicked_State = Clicked_State.Repair;
-        }
-
         private void TargetStoragesButton_Click(object sender, EventArgs e)
         {
             if (attackingRoom != null)
@@ -279,12 +268,12 @@ namespace MonoGameWindowsStarter.States
 
         private void FireWeaponButton_Click(object sender, EventArgs e)
         {
-
+            clicked_State = Clicked_State.SetAttack;
         }
 
         private void RepairRoomButton_Click(object sender, EventArgs e)
         {
-
+            clicked_State = Clicked_State.Repair;
         }
     }
 }
