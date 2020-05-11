@@ -82,6 +82,7 @@
     <Compile Include="Components\StructureComponent.cs" />
     <Compile Include="Components\WeaponComponent.cs" />
     <Compile Include="Controls\UIGroup.cs" />
+    <Compile Include="States\TutorialState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

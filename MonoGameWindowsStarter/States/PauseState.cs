@@ -51,12 +51,12 @@ namespace MonoGameWindowsStarter.States
             quitGameButton.Click += QuitGameButton_Click;
 
             _components = new List<Controls.Button>()
-      {
-        resumeGameButton,
-        saveGameButton,
-        loadGameButton,
-        quitGameButton,
-      };
+            {
+            resumeGameButton,
+            saveGameButton,
+            loadGameButton,
+            quitGameButton,
+            };
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

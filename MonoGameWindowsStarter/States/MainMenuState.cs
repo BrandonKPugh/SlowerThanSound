@@ -34,12 +34,12 @@ namespace MonoGameWindowsStarter.States
 
             newGameButton.Click += NewGameButton_Click;
 
-            var loadGameButton = new Button(buttonTexture, buttonFont)
+            var tutorialButton = new Button(buttonTexture, buttonFont)
             {
-                ButtonInfo = ControlConstants.MAINMENU_LOADGAME,
+                ButtonInfo = ControlConstants.MAINMENU_TUTORIAL,
             };
 
-            loadGameButton.Click += LoadGameButton_Click;
+            tutorialButton.Click += TutorialButton_Click;
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -52,7 +52,7 @@ namespace MonoGameWindowsStarter.States
             {
                 menuTextBox,
                 newGameButton,
-                loadGameButton,
+                tutorialButton,
                 quitGameButton,
             };
         }
@@ -65,11 +65,6 @@ namespace MonoGameWindowsStarter.States
                 component.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-        }
-
-        private void LoadGameButton_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Load Game");
         }
 
         private void NewGameButton_Click(object sender, EventArgs e)
@@ -123,6 +118,11 @@ namespace MonoGameWindowsStarter.States
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
             _game.Exit();
+        }
+
+        private void TutorialButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new TutorialState(_game, _graphicsDevice, _content));
         }
     }
 }

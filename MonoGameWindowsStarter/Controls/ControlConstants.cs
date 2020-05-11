@@ -179,7 +179,7 @@ namespace MonoGameWindowsStarter.Controls
 
         public static TEXTBOX_INFO MAINMENU_TITLE = new TEXTBOX_INFO("Slower Than Sound", Color.LightSkyBlue, 0.3f, 0.05f, 0.4f, 0.2f);
         public static BUTTON_INFO MAINMENU_NEWGAME = new BUTTON_INFO("New Game", 0.35f, 0.3f, 0.3f, 0.15f);
-        public static BUTTON_INFO MAINMENU_LOADGAME = new BUTTON_INFO("Load Game", 0.35f, 0.5f, 0.3f, 0.15f);
+        public static BUTTON_INFO MAINMENU_TUTORIAL = new BUTTON_INFO("Tutorial", 0.35f, 0.5f, 0.3f, 0.15f);
         public static BUTTON_INFO MAINMENU_QUITGAME = new BUTTON_INFO("Quit Game", 0.35f, 0.7f, 0.3f, 0.15f);
 
         #endregion
@@ -322,6 +322,14 @@ namespace MonoGameWindowsStarter.Controls
 
 
         public static BUTTON_INFO REVIEW_BUILD_BUTTON = new BUTTON_INFO("Build Phase", .3f, .75f, .4f, 0.4f * 16f / 9f / 4f);
+        #endregion
+
+        #region TUTORIAL 
+
+        public const string TUTORIAL_TEXTURE = "Tutorial";
+        public static UIBOX_INFO TUTORIAL_TEXTURE_BOX = new UIBOX_INFO(0.05f, 0.05f * 16f / 9f, 0.9f, 1 - (0.15f * 16f / 9f), Color.White);
+        public static BUTTON_INFO EXIT_TUTORIAL = new BUTTON_INFO("Menu", 0.4f, 0.85f, 0.2f, 0.1f);
+
         #endregion
     }
 }
