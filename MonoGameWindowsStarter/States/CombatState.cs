@@ -225,28 +225,52 @@ namespace MonoGameWindowsStarter.States
 
         private void TargetStoragesButton_Click(object sender, EventArgs e)
         {
-            Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyStorage);
-            clicked_State = Clicked_State.None;
+            if (attackingRoom != null)
+            {
+                Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyStorage);
+                clicked_State = Clicked_State.None;
+                attackingRoom = null;
+            }
         }
 
         private void TargetWeaponsButton_Click(object sender, EventArgs e)
         {
-
+            if (attackingRoom != null)
+            {
+                Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyWeapon);
+                clicked_State = Clicked_State.None;
+                attackingRoom = null;
+            }
         }
 
         private void TargetPowerGenButton_Click(object sender, EventArgs e)
         {
-
+            if (attackingRoom != null)
+            {
+                Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyGenerator);
+                clicked_State = Clicked_State.None;
+                attackingRoom = null;
+            }
         }
 
         private void TargetPowerStorageButton_Click(object sender, EventArgs e)
         {
-
+            if (attackingRoom != null)
+            {
+                Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyPowerStorage);
+                clicked_State = Clicked_State.None;
+                attackingRoom = null;
+            }
         }
 
         private void TargetEnemyShipButton_Click(object sender, EventArgs e)
         {
-
+            if (attackingRoom != null)
+            {
+                Ship.AttackEnemy(attackingRoom, this, Projectile.Attack_Against.EnemyHull);
+                clicked_State = Clicked_State.None;
+                attackingRoom = null;
+            }
         }
     }
 }

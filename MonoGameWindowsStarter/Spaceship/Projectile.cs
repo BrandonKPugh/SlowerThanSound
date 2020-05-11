@@ -19,7 +19,9 @@ namespace MonoGameWindowsStarter.Spaceship
             Player,
             EnemyWeapon,
             EnemyStorage,
-            EnemyGenerator
+            EnemyGenerator,
+            EnemyPowerStorage,
+            EnemyHull
         }
 
         private Point _target;
