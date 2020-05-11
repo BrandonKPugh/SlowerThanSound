@@ -298,5 +298,43 @@ namespace MonoGameWindowsStarter.Spaceship
             }
             return null;
         }
+
+        public bool IsValidShip()
+        {
+            bool hasWeapon = false;
+            bool hasPowerGen = false;
+            bool hasPowerStorage = false;
+            bool hasMaterialStorage = false;
+
+            foreach(Room room in Rooms)
+            {
+                switch (room.RoomType)
+                {
+                    case Room.Room_Type.Weapon:
+                        {
+                            hasWeapon = true;
+                            break;
+                        }
+                    case Room.Room_Type.Material_Storage:
+                        {
+                            hasMaterialStorage = true;
+                            break;
+                        }
+                    case Room.Room_Type.Power_Storage:
+                        {
+                            hasPowerStorage = true;
+                            break;
+                        }
+                    case Room.Room_Type.Power_Generation:
+                        {
+                            hasPowerGen = true;
+                            break;
+                        }
+                    case Room.Room_Type.Shield:
+                        break;
+                }
+            }
+            return (hasWeapon && hasPowerGen && hasPowerStorage && hasMaterialStorage);
+        }
     }
 }
