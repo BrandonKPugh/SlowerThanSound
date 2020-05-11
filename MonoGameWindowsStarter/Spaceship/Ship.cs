@@ -27,8 +27,10 @@ namespace MonoGameWindowsStarter.Spaceship
 
         #region RESOURCES
         private float _power;
-        public int Power { get { return (int)_power; } }
+        public int Power { get { return (int)_power; } set { _power = value; } }
+        public int maxPower = 0;
         public int Material = 1000;
+        public int maxMaterial = 0;
         public int MaxHealth = 1;
         public int CurrentHealth;
         private int PreviousHealth;
@@ -46,7 +48,6 @@ namespace MonoGameWindowsStarter.Spaceship
                 room.Update();
             }
 
-            _power += (TotalPowerPerSecond() / 60f);
             /*
             int capacity = (int)TotalPowerCapacity();
             if (_power > capacity)
@@ -261,7 +262,11 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void AttackEnemy(Room weapon, CombatState combatState, Projectile.Attack_Against against)
         {
-            combatState.AddProjectile(new Projectile(new Point(1000,1000),weapon.GetCenter(),(int)weapon.DamagePerShot(),against,combatState));
+            if (Power >= weapon.PowerPerShot())
+            {
+                Power -= (int)weapon.PowerPerShot();
+                combatState.AddProjectile(new Projectile(new Point(1000, 1000), weapon.GetCenter(), (int)weapon.DamagePerShot(), against, combatState));
+            }
         }
 
         public void SetShipHealth()
@@ -282,11 +287,22 @@ namespace MonoGameWindowsStarter.Spaceship
             CurrentHealth = (int)(CurrentHealth * healthDifference);
         }
 
+        public void SetCombatValues()
+        {
+            foreach (Room room in Rooms)
+            {
+                maxPower += (int)room.PowerStorageCapacity();
+                maxMaterial += room.MaterialStorageCapacity();
+            }
+        }
+
         public void AlterHealth(int damage)
         {
             CurrentHealth -= damage;
                 
         }
+
+
 
         public Room GetRoom(Point tilePosition, bool interiorOnly)
         {

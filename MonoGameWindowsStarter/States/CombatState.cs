@@ -112,6 +112,7 @@ namespace MonoGameWindowsStarter.States
             Ship.LoadContent(textures, tileTexture);
             this.Ship = ship;
             Ship.SetShipHealth();
+            Ship.SetCombatValues();
 
             enemyAI = new EnemyAI(this.Ship, this);
             projectiles = new List<Projectile>();

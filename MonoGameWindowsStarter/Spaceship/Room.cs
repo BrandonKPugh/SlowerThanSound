@@ -133,6 +133,42 @@ namespace MonoGameWindowsStarter.Spaceship
                         break;
                     }
             }
+
+            switch(RoomType)
+            {
+                case (Room_Type.None):
+                    {
+                        break;
+                    }
+                case (Room_Type.Weapon):
+                    {
+                        break;
+                    }
+                case (Room_Type.Power_Generation):
+                    {
+                        if (!isBroken)
+                        {
+                            foreach (Component comp in Components)
+                            {
+                                if (comp.ComponentType == Component.Component_Type.Power_Generation & Ship.Power < Ship.maxPower)
+                                {
+                                    Ship.Power += (int)((PowerGenerationComponent)comp).PowerPerSecond;
+                                }
+                            }
+
+                        }
+                        break;
+                    }
+                case (Room_Type.Power_Storage):
+                    {
+                        break;
+                    }
+                case (Room_Type.Material_Storage):
+                    {
+                        break;
+                    }
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch, Grid.GridInfo gridInfo)
