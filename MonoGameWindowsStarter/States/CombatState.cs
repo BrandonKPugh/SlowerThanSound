@@ -23,7 +23,7 @@ namespace MonoGameWindowsStarter.States
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
         private CombatStateTargetUI _canvas;
-        private TextBox _metalAmount;
+        private TextBox _powerAmount;
         private Tooltip _tooltip;
         private UIBox _selectedRoomBox;
 
@@ -49,6 +49,7 @@ namespace MonoGameWindowsStarter.States
             ShipConstants.Initialize();
             
             Ship = ship;
+
             //Ship.Initialize(ShipConstants.COMPONENTS);
             projectileTexture = _content.Load<Texture2D>("Pixel");
 
@@ -84,14 +85,15 @@ namespace MonoGameWindowsStarter.States
                 Color = new Color(Color.White, ControlConstants.ROOM_INFO_BOX_ALPHA)
             };
 
-            TextBox MetalAmountText = new TextBox(buttonFont)
+            TextBox PowerAmountText = new TextBox(buttonFont)
             {
-                TextBoxInfo = ControlConstants.METAL_AMOUNT_TEXT
+                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX,
+                Text = "Power: "
             };
 
-            _metalAmount = new TextBox(buttonFont)
+            _powerAmount = new TextBox(buttonFont)
             {
-                TextBoxInfo = ControlConstants.METAL_AMOUNT_VALUE
+                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX_VALUE
             };
 
             BuildModeButton.Click += BuildModeButton_Click;
@@ -99,8 +101,8 @@ namespace MonoGameWindowsStarter.States
             _uicomponents = new List<UI_Component>
             {
                 BuildModeButton,
-                MetalAmountText,
-                _metalAmount,
+                PowerAmountText,
+                _powerAmount,
                 _canvas,
                 _selectedRoomBox
             };
@@ -152,7 +154,8 @@ namespace MonoGameWindowsStarter.States
             bool mousePressed = (Mouse.GetState().LeftButton == ButtonState.Pressed);
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
-            _metalAmount.Text = Ship.Material.ToString();
+
+            _powerAmount.Text = Ship.Power.ToString();
 
             _tooltip.Show = false;
             switch (clicked_State)

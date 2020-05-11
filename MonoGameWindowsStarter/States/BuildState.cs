@@ -77,12 +77,12 @@ namespace MonoGameWindowsStarter.States
 
             TextBox MetalAmountText = new TextBox(buttonFont)
             {
-                TextBoxInfo = ControlConstants.METAL_AMOUNT_TEXT
+                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX
             };
 
             _metalAmount = new TextBox(buttonFont)
             {
-                TextBoxInfo = ControlConstants.METAL_AMOUNT_VALUE
+                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX_VALUE
             };
 
             Button RoomButton = new Button(buttonTexture, buttonFont)
