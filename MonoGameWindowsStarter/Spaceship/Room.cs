@@ -396,7 +396,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return count;
         }
 
-        private int MaterialStorageCapacity()
+        public int MaterialStorageCapacity()
         {
             int capacity = 0;
             foreach (Component c in Components)
@@ -409,7 +409,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return (int)(Math.Pow(capacity, 1.5f));
         }
 
-        private float PowerGenerationPerSecond()
+        public float PowerGenerationPerSecond()
         {
             float power = 0f;
             foreach (Component c in Components)
@@ -422,7 +422,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return (float)(Math.Pow(power, 1.5f));
         }
 
-        private float PowerStorageCapacity()
+        public float PowerStorageCapacity()
         {
             float power = 0f;
             foreach (Component c in Components)
@@ -448,7 +448,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return (float)Math.Sqrt(damage);
         }
 
-        private float ShotsPerSecond()
+        public float ShotsPerSecond()
         {
             float sps = 0f;
             foreach(Component c in Components)
@@ -461,7 +461,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return (float)Math.Sqrt(sps);
         }
 
-        private float PowerPerShot()
+        public float PowerPerShot()
         {
             float pps = 0f;
             foreach (Component c in Components)
@@ -479,7 +479,7 @@ namespace MonoGameWindowsStarter.Spaceship
             return ShotsPerSecond() * DamagePerShot();
         }
 
-        private float PowerUsePerSecond()
+        public float PowerUsePerSecond()
         {
             return PowerPerShot() * ShotsPerSecond();
         }

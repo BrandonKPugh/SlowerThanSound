@@ -26,7 +26,8 @@ namespace MonoGameWindowsStarter.Spaceship
         public List<Room> Rooms;
 
         #region RESOURCES
-        public int Power;
+        private float _power;
+        public int Power { get { return (int)_power; } }
         public int Material = 1000;
         public int MaxHealth = 1;
         public int CurrentHealth;
@@ -44,6 +45,15 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 room.Update();
             }
+
+            _power += (TotalPowerPerSecond() / 60f);
+            /*
+            int capacity = (int)TotalPowerCapacity();
+            if (_power > capacity)
+            {
+                _power = capacity;
+            }
+            */
         }
 
         public void Initialize(List<Tuple<Point,Point, Room.Room_Type>> rooms)
@@ -335,6 +345,38 @@ namespace MonoGameWindowsStarter.Spaceship
                 }
             }
             return (hasWeapon && hasPowerGen && hasPowerStorage && hasMaterialStorage);
+        }
+
+        private float TotalPowerPerSecond()
+        {
+            float pow = 0f;
+            foreach(Room room in Rooms)
+            {
+                if (room.RoomType == Room.Room_Type.Power_Generation)
+                {
+                    if (!room.isBroken)
+                    {
+                        pow += room.PowerGenerationPerSecond();
+                    }
+                }
+            }
+            return pow;
+        }
+
+        private float TotalPowerCapacity()
+        {
+            float pow = 0f;
+            foreach (Room room in Rooms)
+            {
+                if (room.RoomType == Room.Room_Type.Power_Storage)
+                {
+                    if (!room.isBroken)
+                    {
+                        pow += room.PowerStorageCapacity();
+                    }
+                }
+            }
+            return pow;
         }
     }
 }
