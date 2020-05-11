@@ -47,74 +47,11 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public static void Initialize()
         {
-            //List<Point> s = new List<Point>();
-            //List<Point> w = new List<Point>();
-
-            //// Temporarily hard-coded
-            //s.Add(new Point(1, 1));
-            //s.Add(new Point(1, 2));
-            //s.Add(new Point(1, 3));
-            //s.Add(new Point(1, 4));
-            //s.Add(new Point(1, 5));
-            //s.Add(new Point(1, 6));
-            //s.Add(new Point(1, 7));
-            //s.Add(new Point(1, 8));
-            //s.Add(new Point(1, 9));
-            //s.Add(new Point(2, 1));
-            //s.Add(new Point(2, 4));
-            //s.Add(new Point(2, 9));
-            //s.Add(new Point(3, 1));
-            //s.Add(new Point(3, 4));
-            //s.Add(new Point(3, 9));
-            //s.Add(new Point(4, 1));
-            //s.Add(new Point(4, 4));
-            //s.Add(new Point(4, 5));
-            //s.Add(new Point(4, 6));
-            //s.Add(new Point(4, 7));
-            //s.Add(new Point(4, 8));
-            //s.Add(new Point(4, 9));
-            //s.Add(new Point(5, 1));
-            //s.Add(new Point(5, 2));
-            //s.Add(new Point(5, 3));
-            //s.Add(new Point(5, 4));
-            //s.Add(new Point(5, 9));
-            //s.Add(new Point(6, 1));
-            //s.Add(new Point(6, 4));
-            //s.Add(new Point(6, 9));
-            //s.Add(new Point(7, 1));
-            //s.Add(new Point(7, 4));
-            //s.Add(new Point(7, 9));
-            //s.Add(new Point(8, 1));
-            //s.Add(new Point(8, 4));
-            //s.Add(new Point(8, 9));
-            //s.Add(new Point(9, 1));
-            //s.Add(new Point(9, 2));
-            //s.Add(new Point(9, 3));
-            //s.Add(new Point(9, 4));
-            //s.Add(new Point(9, 5));
-            //s.Add(new Point(9, 6));
-            //s.Add(new Point(9, 7));
-            //s.Add(new Point(9, 8));
-            //s.Add(new Point(9, 9));
-
-            //foreach (Point p in s)
-            //{
-            //    COMPONENTS.Add(new StructureComponent(p.X, p.Y, ComponentConstants.COMPONENT_STRUCTURE_COLOR));
-            //}
-
-            //// Temporarily hard-coded
-            //w.Add(new Point(2, 5));
-            //w.Add(new Point(2, 6));
-            //w.Add(new Point(2, 8));
-            //w.Add(new Point(3, 8));
-
-            //foreach (Point p in w)
-            //{
-            //    COMPONENTS.Add(new WeaponComponent(p.X, p.Y, ComponentConstants.COMPONENT_WEAPON_COLOR));
-            //}
             ROOMPOINTS = new List<Tuple<Point, Point, Room.Room_Type>>();
-            //ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(0, 0), new Point(4, 6), Room.Room_Type.None));
-            //ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(4, 0), new Point(8, 6), Room.Room_Type.None));
+            ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(4, 4), new Point(7, 7), Room.Room_Type.None));
+            ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(7, 4), new Point(10, 7), Room.Room_Type.None));
+            ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(4, 7), new Point(7, 10), Room.Room_Type.None));
+            ROOMPOINTS.Add(new Tuple<Point, Point, Room.Room_Type>(new Point(7, 7), new Point(10, 10), Room.Room_Type.None));
         }
     }
 }
