@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MonoGameWindowsStarter.Spaceship;
 using static MonoGameWindowsStarter.States.BuildState;
 using MonoGameWindowsStarter.Rendering;
+using MonoGameWindowsStarter.States;
 
 namespace MonoGameWindowsStarter.Components
 {
@@ -105,6 +106,26 @@ namespace MonoGameWindowsStarter.Components
                         throw new NotImplementedException("Unknown placement type");
                     }
             }
+        }
+
+        internal static int GetBaseValue(Placement_Type type)
+        {
+            switch (type)
+            {
+                case Placement_Type.Weapon:
+                case Placement_Type.PlacingWeapon:
+                    return new WeaponComponent(0, 0, Color.White).getValue();
+                case Placement_Type.Storage:
+                case Placement_Type.PlacingStorage:
+                    return new MaterialStorageComponent(0, 0, Color.White).getValue();
+                case Placement_Type.Generator:
+                case Placement_Type.PlacingGenerator:
+                    return new PowerGenerationComponent(0, 0, Color.White).getValue();
+                case Placement_Type.Battery:
+                case Placement_Type.PlacingBattery:
+                    return new PowerStorageComponent(0, 0, Color.White).getValue();
+            }
+            return 0;
         }
     }
 }

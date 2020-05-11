@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using MonoGameWindowsStarter.Controls;
 using MonoGameWindowsStarter.Controls.UIGroups;
 using System.ComponentModel.Design;
+using MonoGameWindowsStarter.Rendering;
 
 namespace MonoGameWindowsStarter.States
 {
@@ -59,6 +60,7 @@ namespace MonoGameWindowsStarter.States
         private bool _drawTemporaryComponent = false;
         private Room_State roomState = Room_State.None;
         private TextBox _metalAmount;
+        private Tooltip _tooltip;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -121,14 +123,7 @@ namespace MonoGameWindowsStarter.States
                 BorderBoxInfo = ControlConstants.BUILDMODE_CANVAS
             };
 
-            /*
-            BorderBox BuildModeTitleBox = new BorderBox(pixelTexture)
-            {
-                BorderBoxInfo = ControlConstants.BUILDMODE_TITLEBOX
-            };
-
-            BuildModeTitleBox.SetPosition(BuildModeTitle.Location, 0);
-            */
+            _tooltip = new Tooltip(pixelTexture, buttonFont);
 
             _uicomponents = new List<UI_Component>()
             {
@@ -140,7 +135,7 @@ namespace MonoGameWindowsStarter.States
                 GridBox,
                 Canvas,
                 MetalAmountText,
-                _metalAmount
+                _metalAmount,
                 //BuildModeTitleBox
             };
 
@@ -171,6 +166,9 @@ namespace MonoGameWindowsStarter.States
                 _temporaryComponent.Draw(spriteBatch, Ship.Grid.Info);
                 spriteBatch.End();
             }
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            _tooltip.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -211,6 +209,21 @@ namespace MonoGameWindowsStarter.States
                             // Drops through to Weapon
                             case Placement_Type.Weapon:
                                 {
+                                    _tooltip.Show = false;
+                                    if (mouseOnTile)
+                                    {
+                                        foreach (Room room in Ship.Rooms)
+                                        {
+                                            if (room.InteriorContains(tileUnderMouse))
+                                            {
+                                                if (Component.RoomTypeMatches(_placementType, room.RoomType) || room.RoomType == Room.Room_Type.None)
+                                                {
+                                                    _tooltip.Show = true;
+                                                    _tooltip.SetText("Cost: " + Component.GetBaseValue(_placementType));
+                                                }
+                                            }
+                                        }
+                                    }
                                     if (mousePressed && mouseOnTile)
                                     {
                                         foreach (Room room in Ship.Rooms)
@@ -313,6 +326,7 @@ namespace MonoGameWindowsStarter.States
                                             if (room.Contains(_temporaryComponent.TilePosition) && !room.InteriorContains(tileUnderMouse))
                                             {
                                                 _drawTemporaryComponent = false;
+                                                _tooltip.Show = false;
                                             }
                                             if (room.Contains(tileUnderMouse) && room.Contains(_temporaryComponent.TilePosition))
                                             {
@@ -330,6 +344,8 @@ namespace MonoGameWindowsStarter.States
                                                 {
                                                     _temporaryComponent.TilePosition = tileUnderMouse;
                                                     _drawTemporaryComponent = true;
+                                                    _tooltip.Show = true;
+                                                    _tooltip.SetText("Cost: " + _temporaryComponent.getValue().ToString());
                                                 }
                                                 break;
                                             }
@@ -338,6 +354,7 @@ namespace MonoGameWindowsStarter.States
                                     else if (mousePressed && !mouseOnTile)
                                     {
                                         _drawTemporaryComponent = false;
+                                        _tooltip.Show = false;
                                     }
                                     else if (!mousePressed)
                                     {
@@ -362,6 +379,7 @@ namespace MonoGameWindowsStarter.States
                                         }
                                         _temporaryComponent = null;
                                         _drawTemporaryComponent = false;
+                                        _tooltip.Show = false;
 
                                         _placementType--;
                                     }
@@ -438,6 +456,8 @@ namespace MonoGameWindowsStarter.States
                                         {
                                             Ship.LoadComponentTexture(component);
                                         }
+                                        _tooltip.Show = true;
+                                        _tooltip.SetText("Cost: " + _temporaryRoom.GetValue().ToString());
                                     }
                                     else if (!mousePressed && mouseOnTile)
                                     {
@@ -449,11 +469,25 @@ namespace MonoGameWindowsStarter.States
                                         }
                                         roomState = Room_State.Room;
                                         _temporaryRoom = null;
+                                        _tooltip.Show = false;
                                     }
                                     break;
                                 }
                             case Room_State.DeleteRoom:
                                 {
+                                    _tooltip.Show = false;
+                                    if(mouseOnTile)
+                                    {
+                                        foreach (Room room in Ship.Rooms)
+                                        {
+                                            if (room.InteriorContains(tileUnderMouse))
+                                            {
+                                                _tooltip.Show = true;
+                                                _tooltip.SetText("Refund: " + room.GetValue() / 2);
+                                                break;
+                                            }
+                                        }
+                                    }
                                     if (mousePressed && mouseOnTile)
                                     {
                                         foreach (Room room in Ship.Rooms)
@@ -462,6 +496,7 @@ namespace MonoGameWindowsStarter.States
                                             {
                                                 Ship.Material += room.GetValue() / 2;
                                                 Ship.RemoveRoom(room);
+                                                _tooltip.Show = false;
                                                 break;
                                             }
                                         }
@@ -491,8 +526,9 @@ namespace MonoGameWindowsStarter.States
 
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
+            _tooltip.Update(gameTime);
 
-            if(_activeCanvas != null)
+            if (_activeCanvas != null)
                 _activeCanvas.Update(gameTime);
         }
 

@@ -11,7 +11,8 @@ namespace MonoGameWindowsStarter.Controls
     public class BorderBox : UI_Component
     {
         private Texture2D _texture;
-        public int PenWeight { get; set; }
+        private int _penWeight;
+        public int PenWeight { get { if (_penWeight > Math.Min(Size.X/2, Size.Y/2)) return (int)(Math.Min(Size.X/2, Size.Y/2) + 1); else return _penWeight; } set { _penWeight = value; } }
         public Color Color { get; set; }
         public ControlConstants.BORDERBOX_INFO BorderBoxInfo { set { Position = new Vector2(value.X, value.Y); Size = new Vector2(value.Width, value.Height); Color = value.Color; PenWeight = value.Weight; } }
 

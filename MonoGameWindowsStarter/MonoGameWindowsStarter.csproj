@@ -58,6 +58,7 @@
     <Compile Include="Controls\UIGroups\BuildStateRoomsUI.cs" />
     <Compile Include="Controls\UIGroups\CombatStateTargetUI.cs" />
     <Compile Include="Controls\UIGroups\ReviewStateStats.cs" />
+    <Compile Include="Controls\UIGroups\Tooltip.cs" />
     <Compile Include="Controls\UI_Component.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="ModeState.cs" />
