@@ -47,8 +47,12 @@ namespace MonoGameWindowsStarter.Spaceship
         private int roomHealth;
         private int maxRoomHealth;
         public int RoomHealth { get { return roomHealth; } }
+        public bool CanShoot { get; private set; }
         public bool isBroken;
         public bool isRepairing;
+        private float _millisPassed = 0f;
+        private float _timeSinceShot = 0f;
+
 
         public enum Room_State
         {
@@ -97,8 +101,15 @@ namespace MonoGameWindowsStarter.Spaceship
             
         }
 
-        public void Update(TimeSpan timer)
+        public void Update(GameTime gameTime)
         {
+            _millisPassed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            _timeSinceShot += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(_timeSinceShot > (1000f / ShotsPerSecond()))
+            {
+                CanShoot = true;
+            }
+
             if (roomFlashingFrames <= 0)
             {
                 roomFlashingFrames = ControlConstants.COMBATMODE_ROOMFLASHINGFRAMES;
@@ -146,15 +157,9 @@ namespace MonoGameWindowsStarter.Spaceship
                     }
                 case (Room_Type.Power_Generation):
                     {
-                        if (!isBroken & timer.TotalSeconds >= 1)
+                        if(_millisPassed > ShipConstants.TICK_INTERVAL && !isBroken)
                         {
-                            foreach (Component comp in Components)
-                            {
-                                if (comp.ComponentType == Component.Component_Type.Power_Generation & Ship.Power < Ship.maxPower)
-                                {
-                                    Ship.Power += (int)((PowerGenerationComponent)comp).PowerPerSecond;
-                                }
-                            }
+                            Ship.Power += PowerGenerationPerSecond() * (ShipConstants.TICK_INTERVAL / 1000f);
                         }
                         break;
                     }
@@ -167,7 +172,10 @@ namespace MonoGameWindowsStarter.Spaceship
                         break;
                     }
             }
-
+            if(_millisPassed > ShipConstants.TICK_INTERVAL)
+            {
+                _millisPassed -= ShipConstants.TICK_INTERVAL;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, Grid.GridInfo gridInfo)
@@ -550,5 +558,10 @@ namespace MonoGameWindowsStarter.Spaceship
             }
         }
 
+        public void Shoot()
+        {
+            _timeSinceShot = 0f;
+            CanShoot = false;
+        }
     }
 }

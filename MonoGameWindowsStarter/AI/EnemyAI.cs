@@ -3,6 +3,7 @@ using MonoGameWindowsStarter.Spaceship;
 using MonoGameWindowsStarter.States;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +22,15 @@ namespace MonoGameWindowsStarter.AI
         #endregion
 
         public int shipHealth = 100;
+        public int maxShipHealth;
         public int weaponHealth = 10;
         public int weaponMaxHealth;
         public int materialStorageHealth = 10;
         public int materialMaxHealth;
         public int powerGeneratorHealth = 10;
         public int generatorMaxHealth;
+        public int powerStorageHealth = 10;
+        public int powerStorageMaxHealth;
 
         public int materialStored = 100;
         public int weaponDamage = 10;
@@ -43,10 +47,11 @@ namespace MonoGameWindowsStarter.AI
             _combatState = combatState;
             var scale = _playerShip.MaxHealth * 0.01;
 
-            shipHealth = (int)(shipHealth * scale);
+            //shipHealth = (int)(shipHealth * scale);
             weaponHealth = (int)(weaponHealth * scale);
             materialStorageHealth = (int)(materialStorageHealth * scale);
             powerGeneratorHealth = (int)(powerGeneratorHealth * scale);
+            powerStorageHealth = (int)(powerStorageHealth * scale);
             materialStored = (int)(materialStored * scale);
             weaponDamage = (int)(weaponDamage * scale);
             weaponFireRate = (int)(weaponFireRate / scale);
@@ -56,6 +61,10 @@ namespace MonoGameWindowsStarter.AI
             weaponMaxHealth = weaponHealth;
             materialMaxHealth = materialStorageHealth;
             generatorMaxHealth = powerGeneratorHealth;
+            powerStorageMaxHealth = powerStorageHealth;
+
+            shipHealth = CalculateShipHealth();
+            maxShipHealth = shipHealth;
 
             timer = new TimeSpan();
         }
@@ -97,6 +106,26 @@ namespace MonoGameWindowsStarter.AI
                 }
                 timer = new TimeSpan();
             }
+
+            if(shipHealth < 0)
+            {
+
+            }
+
+            if(weaponHealth < 0)
+                weaponHealth = 0;
+            if (materialStorageHealth < 0)
+                materialStorageHealth = 0;
+            if (powerGeneratorHealth < 0)
+                powerGeneratorHealth = 0;
+            if (powerStorageHealth < 0)
+                powerStorageHealth = 0;
+            shipHealth = CalculateShipHealth();
+        }
+
+        public int CalculateShipHealth()
+        {
+            return (weaponHealth + materialStorageHealth + powerGeneratorHealth + powerStorageHealth);
         }
     }
 }

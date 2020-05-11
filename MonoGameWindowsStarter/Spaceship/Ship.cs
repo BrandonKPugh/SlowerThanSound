@@ -27,16 +27,18 @@ namespace MonoGameWindowsStarter.Spaceship
 
         #region RESOURCES
         private float _power;
-        public int Power { get { return (int)_power; } set { _power = value; } }
+        public float Power { get { return _power; } set { _power = Math.Min(value, maxPower); } }
         public int maxPower = 0;
         public int Material = 1000;
         public int maxMaterial = 0;
         public int MaxHealth = 1;
         public int CurrentHealth;
         private int PreviousHealth;
+        private List<Tuple<Room, Projectile.Attack_Against>> Attacks = new List<Tuple<Room, Projectile.Attack_Against>>();
+        private CombatState _combatState;
         #endregion
 
-        TimeSpan timer;
+        //TimeSpan timer;
         public Ship()
         {
 
@@ -44,21 +46,11 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void Update(GameTime gameTime)
         {
-            timer += gameTime.ElapsedGameTime;
-            if (timer.TotalMilliseconds >= 1100)
-                timer = new TimeSpan();
             foreach(Room room in Rooms)
             {
-                room.Update(timer);
+                room.Update(gameTime);
             }
-
-            /*
-            int capacity = (int)TotalPowerCapacity();
-            if (_power > capacity)
-            {
-                _power = capacity;
-            }
-            */
+            FireWeapons(gameTime);
         }
 
         public void Initialize(List<Tuple<Point,Point, Room.Room_Type>> rooms)
@@ -266,11 +258,20 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void AttackEnemy(Room weapon, CombatState combatState, Projectile.Attack_Against against)
         {
-            if (Power >= weapon.PowerPerShot())
+            List<Tuple<Room, Projectile.Attack_Against>> toRemove = new List<Tuple<Room, Projectile.Attack_Against>>();
+            foreach (Tuple<Room, Projectile.Attack_Against> attack in Attacks)
             {
-                Power -= (int)weapon.PowerPerShot();
-                combatState.AddProjectile(new Projectile(new Point(1000, 1000), weapon.GetCenter(), (int)weapon.DamagePerShot(), against, combatState));
+                if(attack.Item1.RoomID == weapon.RoomID)
+                {
+                    toRemove.Add(attack);
+                }
             }
+            foreach(Tuple<Room, Projectile.Attack_Against> attack in toRemove)
+            {
+                Attacks.Remove(attack);
+            }
+            Attacks.Add(new Tuple<Room, Projectile.Attack_Against>(weapon, against));
+            _combatState = combatState;
         }
 
         public void SetShipHealth()
@@ -298,7 +299,7 @@ namespace MonoGameWindowsStarter.Spaceship
                 maxPower += (int)room.PowerStorageCapacity();
                 maxMaterial += room.MaterialStorageCapacity();
             }
-            timer = new TimeSpan(0);
+            //timer = new TimeSpan(0);
         }
 
         public void AlterHealth(int damage)
@@ -398,6 +399,21 @@ namespace MonoGameWindowsStarter.Spaceship
                 }
             }
             return pow;
+        }
+
+        private void FireWeapons(GameTime gameTime)
+        {
+            foreach (Tuple<Room, Projectile.Attack_Against> attack in Attacks)
+            {
+                Room room = attack.Item1;
+                Projectile.Attack_Against against = attack.Item2;
+                if (room.CanShoot && Power >= room.PowerPerShot())
+                {
+                    room.Shoot();
+                    Power -= (int)room.PowerPerShot();
+                    _combatState.AddProjectile(new Projectile(new Point(1000, 1000), room.GetCenter(), (int)room.DamagePerShot(), against, _combatState));
+                }
+            }
         }
     }
 }

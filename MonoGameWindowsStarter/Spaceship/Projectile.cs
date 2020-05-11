@@ -93,6 +93,11 @@ namespace MonoGameWindowsStarter.Spaceship
                         _combatState.enemyAI.weaponHealth -= _damage;
                         break;
                     }
+                case (Attack_Against.EnemyPowerStorage):
+                    {
+                        _combatState.enemyAI.powerStorageHealth -= _damage;
+                        break;
+                    }
                 default:
                     {
                         bool hitOnTile = _combatState.Ship.Grid.PixelToTile(target.X, target.Y, out int tileX, out int tileY);

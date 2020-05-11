@@ -13,6 +13,7 @@ namespace MonoGameWindowsStarter.Spaceship
     {
         //public static List<Component> COMPONENTS = new List<Component>();
         public static List<Tuple<Point, Point, Room.Room_Type>> ROOMPOINTS;
+        public const float TICK_INTERVAL = 1000/60f;
 
         public struct GRID_INFO
         {

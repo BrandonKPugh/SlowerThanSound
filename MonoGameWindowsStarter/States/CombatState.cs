@@ -178,7 +178,7 @@ namespace MonoGameWindowsStarter.States
 
             //_powerAmount.Text = Ship.Power.ToString();
             _playerPowerBar.Value = ((float)Ship.Power / (float)Ship.maxPower);
-            _playerPowerBar.SetText("Power: " + Ship.Power + " / " + Ship.maxPower);
+            _playerPowerBar.SetText("Power: " + (int)Ship.Power + " / " + (int)Ship.maxPower);
 
             _tooltip.Show = false;
             switch (clicked_State)
@@ -231,11 +231,11 @@ namespace MonoGameWindowsStarter.States
                     }
             }
 
-            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETENEMYSHIP.Text, 0.55f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETENEMYSHIP.Text, ((float)enemyAI.shipHealth / (float)enemyAI.maxShipHealth));
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETWEAPONS.Text, ((float)enemyAI.weaponHealth / (float)enemyAI.weaponMaxHealth));
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETSTORAGES.Text, ((float)enemyAI.materialStorageHealth / (float)enemyAI.materialMaxHealth));
             _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERGEN.Text, ((float)enemyAI.powerGeneratorHealth / (float)enemyAI.generatorMaxHealth));
-            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text, 0.35f);
+            _canvas.SetProgressButtonValue(ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text, ((float)enemyAI.powerStorageHealth / (float)enemyAI.powerStorageMaxHealth));
 
 
             foreach (var component in _uicomponents)
@@ -272,6 +272,8 @@ namespace MonoGameWindowsStarter.States
             if (Ship.CurrentHealth < 0)
                 LoseGame();
             _playerHealthBar.Value = ((float)Ship.CurrentHealth / (float)Ship.MaxHealth);
+
+            
         }
 
         public void AddProjectile(Projectile projectile)
