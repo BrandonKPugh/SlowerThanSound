@@ -97,7 +97,7 @@ namespace MonoGameWindowsStarter.Spaceship
             
         }
 
-        public void Update()
+        public void Update(TimeSpan timer)
         {
             if (roomFlashingFrames <= 0)
             {
@@ -146,7 +146,7 @@ namespace MonoGameWindowsStarter.Spaceship
                     }
                 case (Room_Type.Power_Generation):
                     {
-                        if (!isBroken)
+                        if (!isBroken & timer.TotalSeconds >= 1)
                         {
                             foreach (Component comp in Components)
                             {
@@ -155,7 +155,6 @@ namespace MonoGameWindowsStarter.Spaceship
                                     Ship.Power += (int)((PowerGenerationComponent)comp).PowerPerSecond;
                                 }
                             }
-
                         }
                         break;
                     }

@@ -36,6 +36,7 @@ namespace MonoGameWindowsStarter.Spaceship
         private int PreviousHealth;
         #endregion
 
+        TimeSpan timer;
         public Ship()
         {
 
@@ -43,9 +44,12 @@ namespace MonoGameWindowsStarter.Spaceship
 
         public void Update(GameTime gameTime)
         {
+            timer += gameTime.ElapsedGameTime;
+            if (timer.TotalMilliseconds >= 1100)
+                timer = new TimeSpan();
             foreach(Room room in Rooms)
             {
-                room.Update();
+                room.Update(timer);
             }
 
             /*
@@ -294,6 +298,7 @@ namespace MonoGameWindowsStarter.Spaceship
                 maxPower += (int)room.PowerStorageCapacity();
                 maxMaterial += room.MaterialStorageCapacity();
             }
+            timer = new TimeSpan(0);
         }
 
         public void AlterHealth(int damage)
