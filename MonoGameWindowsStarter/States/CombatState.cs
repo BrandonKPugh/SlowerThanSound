@@ -67,6 +67,8 @@ namespace MonoGameWindowsStarter.States
             _canvas.InitializeButton(TargetWeaponsButton_Click, ControlConstants.COMBATMODE_TARGETWEAPONS.Text);
             _canvas.InitializeButton(TargetPowerGenButton_Click, ControlConstants.COMBATMODE_TARGETPOWERGEN.Text);
             _canvas.InitializeButton(TargetPowerStorageButton_Click, ControlConstants.COMBATMODE_TARGETPOWERSTORAGE.Text);
+            _canvas.InitializeButton(FireWeaponButton_Click, ControlConstants.COMBATMODE_FIREWEAPON.Text);
+            _canvas.InitializeButton(RepairRoomButton_Click, ControlConstants.COMBATMODE_REPAIRROOM.Text);
 
             Button BuildModeButton = new Button(buttonTexture, buttonFont)
             {
@@ -247,6 +249,16 @@ namespace MonoGameWindowsStarter.States
         }
 
         private void TargetEnemyShipButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FireWeaponButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RepairRoomButton_Click(object sender, EventArgs e)
         {
 
         }

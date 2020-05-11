@@ -55,8 +55,8 @@
     <Compile Include="Controls\ControlConstants.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\UIGroups\BuildStateComponentUI.cs" />
-    <Compile Include="Controls\UIGroups\BuildStateRoomUI.cs" />
     <Compile Include="Controls\UIGroups\BuildStateShipUI.cs" />
+    <Compile Include="Controls\UIGroups\BuildStateRoomsUI.cs" />
     <Compile Include="Controls\UIGroups\CombatStateTargetUI.cs" />
     <Compile Include="Controls\UIGroups\ReviewStateStats.cs" />
     <Compile Include="Controls\UI_Component.cs" />

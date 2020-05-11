@@ -64,6 +64,19 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
                 BorderBoxInfo = ControlConstants.BUILDMODE_GRIDBOX
             };
 
+            Button FireWeapon = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_FIREWEAPON
+            };
+
+
+            Button RepairRoom = new Button(buttonTexture, buttonFont)
+            {
+                ButtonInfo = ControlConstants.COMBATMODE_REPAIRROOM
+            };
+
+
+
             UI_Components = new List<UI_Component>()
             {
                 CanvasBox,
@@ -74,7 +87,9 @@ namespace MonoGameWindowsStarter.Controls.UIGroups
                 TargetStoragesButton,
                 TargetWeaponsButton,
                 TargetPowerGenButton,
-                TargetPowerStorageButton
+                TargetPowerStorageButton,
+                FireWeapon,
+                RepairRoom
             };
         }
 

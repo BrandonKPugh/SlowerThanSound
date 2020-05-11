@@ -21,10 +21,10 @@ namespace MonoGameWindowsStarter.States
         {
             // Don't change the order, always A then placingA
             None,
-            Room,
+            //Room,
             DeleteComponent,
-            DeleteRoom,
-            PlacingRoom,
+            //DeleteRoom,
+            //PlacingRoom,
             Weapon,
             PlacingWeapon,
             Storage,
@@ -41,6 +41,13 @@ namespace MonoGameWindowsStarter.States
             Component,
             Room
         }
+        private enum Room_State
+        {
+            None,
+            Room,
+            PlacingRoom,
+            DeleteRoom
+        }
         public Ship Ship;
         private List<UI_Component> _uicomponents;
         private UIGroup _activeCanvas;
@@ -50,6 +57,7 @@ namespace MonoGameWindowsStarter.States
         private Point _temporaryRoomStart;
         private Component _temporaryComponent = null;
         private bool _drawTemporaryComponent = false;
+        private Room_State roomState = Room_State.None;
         public BuildState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Ship ship) : base(game, graphicsDevice, content)
         {
             this.Ship = ship;
@@ -64,12 +72,12 @@ namespace MonoGameWindowsStarter.States
 
             CombatModeButton.Click += CombatModeButton_Click;
 
-            Button ShipBuildButton = new Button(buttonTexture, buttonFont)
+            Button RoomButton = new Button(buttonTexture, buttonFont)
             {
-                ButtonInfo = ControlConstants.BUILDMODE_SHIPBUILD,
+                ButtonInfo = ControlConstants.BUILDMODE_ROOM,
             };
 
-            ShipBuildButton.Click += ShipBuildButton_Click;
+            RoomButton.Click += RoomButton_Click;
 
             Button ComponentBuildButton = new Button(buttonTexture, buttonFont)
             {
@@ -78,12 +86,12 @@ namespace MonoGameWindowsStarter.States
 
             ComponentBuildButton.Click += ComponentBuildButton_Click;
 
-            Button ResearchButton = new Button(buttonTexture, buttonFont)
+            Button ShipButton = new Button(buttonTexture, buttonFont)
             {
-                ButtonInfo = ControlConstants.BUILDMODE_ROOMS,
+                ButtonInfo = ControlConstants.BUILDMODE_SHIP,
             };
 
-            ResearchButton.Click += RoomButton_Click;
+            ShipButton.Click += ShipBuildButton_Click;
 
             TextBox BuildModeTitle = new TextBox(buttonFont)
             {
@@ -114,9 +122,9 @@ namespace MonoGameWindowsStarter.States
             _uicomponents = new List<UI_Component>()
             {
                 CombatModeButton,
-                ShipBuildButton,
+                RoomButton,
                 ComponentBuildButton,
-                ResearchButton,
+                ShipButton,
                 BuildModeTitle,
                 GridBox,
                 Canvas,
@@ -181,78 +189,6 @@ namespace MonoGameWindowsStarter.States
                         {
                             case Placement_Type.None:
                                 {
-                                    break;
-                                }
-                            case Placement_Type.Room:
-                                {
-                                    if (mousePressed)
-                                    {
-                                        bool beginPlacement = false;
-                                        bool foundRoom = false;
-                                        if (mouseOnTile)
-                                        {
-                                            foreach (Room room in Ship.Rooms)
-                                            {
-                                                if (room.Contains(tileUnderMouse))
-                                                {
-                                                    foundRoom = true;
-                                                    Component found = null;
-                                                    foreach (Component c in room.GetComponents())
-                                                    {
-                                                        if (c.TilePosition == tileUnderMouse)
-                                                        {
-                                                            found = c;
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (found != null && found.ComponentType == Component.Component_Type.Structure)
-                                                    {
-                                                        beginPlacement = true;
-                                                    }
-                                                }
-                                            }
-                                            if (foundRoom == false)
-                                            {
-                                                beginPlacement = true;
-                                            }
-                                            if (beginPlacement)
-                                            {
-                                                _temporaryRoomStart = tileUnderMouse;
-                                                _temporaryRoom = new Room(Ship, Ship.Grid, tileUnderMouse, tileUnderMouse, Room.Room_Type.None);
-                                                foreach (Component component in _temporaryRoom.GetComponents())
-                                                {
-                                                    Ship.LoadComponentTexture(component);
-                                                }
-                                                _placementType = Placement_Type.PlacingRoom;
-                                            }
-                                        }
-                                    }
-                                    break;
-                                }
-                            case Placement_Type.PlacingRoom:
-                                {
-                                    if (mousePressed && mouseOnTile)
-                                    {
-                                        var minX = Math.Min(tileX, _temporaryRoomStart.X);
-                                        var minY = Math.Min(tileY, _temporaryRoomStart.Y);
-                                        var maxX = Math.Max(tileX, _temporaryRoomStart.X);
-                                        var maxY = Math.Max(tileY, _temporaryRoomStart.Y);
-                                        Point p1 = new Point(minX, minY);
-                                        Point p2 = new Point(maxX, maxY);
-
-                                        _temporaryRoom = new Room(Ship, Ship.Grid, p1, p2, Room.Room_Type.None);
-                                        foreach (Component component in _temporaryRoom.GetComponents())
-                                        {
-                                            Ship.LoadComponentTexture(component);
-                                        }
-                                    }
-                                    else if (!mousePressed && mouseOnTile)
-                                    {
-                                        // Released mouse, finalize room
-                                        _placementType = Placement_Type.Room;
-                                        Ship.AddRoom(_temporaryRoom);
-                                        _temporaryRoom = null;
-                                    }
                                     break;
                                 }
                             case Placement_Type.Battery:
@@ -349,21 +285,6 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     break;
                                 }
-                            case Placement_Type.DeleteRoom:
-                                {
-                                    if (mousePressed && mouseOnTile)
-                                    {
-                                        foreach (Room room in Ship.Rooms)
-                                        {
-                                            if (room.InteriorContains(tileUnderMouse))
-                                            {
-                                                Ship.RemoveRoom(room);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    break;
-                                }
                             case Placement_Type.PlacingBattery:
                             case Placement_Type.PlacingStorage:
                             case Placement_Type.PlacingGenerator:
@@ -431,15 +352,109 @@ namespace MonoGameWindowsStarter.States
                     }
                 case Tab_State.Room:
                     {
-                        if(mousePressed && mouseOnTile)
+                        switch (roomState)
                         {
-                            Room room = Ship.GetRoom(tileUnderMouse, true);
-                            ((BuildStateRoomUI)_activeCanvas).SelectedRoom = room;
+                            case Room_State.None:
+                                break;
+                            case Room_State.Room:
+                                {
+                                    if (mousePressed)
+                                    {
+                                        bool beginPlacement = false;
+                                        bool foundRoom = false;
+                                        if (mouseOnTile)
+                                        {
+                                            foreach (Room room in Ship.Rooms)
+                                            {
+                                                if (room.Contains(tileUnderMouse))
+                                                {
+                                                    foundRoom = true;
+                                                    Component found = null;
+                                                    foreach (Component c in room.GetComponents())
+                                                    {
+                                                        if (c.TilePosition == tileUnderMouse)
+                                                        {
+                                                            found = c;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (found != null && found.ComponentType == Component.Component_Type.Structure)
+                                                    {
+                                                        beginPlacement = true;
+                                                    }
+                                                }
+                                            }
+                                            if (foundRoom == false)
+                                            {
+                                                beginPlacement = true;
+                                            }
+                                            if (beginPlacement)
+                                            {
+                                                _temporaryRoomStart = tileUnderMouse;
+                                                _temporaryRoom = new Room(Ship, Ship.Grid, tileUnderMouse, tileUnderMouse, Room.Room_Type.None);
+                                                foreach (Component component in _temporaryRoom.GetComponents())
+                                                {
+                                                    Ship.LoadComponentTexture(component);
+                                                }
+                                                roomState = Room_State.PlacingRoom;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            case Room_State.PlacingRoom:
+                                {
+                                    if (mousePressed && mouseOnTile)
+                                    {
+                                        var minX = Math.Min(tileX, _temporaryRoomStart.X);
+                                        var minY = Math.Min(tileY, _temporaryRoomStart.Y);
+                                        var maxX = Math.Max(tileX, _temporaryRoomStart.X);
+                                        var maxY = Math.Max(tileY, _temporaryRoomStart.Y);
+                                        Point p1 = new Point(minX, minY);
+                                        Point p2 = new Point(maxX, maxY);
+
+                                        _temporaryRoom = new Room(Ship, Ship.Grid, p1, p2, Room.Room_Type.None);
+                                        foreach (Component component in _temporaryRoom.GetComponents())
+                                        {
+                                            Ship.LoadComponentTexture(component);
+                                        }
+                                    }
+                                    else if (!mousePressed && mouseOnTile)
+                                    {
+                                        // Released mouse, finalize room
+                                        roomState = Room_State.Room;
+                                        Ship.AddRoom(_temporaryRoom);
+                                        _temporaryRoom = null;
+                                    }
+                                    break;
+                                }
+                            case Room_State.DeleteRoom:
+                                {
+                                    if (mousePressed && mouseOnTile)
+                                    {
+                                        foreach (Room room in Ship.Rooms)
+                                        {
+                                            if (room.InteriorContains(tileUnderMouse))
+                                            {
+                                                Ship.RemoveRoom(room);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            default:
+                                break;
                         }
                         break;
                     }
                 case Tab_State.Ship:
                     {
+                        if (mousePressed && mouseOnTile)
+                        {
+                            Room room = Ship.GetRoom(tileUnderMouse, true);
+                            ((BuildStateShipUI)_activeCanvas).SelectedRoom = room;
+                        }
                         break;
                     }
                 default:
@@ -447,7 +462,7 @@ namespace MonoGameWindowsStarter.States
                         throw new NotImplementedException();
                     }
             }
-            
+
 
             foreach (var component in _uicomponents)
                 component.Update(gameTime);
@@ -470,7 +485,8 @@ namespace MonoGameWindowsStarter.States
             _temporaryComponent = null;
             _drawTemporaryComponent = false;
             _tabState = Tab_State.Ship;
-            SetActiveButton(ControlConstants.BUILDMODE_SHIPBUILD.Text);
+            roomState = Room_State.None;
+            SetActiveButton(ControlConstants.BUILDMODE_SHIP.Text);
         }
         private void ComponentBuildButton_Click(object sender, EventArgs e)
         {
@@ -479,23 +495,24 @@ namespace MonoGameWindowsStarter.States
             componentCanvas.InitializeButton(PlaceStorageButton_Click, ControlConstants.PLACE_COMPONENT_STORAGE.Text);
             componentCanvas.InitializeButton(PlaceGeneratorButton_Click, ControlConstants.PLACE_COMPONENT_GENERATOR.Text);
             componentCanvas.InitializeButton(PlaceBatteryButton_Click, ControlConstants.PLACE_COMPONENT_BATTERY.Text);
-            componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
             componentCanvas.InitializeButton(DeleteComponentButton_Click, ControlConstants.DELETE_COMPONENT.Text);
-            componentCanvas.InitializeButton(DeleteRoomButton_Click, ControlConstants.DELETE_ROOM.Text);
             _activeCanvas = componentCanvas;
             _tabState = Tab_State.Component;
             SetActiveButton(ControlConstants.BUILDMODE_COMPONENTBUILD.Text);
         }
         private void RoomButton_Click(object sender, EventArgs e)
         {
-            BuildStateRoomUI componentCanvas = new BuildStateRoomUI(_content);
+            BuildStateRoomsUI componentCanvas = new BuildStateRoomsUI(_content);
+            componentCanvas.InitializeButton(DeleteRoomButton_Click, ControlConstants.DELETE_ROOM.Text);
+            componentCanvas.InitializeButton(CreateRoomButton_Click, ControlConstants.CREATE_ROOM.Text);
             _activeCanvas = componentCanvas;
             _placementType = Placement_Type.None;
             _temporaryRoom = null;
             _temporaryComponent = null;
             _drawTemporaryComponent = false;
             _tabState = Tab_State.Room;
-            SetActiveButton(ControlConstants.BUILDMODE_ROOMS.Text);
+            roomState = Room_State.None;
+            SetActiveButton(ControlConstants.BUILDMODE_ROOM.Text);
         }
 
         private void DeleteComponentButton_Click(object sender, EventArgs e)
@@ -504,7 +521,7 @@ namespace MonoGameWindowsStarter.States
         }
         private void DeleteRoomButton_Click(object sender, EventArgs e)
         {
-            _placementType = Placement_Type.DeleteRoom;
+            roomState = Room_State.DeleteRoom;
         }
 
         private void PlaceWeaponButton_Click(object sender, EventArgs e)
@@ -528,7 +545,7 @@ namespace MonoGameWindowsStarter.States
         }
         private void CreateRoomButton_Click(object sender, EventArgs e)
         {
-            _placementType = Placement_Type.Room;
+            roomState = Room_State.Room;
 
         }
 
