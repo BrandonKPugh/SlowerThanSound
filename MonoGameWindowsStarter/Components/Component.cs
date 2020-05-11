@@ -79,7 +79,6 @@ namespace MonoGameWindowsStarter.Components
             switch (placementType)
             {
                 case Placement_Type.None:
-                case Placement_Type.Room:
                     {
                         return false;
                     }
