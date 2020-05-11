@@ -94,6 +94,7 @@ namespace MonoGameWindowsStarter.Spaceship
                     {
                         bool hitOnTile = _combatState.Ship.Grid.PixelToTile(target.X, target.Y, out int tileX, out int tileY);
                         Point tileHit = new Point(tileX, tileY);
+                        _combatState.Ship.AlterHealth(_damage);
                         foreach (Room room in _combatState.Ship.Rooms)
                         {
                             if (room.Contains(tileHit))

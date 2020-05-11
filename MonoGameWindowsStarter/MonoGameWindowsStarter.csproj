@@ -42,7 +42,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AI\EnemyAI.cs" />
-    <Compile Include="AI\EnemyShip.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentConstants.cs" />
     <Compile Include="Components\PowerGenerationComponent.cs" />

@@ -286,6 +286,16 @@ namespace MonoGameWindowsStarter.Spaceship
             return priority;
         }
 
+        public int GetValue()
+        {
+            var value = 0;
+            foreach (Component comp in Components)
+            {
+                value += comp.getValue();
+            }
+            return value;
+        }
+
         public void SetRoomType(Room_Type type)
         {
             RoomType = type;
@@ -296,7 +306,7 @@ namespace MonoGameWindowsStarter.Spaceship
             roomHealth = 0;
             foreach (Component component in Components)
             {
-                roomHealth += 1;
+                roomHealth += component.health;
             }
             maxRoomHealth = roomHealth;
             return roomHealth;

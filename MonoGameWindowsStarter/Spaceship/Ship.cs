@@ -26,10 +26,9 @@ namespace MonoGameWindowsStarter.Spaceship
         public List<Room> Rooms;
 
         #region RESOURCES
-        public int Money;
         public int Power;
-        public int Material;
-        public int MaxHealth = 100;
+        public int Material = 1000;
+        public int MaxHealth = 1;
         public int CurrentHealth;
         private int PreviousHealth;
         #endregion
@@ -60,6 +59,7 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 Rooms.Add(new Room(this, Grid, a.Item1, a.Item2, a.Item3));
             }
+            CurrentHealth = MaxHealth;
         }
 
         // Alternative initialization, allows passing in some preset components
@@ -267,9 +267,15 @@ namespace MonoGameWindowsStarter.Spaceship
                 healthDifference = MaxHealth / PreviousHealth;
             else
             {
-                healthDifference = 0;
+                healthDifference = 1;
             }
             CurrentHealth = (int)(CurrentHealth * healthDifference);
+        }
+
+        public void AlterHealth(int damage)
+        {
+            CurrentHealth -= damage;
+                
         }
 
         public Room GetRoom(Point tilePosition, bool interiorOnly)

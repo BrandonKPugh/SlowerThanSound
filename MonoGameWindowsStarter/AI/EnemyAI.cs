@@ -20,16 +20,27 @@ namespace MonoGameWindowsStarter.AI
         protected CombatState _combatState;
 
         private TimeSpan timer;
-
-        private EnemyShip enemyShip;
         #endregion
+
+        public int shipHealth = 100;
+        public int weaponHealth = 10;
+        public int materialStorageHealth = 10;
+        public int powerGeneratorHealth = 10;
+
+        public int materialStored = 100;
+        public int weaponDamage = 10;
+        public int weaponFireRate = 5;
+        public int weaponPowerNeeded = 5;
+        public int weaponCooldown = 5;
+
+        public int powerGeneration = 5;
+        public int currentPower = 50;
 
         public EnemyAI(Ship playerShip, CombatState combatState)
         {
             _playerShip = playerShip;
             _combatState = combatState;
             timer = new TimeSpan();
-            enemyShip = new EnemyShip(_playerShip.MaxHealth);
         }
 
         private void AttackPlayer()
@@ -54,7 +65,7 @@ namespace MonoGameWindowsStarter.AI
             Random rand = new Random();
             var x = rand.Next(target.X, target.X + target.Width);
             var y = rand.Next(target.Y, target.Y + target.Height);
-            _combatState.AddProjectile(new Projectile(new Point(x, y), new Vector2(1000, 1000), enemyShip.weaponDamage, Projectile.Attack_Against.Player,_combatState));
+            _combatState.AddProjectile(new Projectile(new Point(x, y), new Vector2(1000, 1000), weaponDamage, Projectile.Attack_Against.Player,_combatState));
         }
 
         public void Update(GameTime gameTime)

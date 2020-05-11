@@ -202,6 +202,8 @@ namespace MonoGameWindowsStarter.States
             }
 
             Ship.Update(gameTime);
+            if (Ship.CurrentHealth < 0)
+                LoseGame();
         }
 
         public void AddProjectile(Projectile projectile)
@@ -209,6 +211,12 @@ namespace MonoGameWindowsStarter.States
             projectile._texture = projectileTexture;
             projectiles.Add(projectile);
         }
+
+        public void LoseGame()
+        {
+            _game.ChangeState(new MainMenuState(_game, _graphicsDevice, _content));
+        }
+
         private void BuildModeButton_Click(object sender, EventArgs e)
         {
             ReviewState.CombatInfo info = new ReviewState.CombatInfo();
