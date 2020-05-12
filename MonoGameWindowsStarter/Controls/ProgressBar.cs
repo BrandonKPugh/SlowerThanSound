@@ -47,18 +47,6 @@ namespace MonoGameWindowsStarter.Controls
         //      Probably use 1x1 pixel Texture for this too
         private Texture2D ProgressionTexture;
 
-        // Creates a progress bar
-        //      Value and text are optional
-        /*
-        public ProgressBar(Rectangle location, Color backgroundColor, Color progressionColor, float value = 1.0f, string text = "")
-        {
-            this.Location = location;
-            this.BackgroundColor = backgroundColor;
-            this.ProgressionColor = progressionColor;
-            this.Text = text;
-        }
-        */
-
         public ProgressBar(Texture2D pixelTexture, SpriteFont font)
         {
             //this.BarTexture = pixelTexture;
@@ -89,15 +77,10 @@ namespace MonoGameWindowsStarter.Controls
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
-
             Rectangle progressionDest = new Rectangle(Location.X, Location.Y, (int) (Location.Width * Value), Location.Height);
             spriteBatch.Draw(BackgroundTexture, Location, BackgroundColor);
             spriteBatch.Draw(ProgressionTexture, progressionDest, ProgressionColor);
-            //spriteBatch.Draw(BarTexture, Location, Color.Black);
             Button.CenterString(Text, Font, new Vector2(Location.X, Location.Y), new Vector2(Location.Width, Location.Height), spriteBatch, ControlConstants.BAR_PENCOLOR);
-
-            //spriteBatch.End();
 
         }
 

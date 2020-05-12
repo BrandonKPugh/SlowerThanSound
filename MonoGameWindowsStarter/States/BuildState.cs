@@ -22,10 +22,7 @@ namespace MonoGameWindowsStarter.States
         {
             // Don't change the order, always A then placingA
             None,
-            //Room,
             DeleteComponent,
-            //DeleteRoom,
-            //PlacingRoom,
             Weapon,
             PlacingWeapon,
             Storage,
@@ -138,7 +135,6 @@ namespace MonoGameWindowsStarter.States
                 Canvas,
                 MetalAmountText,
                 _metalAmount,
-                //BuildModeTitleBox
             };
 
         }
@@ -380,11 +376,6 @@ namespace MonoGameWindowsStarter.States
                                                 if (found == null)
                                                 {
                                                     _temporaryComponent.TilePosition = tileUnderMouse;
-                                                    /*
-                                                    _drawTemporaryComponent = true;
-                                                    _tooltip.Show = true;
-                                                    _tooltip.SetText("Cost: " + _temporaryComponent.getValue().ToString());
-                                                    */
                                                     if (Ship.Material - Component.GetBaseValue(_placementType) >= 0)
                                                     {
                                                         Ship.Material -= Component.GetBaseValue(_placementType);

@@ -34,10 +34,6 @@ namespace MonoGameWindowsStarter.Spaceship
                 return new Rectangle(x, y, w, h);
             }
         }
-        
-
-        // 2D List, Tiles[x][y]
-        //public List<List<Tile>> Tiles;
 
         public GridInfo Info;
 

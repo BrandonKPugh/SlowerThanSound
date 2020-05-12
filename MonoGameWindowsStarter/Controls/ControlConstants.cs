@@ -186,10 +186,8 @@ namespace MonoGameWindowsStarter.Controls
 
         #region PAUSEMENU
 
-        public static BUTTON_INFO PAUSEMENU_RESUMEGAME = new BUTTON_INFO("Resume Game", 0.35f, 0.1f, 0.3f, 0.15f);
-        public static BUTTON_INFO PAUSEMENU_SAVEGAME = new BUTTON_INFO("Save Game", 0.35f, 0.3f, 0.3f, 0.15f);
-        public static BUTTON_INFO PAUSEMENU_LOADGAME = new BUTTON_INFO("Load Game", 0.35f, 0.5f, 0.3f, 0.15f);
-        public static BUTTON_INFO PAUSEMENU_QUITGAME = new BUTTON_INFO("Exit to Menu", 0.35f, 0.7f, 0.3f, 0.15f);
+        public static BUTTON_INFO PAUSEMENU_RESUMEGAME = new BUTTON_INFO("Resume Game", 0.35f, 0.3f, 0.3f, 0.15f);
+        public static BUTTON_INFO PAUSEMENU_QUITGAME = new BUTTON_INFO("Exit to Menu", 0.35f, 0.5f, 0.3f, 0.15f);
 
         #endregion
 

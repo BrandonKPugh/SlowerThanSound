@@ -14,9 +14,6 @@ namespace MonoGameWindowsStarter.Spaceship
 {
     public class Ship
     {
-        // List of all components
-        //      this will likely be a different data structure later
-        // private List<Component> Components;
         // Dictionary for component textures
         private Dictionary<Component.Component_Type, Texture2D> Textures;
         private Dictionary<Component.Component_Type, Sprite> Sprites;
@@ -38,7 +35,6 @@ namespace MonoGameWindowsStarter.Spaceship
         private CombatState _combatState;
         #endregion
 
-        //TimeSpan timer;
         public Ship()
         {
 
@@ -152,13 +148,6 @@ namespace MonoGameWindowsStarter.Spaceship
             }
             spriteBatch.End();
         }
-
-        //public void AddComponent(Component component)
-        //{
-        //    // Load the texture for it since the texture is null by default
-        //    LoadComponentTexture(component);
-        //    Components.Add(component);
-        //}
 
         public List<Component> GetComponents()
         {

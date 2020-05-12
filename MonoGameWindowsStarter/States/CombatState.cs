@@ -23,7 +23,6 @@ namespace MonoGameWindowsStarter.States
         private List<Projectile> projectiles;
         private List<Projectile> deadProjectiles;
         private CombatStateTargetUI _canvas;
-        //private TextBox _powerAmount;
         private Tooltip _tooltip;
         private UIBox _selectedRoomBox;
         private ProgressBar _playerHealthBar;
@@ -56,7 +55,6 @@ namespace MonoGameWindowsStarter.States
             Ship.Attacks = new List<Tuple<Room, Projectile.Attack_Against>>();
             _oldMaterialCount = Ship.Material;
 
-            //Ship.Initialize(ShipConstants.COMPONENTS);
             projectileTexture = _content.Load<Texture2D>("Pixel");
 
             Texture2D buttonTexture = _content.Load<Texture2D>(ControlConstants.BUTTON_TEXTURE);
@@ -91,26 +89,12 @@ namespace MonoGameWindowsStarter.States
                 Color = new Color(Color.White, ControlConstants.ROOM_INFO_BOX_ALPHA)
             };
 
-            /*
-            TextBox PowerAmountText = new TextBox(buttonFont)
-            {
-                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX,
-                Text = "Power: "
-            };
-            */
-
             _playerHealthBar = new ProgressBar(_pixelTexture, buttonFont)
             {
                 ProgressBarInfo = ControlConstants.PLAYER_HEALTHBAR
             };
             _playerHealthBar.Value = 0.5f;
 
-            /*
-            _powerAmount = new TextBox(buttonFont)
-            {
-                TextBoxInfo = ControlConstants.PRIMARY_TEXTBOX_VALUE
-            };
-            */
 
             _playerPowerBar = new ProgressBar(_pixelTexture, buttonFont)
             {
@@ -123,8 +107,6 @@ namespace MonoGameWindowsStarter.States
             _uicomponents = new List<UI_Component>
             {
                 BuildModeButton,
-                //PowerAmountText,
-                //_powerAmount,
                 _canvas,
                 _selectedRoomBox,
                 _playerHealthBar,
@@ -180,7 +162,6 @@ namespace MonoGameWindowsStarter.States
             bool mouseOnTile = Ship.Grid.PixelToTile(x, y, out int tileX, out int tileY);
             Point tileUnderMouse = new Point(tileX, tileY);
 
-            //_powerAmount.Text = Ship.Power.ToString();
             _playerPowerBar.Value = ((float)Ship.Power / (float)Ship.maxPower);
             _playerPowerBar.SetText("Power: " + (int)Ship.Power + " / " + (int)Ship.maxPower);
 

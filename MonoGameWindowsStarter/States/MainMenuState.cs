@@ -79,25 +79,12 @@ namespace MonoGameWindowsStarter.States
 
             Texture2D tileTexture = _content.Load<Texture2D>("Tile");
 
-            //Dictionary <Component.Component_Type, Texture2D> textures = new Dictionary<Component.Component_Type, Texture2D>();
             Dictionary<Component.Component_Type, Sprite> textures = new Dictionary<Component.Component_Type, Sprite>();
             textures.Add(Component.Component_Type.Power_Generation, spriteSheet[0]);
             textures.Add(Component.Component_Type.Power_Storage, spriteSheet[1]);
             textures.Add(Component.Component_Type.Weapon, spriteSheet[2]);
             textures.Add(Component.Component_Type.Material_Storage, spriteSheet[3]);
             textures.Add(Component.Component_Type.Structure, spriteSheet[4]);
-
-            //Texture2D weaponTexture = _content.Load<Texture2D>("Component_Weapon");
-            //textures.Add(Component.Component_Type.Weapon, weaponTexture);
-            //Texture2D structureTexture = _content.Load<Texture2D>("Structure");
-            //textures.Add(Component.Component_Type.Structure, structureTexture);
-            //Texture2D materialStorageTexture = _content.Load<Texture2D>("Component_MaterialStorage");
-            //textures.Add(Component.Component_Type.Material_Storage, materialStorageTexture);
-            //Texture2D powerGeneratorTexture = _content.Load<Texture2D>("Component_MaterialStorage");
-            //textures.Add(Component.Component_Type.Power_Generation, powerGeneratorTexture);
-
-            //SpriteFont font = content.Load<SpriteFont>("DebugFont");
-            //Texture2D pixel = content.Load<Texture2D>("pixel");
 
             Ship.LoadContent(textures, tileTexture);
 

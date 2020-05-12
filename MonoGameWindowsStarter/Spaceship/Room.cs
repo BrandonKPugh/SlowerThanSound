@@ -321,7 +321,6 @@ namespace MonoGameWindowsStarter.Spaceship
         public int GetPriority()
         {
             var priority = 1;
-            //Debug value, will get value of each component and return the total value at some point
             foreach(Component comp in Components)
             {
                 priority += comp.getValue();
@@ -351,7 +350,6 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 roomHealth += component.health;
             }
-            //roomHealth = (int)(Math.Pow(roomHealth, 1.5f));
             maxRoomHealth = roomHealth;
             return roomHealth;
         }
