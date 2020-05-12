@@ -21,6 +21,11 @@ namespace MonoGameWindowsStarter.Controls
             _texture = texture;
         }
 
+        public void setTexture(Texture2D texture)
+        {
+            _texture = texture;
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if(Show)

@@ -29,20 +29,6 @@ namespace MonoGameWindowsStarter.States
 
             resumeGameButton.Click += ResumeGameButton_Click;
 
-            var saveGameButton = new Controls.Button(buttonTexture, buttonFont)
-            {
-                ButtonInfo = ControlConstants.PAUSEMENU_SAVEGAME,
-            };
-
-            saveGameButton.Click += SaveGameButton_Click;
-
-            var loadGameButton = new Controls.Button(buttonTexture, buttonFont)
-            {
-                ButtonInfo = ControlConstants.PAUSEMENU_LOADGAME,
-            };
-
-            loadGameButton.Click += LoadGameButton_Click;
-
             var quitGameButton = new Controls.Button(buttonTexture, buttonFont)
             {
                 ButtonInfo = ControlConstants.PAUSEMENU_QUITGAME,
@@ -53,9 +39,7 @@ namespace MonoGameWindowsStarter.States
             _components = new List<Controls.Button>()
             {
             resumeGameButton,
-            saveGameButton,
-            loadGameButton,
-            quitGameButton,
+            quitGameButton
             };
         }
 
@@ -72,11 +56,6 @@ namespace MonoGameWindowsStarter.States
         private void SaveGameButton_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Save Game");
-        }
-
-        private void LoadGameButton_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Load Game");
         }
 
         private void ResumeGameButton_Click(object sender, EventArgs e)

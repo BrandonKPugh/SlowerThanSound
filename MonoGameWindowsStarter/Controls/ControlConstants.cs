@@ -326,9 +326,13 @@ namespace MonoGameWindowsStarter.Controls
 
         #region TUTORIAL 
 
-        public const string TUTORIAL_TEXTURE = "Tutorial";
+        public const string TUTORIAL_TEXTURE1 = "TutorialScreen1";
+        public const string TUTORIAL_TEXTURE2 = "TutorialScreen2";
+        public const string TUTORIAL_TEXTURE3 = "TutorialScreen3";
         public static UIBOX_INFO TUTORIAL_TEXTURE_BOX = new UIBOX_INFO(0.05f, 0.05f * 16f / 9f, 0.9f, 1 - (0.15f * 16f / 9f), Color.White);
         public static BUTTON_INFO EXIT_TUTORIAL = new BUTTON_INFO("Menu", 0.4f, 0.85f, 0.2f, 0.1f);
+        public static BUTTON_INFO NEXT_TUTORIAL = new BUTTON_INFO("Next", 0.6f, 0.85f, 0.2f, 0.1f);
+        public static BUTTON_INFO PREVIOUS_TUTORIAL = new BUTTON_INFO("Previous", 0.2f, 0.85f, 0.2f, 0.1f);
 
         #endregion
     }
