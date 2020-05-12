@@ -365,9 +365,9 @@ namespace MonoGameWindowsStarter.States
                                                     _tooltip.Show = true;
                                                     _tooltip.SetText("Cost: " + _temporaryComponent.getValue().ToString());
                                                     */
-                                                    if (Ship.Material - _temporaryComponent.value >= 0)
+                                                    if (Ship.Material - Component.GetBaseValue(_placementType) >= 0)
                                                     {
-                                                        Ship.Material -= _temporaryComponent.value;
+                                                        Ship.Material -= Component.GetBaseValue(_placementType);
                                                         Ship.AddComponent(_temporaryComponent);
                                                         _placementType--;
                                                     }
@@ -383,11 +383,11 @@ namespace MonoGameWindowsStarter.States
                                     }
                                     else if (!mousePressed)
                                     {
-                                        if (Ship.Material - _temporaryComponent.value >= 0) 
+                                        if (Ship.Material - Component.GetBaseValue(_placementType) >= 0) 
                                         {
                                             if (mouseOnTile && (tileUnderMouse == _temporaryComponent.TilePosition))
                                             {
-                                                Ship.Material -= _temporaryComponent.value;
+                                                Ship.Material -= Component.GetBaseValue(_placementType);
                                                 Ship.AddComponent(_temporaryComponent);
                                             }
                                             else
@@ -396,7 +396,7 @@ namespace MonoGameWindowsStarter.States
                                                 {
                                                     if (room.InteriorContains(tileUnderMouse) && room.InteriorContains(_temporaryComponent.TilePosition))
                                                     {
-                                                        Ship.Material -= _temporaryComponent.value;
+                                                        Ship.Material -= Component.GetBaseValue(_placementType);
                                                         Ship.AddComponent(_temporaryComponent);
                                                     }
                                                 }
