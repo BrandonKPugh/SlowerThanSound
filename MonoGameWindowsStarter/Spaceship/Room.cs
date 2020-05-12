@@ -351,7 +351,7 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 roomHealth += component.health;
             }
-            roomHealth = (int)(Math.Pow(roomHealth, 1.5f));
+            //roomHealth = (int)(Math.Pow(roomHealth, 1.5f));
             maxRoomHealth = roomHealth;
             return roomHealth;
         }

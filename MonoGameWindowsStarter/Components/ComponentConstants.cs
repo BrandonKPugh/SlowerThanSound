@@ -18,5 +18,6 @@ namespace MonoGameWindowsStarter.Components
         public static Color COMPONENT_POWERGENERATOR_COLOR = Color.Yellow;
         public static Color COMPONENT_POWERSTORAGE_COLOR = Color.GreenYellow;
         public static Color COMPONENT_DEFAULT_COLOR = Color.White;
+
     }
 }

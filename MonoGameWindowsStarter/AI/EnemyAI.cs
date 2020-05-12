@@ -34,7 +34,7 @@ namespace MonoGameWindowsStarter.AI
 
         public float materialStored = 100;
         public float weaponDamage = 10;
-        public float weaponFireRate = 10f;
+        public float weaponFireRate = 8f;
         public float weaponPowerNeeded = 5;
         public float weaponCooldown = 5;
 
@@ -45,8 +45,8 @@ namespace MonoGameWindowsStarter.AI
         {
             _playerShip = playerShip;
             _combatState = combatState;
-            //var scale = _playerShip.MaxHealth * 0.01;
-            var scale = Math.Pow(_playerShip.MaxHealth, 0.1f);
+            var scale = _playerShip.MaxHealth * 0.01;
+            //var scale = Math.Pow(_playerShip.MaxHealth, 0.1f);
 
             //shipHealth = (int)(shipHealth * scale);
             weaponHealth = (float)(weaponHealth * scale);
