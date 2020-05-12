@@ -24,8 +24,8 @@ namespace MonoGameWindowsStarter.States
         public TutorialState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
         {
             tutorialTexture1 = _content.Load<Texture2D>(ControlConstants.TUTORIAL_TEXTURE1);
-            tutorialTexture2 = _content.Load<Texture2D>(ControlConstants.TUTORIAL_TEXTURE2);
-            tutorialTexture3 = _content.Load<Texture2D>(ControlConstants.TUTORIAL_TEXTURE3);
+            tutorialTexture2 = _content.Load<Texture2D>(ControlConstants.TUTORIAL_TEXTURE3);
+            tutorialTexture3 = _content.Load<Texture2D>(ControlConstants.TUTORIAL_TEXTURE2);
             textures = new Texture2D[3];
             textures[0] = tutorialTexture1;
             textures[1] = tutorialTexture2;
