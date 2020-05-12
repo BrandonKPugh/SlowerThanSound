@@ -21,42 +21,43 @@ namespace MonoGameWindowsStarter.AI
         private TimeSpan timer;
         #endregion
 
-        public int shipHealth = 100;
-        public int maxShipHealth;
-        public int weaponHealth = 10;
-        public int weaponMaxHealth;
-        public int materialStorageHealth = 10;
-        public int materialMaxHealth;
-        public int powerGeneratorHealth = 10;
-        public int generatorMaxHealth;
-        public int powerStorageHealth = 10;
-        public int powerStorageMaxHealth;
+        public float shipHealth = 100;
+        public float maxShipHealth;
+        public float weaponHealth = 5;
+        public float weaponMaxHealth;
+        public float materialStorageHealth = 5;
+        public float materialMaxHealth;
+        public float powerGeneratorHealth = 5;
+        public float generatorMaxHealth;
+        public float powerStorageHealth = 5;
+        public float powerStorageMaxHealth;
 
-        public int materialStored = 100;
-        public int weaponDamage = 10;
-        public int weaponFireRate = 10;
-        public int weaponPowerNeeded = 5;
-        public int weaponCooldown = 5;
+        public float materialStored = 100;
+        public float weaponDamage = 10;
+        public float weaponFireRate = 10f;
+        public float weaponPowerNeeded = 5;
+        public float weaponCooldown = 5;
 
-        public int powerGeneration = 5;
-        public int currentPower = 50;
+        public float powerGeneration = 5;
+        public float currentPower = 50;
 
         public EnemyAI(Ship playerShip, CombatState combatState)
         {
             _playerShip = playerShip;
             _combatState = combatState;
-            var scale = _playerShip.MaxHealth * 0.01;
+            //var scale = _playerShip.MaxHealth * 0.01;
+            var scale = Math.Pow(_playerShip.MaxHealth, 0.1f);
 
             //shipHealth = (int)(shipHealth * scale);
-            weaponHealth = (int)(weaponHealth * scale);
-            materialStorageHealth = (int)(materialStorageHealth * scale);
-            powerGeneratorHealth = (int)(powerGeneratorHealth * scale);
-            powerStorageHealth = (int)(powerStorageHealth * scale);
-            materialStored = (int)(materialStored * scale);
-            weaponDamage = (int)(weaponDamage * scale);
-            weaponFireRate = (int)(weaponFireRate / scale);
-            weaponPowerNeeded = (int)(weaponPowerNeeded * scale);
-            powerGeneration = (int)(powerGeneration * scale);
+            weaponHealth = (float)(weaponHealth * scale);
+            materialStorageHealth = (float)(materialStorageHealth * scale);
+            powerGeneratorHealth = (float)(powerGeneratorHealth * scale);
+            powerStorageHealth = (float)(powerStorageHealth * scale);
+            materialStored = (float)(materialStored * scale);
+            weaponDamage = (float)(weaponDamage * scale);
+            weaponFireRate =((float)weaponFireRate / (float)scale);
+            weaponPowerNeeded = (float)(weaponPowerNeeded * scale);
+            powerGeneration = (float)(powerGeneration * scale);
 
             weaponMaxHealth = weaponHealth;
             materialMaxHealth = materialStorageHealth;
@@ -125,7 +126,7 @@ namespace MonoGameWindowsStarter.AI
 
         public int CalculateShipHealth()
         {
-            return (weaponHealth + materialStorageHealth + powerGeneratorHealth + powerStorageHealth);
+            return (int)(weaponHealth + materialStorageHealth + powerGeneratorHealth + powerStorageHealth);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace MonoGameWindowsStarter.Spaceship
 {
     public class Projectile
     {
+        Random rand = new Random();
         public enum Attack_Against
         {
             Player,
@@ -27,7 +28,7 @@ namespace MonoGameWindowsStarter.Spaceship
         private Point _target;
         private Vector2 _position;
         private int _speed;
-        private int _damage;
+        private float _damage;
         public Texture2D _texture;
         public Sprite _sprite;
         public bool AtTarget = false;
@@ -36,7 +37,7 @@ namespace MonoGameWindowsStarter.Spaceship
 
         
 
-        public Projectile(Point target, Vector2 position, int damage, Attack_Against against,CombatState combatState)
+        public Projectile(Point target, Vector2 position, float damage, Attack_Against against,CombatState combatState)
         {
             _target = target;
             _position = position;
@@ -97,6 +98,31 @@ namespace MonoGameWindowsStarter.Spaceship
                     {
                         _combatState.enemyAI.powerStorageHealth -= _damage;
                         break;
+                    }
+                case (Attack_Against.EnemyHull):
+                    {
+                        int waysToSplit = 0;
+                        if (_combatState.enemyAI.powerGeneratorHealth > 0)
+                            waysToSplit++;
+                        if (_combatState.enemyAI.materialStorageHealth > 0)
+                            waysToSplit++;
+                        if (_combatState.enemyAI.weaponHealth > 0)
+                            waysToSplit++;
+                        if (_combatState.enemyAI.powerStorageHealth > 0)
+                            waysToSplit++;
+
+                        _damage /= (float)waysToSplit;
+                        _damage *= 1.5f;
+                        if (_combatState.enemyAI.powerGeneratorHealth > 0)
+                            _combatState.enemyAI.powerGeneratorHealth -= _damage;
+                        if (_combatState.enemyAI.materialStorageHealth > 0)
+                            _combatState.enemyAI.materialStorageHealth -= _damage;
+                        if (_combatState.enemyAI.weaponHealth > 0)
+                            _combatState.enemyAI.weaponHealth -= _damage;
+                        if (_combatState.enemyAI.powerStorageHealth > 0)
+                            _combatState.enemyAI.powerStorageHealth -= _damage;
+                        break;
+
                     }
                 default:
                     {

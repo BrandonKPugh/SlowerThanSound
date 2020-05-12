@@ -51,6 +51,7 @@ namespace MonoGameWindowsStarter.States
             ShipConstants.Initialize();
             
             Ship = ship;
+            Ship.CurrentHealth = Ship.MaxHealth;
 
             //Ship.Initialize(ShipConstants.COMPONENTS);
             projectileTexture = _content.Load<Texture2D>("Pixel");

@@ -302,9 +302,9 @@ namespace MonoGameWindowsStarter.Spaceship
             //timer = new TimeSpan(0);
         }
 
-        public void AlterHealth(int damage)
+        public void AlterHealth(float damage)
         {
-            CurrentHealth -= damage;
+            CurrentHealth -= (int)damage;
                 
         }
 

@@ -360,9 +360,17 @@ namespace MonoGameWindowsStarter.States
                                                 if (found == null)
                                                 {
                                                     _temporaryComponent.TilePosition = tileUnderMouse;
+                                                    /*
                                                     _drawTemporaryComponent = true;
                                                     _tooltip.Show = true;
                                                     _tooltip.SetText("Cost: " + _temporaryComponent.getValue().ToString());
+                                                    */
+                                                    if (Ship.Material - _temporaryComponent.value >= 0)
+                                                    {
+                                                        Ship.Material -= _temporaryComponent.value;
+                                                        Ship.AddComponent(_temporaryComponent);
+                                                        _placementType--;
+                                                    }
                                                 }
                                                 break;
                                             }
