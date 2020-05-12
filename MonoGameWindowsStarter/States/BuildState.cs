@@ -309,6 +309,25 @@ namespace MonoGameWindowsStarter.States
                                 }
                             case Placement_Type.DeleteComponent:
                                 {
+                                    _tooltip.Show = false;
+                                    if (mouseOnTile)
+                                    {
+                                        foreach (Room room in Ship.Rooms)
+                                        {
+                                            if (room.InteriorContains(tileUnderMouse))
+                                            {
+                                                foreach (Component c in room.GetComponents())
+                                                {
+                                                    if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
+                                                    {
+                                                        _tooltip.Show = true;
+                                                        _tooltip.SetText("Refund: " + Component.GetBaseValue(c.ComponentType) / 2);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                     if (mousePressed && mouseOnTile)
                                     {
                                         foreach (Room room in Ship.Rooms)
@@ -319,8 +338,9 @@ namespace MonoGameWindowsStarter.States
                                                 {
                                                     if (c.X == tileX && c.Y == tileY && c.ComponentType != Component.Component_Type.Structure)
                                                     {
-                                                        Ship.Material += c.value / 2;
+                                                        Ship.Material += Component.GetBaseValue(c.ComponentType) / 2;
                                                         room.RemoveComponent(c);
+                                                        _tooltip.Show = false;
                                                         break;
                                                     }
                                                 }
@@ -369,6 +389,9 @@ namespace MonoGameWindowsStarter.States
                                                     {
                                                         Ship.Material -= Component.GetBaseValue(_placementType);
                                                         Ship.AddComponent(_temporaryComponent);
+                                                        _temporaryComponent = null;
+                                                        _drawTemporaryComponent = false;
+                                                        _tooltip.Show = false;
                                                         _placementType--;
                                                     }
                                                 }
@@ -482,14 +505,14 @@ namespace MonoGameWindowsStarter.States
                                             Ship.LoadComponentTexture(component);
                                         }
                                         _tooltip.Show = true;
-                                        _tooltip.SetText("Cost: " + _temporaryRoom.GetValue().ToString());
+                                        _tooltip.SetText("Cost: " + _temporaryRoom.GetCost().ToString());
                                     }
                                     else if (!mousePressed && mouseOnTile)
                                     {
-                                        if (Ship.Material - _temporaryRoom.GetValue() >= 0)
+                                        if (Ship.Material - _temporaryRoom.GetCost() >= 0)
                                         {
                                             // Released mouse, finalize room
-                                            Ship.Material -= _temporaryRoom.GetValue();
+                                            Ship.Material -= _temporaryRoom.GetCost();
                                             Ship.AddRoom(_temporaryRoom);
                                         }
                                         roomState = Room_State.Room;
@@ -508,7 +531,7 @@ namespace MonoGameWindowsStarter.States
                                             if (room.InteriorContains(tileUnderMouse))
                                             {
                                                 _tooltip.Show = true;
-                                                _tooltip.SetText("Refund: " + room.GetValue() / 2);
+                                                _tooltip.SetText("Refund: " + room.GetCost() / 2);
                                                 break;
                                             }
                                         }
@@ -519,7 +542,7 @@ namespace MonoGameWindowsStarter.States
                                         {
                                             if (room.InteriorContains(tileUnderMouse))
                                             {
-                                                Ship.Material += room.GetValue() / 2;
+                                                Ship.Material += room.GetCost() / 2;
                                                 Ship.RemoveRoom(room);
                                                 _tooltip.Show = false;
                                                 break;

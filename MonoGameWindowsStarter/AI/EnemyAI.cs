@@ -33,7 +33,7 @@ namespace MonoGameWindowsStarter.AI
         public float powerStorageMaxHealth;
 
         public float materialStored = 100;
-        public float weaponDamage = 10;
+        public float weaponDamage = 5;
         public float weaponFireRate = 8f;
         public float weaponPowerNeeded = 5;
         public float weaponCooldown = 5;

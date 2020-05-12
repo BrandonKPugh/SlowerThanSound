@@ -29,12 +29,12 @@ namespace MonoGameWindowsStarter.Spaceship
         private float _power;
         public float Power { get { return _power; } set { _power = Math.Min(value, maxPower); } }
         public int maxPower = 0;
-        public int Material = 1000;
+        public int Material = 25;
         public int maxMaterial = 0;
         public int MaxHealth = 1;
         public int CurrentHealth;
         private int PreviousHealth;
-        private List<Tuple<Room, Projectile.Attack_Against>> Attacks = new List<Tuple<Room, Projectile.Attack_Against>>();
+        public List<Tuple<Room, Projectile.Attack_Against>> Attacks = new List<Tuple<Room, Projectile.Attack_Against>>();
         private CombatState _combatState;
         #endregion
 

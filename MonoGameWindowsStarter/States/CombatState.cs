@@ -31,6 +31,7 @@ namespace MonoGameWindowsStarter.States
 
         private Texture2D projectileTexture;
         private Texture2D _pixelTexture;
+        private int _oldMaterialCount;
 
         private enum Clicked_State
         {
@@ -52,6 +53,8 @@ namespace MonoGameWindowsStarter.States
             
             Ship = ship;
             Ship.CurrentHealth = Ship.MaxHealth;
+            Ship.Attacks = new List<Tuple<Room, Projectile.Attack_Against>>();
+            _oldMaterialCount = Ship.Material;
 
             //Ship.Initialize(ShipConstants.COMPONENTS);
             projectileTexture = _content.Load<Texture2D>("Pixel");
@@ -274,7 +277,10 @@ namespace MonoGameWindowsStarter.States
                 LoseGame();
             _playerHealthBar.Value = ((float)Ship.CurrentHealth / (float)Ship.MaxHealth);
 
-            
+            if(enemyAI.shipHealth <= 0)
+            {
+                BuildModeButton_Click(this, null);
+            }
         }
 
         public void AddProjectile(Projectile projectile)
@@ -291,7 +297,8 @@ namespace MonoGameWindowsStarter.States
         private void BuildModeButton_Click(object sender, EventArgs e)
         {
             ReviewState.CombatInfo info = new ReviewState.CombatInfo();
-            info.MetalCollected = 10;
+            info.MetalCollected = (Ship.Material - _oldMaterialCount) + (int)((enemyAI.maxShipHealth * ((30 + Ship.maxMaterial) / 60f)) * (Math.Max(((enemyAI.maxShipHealth / 2) - enemyAI.shipHealth), 0) / enemyAI.maxShipHealth));
+            Ship.Material += (int)((enemyAI.maxShipHealth * ((30 + Ship.maxMaterial) / 60f)) * (Math.Max(((enemyAI.maxShipHealth / 2) - enemyAI.shipHealth), 0) / enemyAI.maxShipHealth));
             _game.ChangeState(new ReviewState(_game, _graphicsDevice, _content, Ship, info));
         }
 

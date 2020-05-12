@@ -564,5 +564,19 @@ namespace MonoGameWindowsStarter.Spaceship
             _timeSinceShot = 0f;
             CanShoot = false;
         }
+
+        public int GetCost()
+        {
+            var value = 0;
+            value += GridLocation.Width * GridLocation.Height * 3;
+
+
+            foreach (Component comp in Components)
+            {
+                if(comp.ComponentType != Component.Component_Type.Structure)
+                    value += comp.getValue();
+            }
+            return value;
+        }
     }
 }

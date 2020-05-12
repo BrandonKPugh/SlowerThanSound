@@ -81,48 +81,46 @@ namespace MonoGameWindowsStarter.Spaceship
             {
                 case (Attack_Against.EnemyGenerator):
                     {
-                        _combatState.enemyAI.powerGeneratorHealth -= _damage;
+                        if(_combatState.enemyAI.powerGeneratorHealth <= 0)
+                            DamageHull();
+                        else
+                            _combatState.enemyAI.powerGeneratorHealth -= _damage;
                         break;
                     }
                 case (Attack_Against.EnemyStorage):
                     {
-                        _combatState.enemyAI.materialStorageHealth -= _damage;
-                        break;
+                        if (_combatState.enemyAI.materialStorageHealth <= 0)
+                            DamageHull();
+                        else
+                        {
+                            _combatState.enemyAI.materialStorageHealth -= _damage;
+                            _combatState.Ship.Material += (int)_damage;
+                        }
+                            break;
                     }
                 case (Attack_Against.EnemyWeapon):
                     {
-                        _combatState.enemyAI.weaponHealth -= _damage;
+                        if (_combatState.enemyAI.weaponHealth <= 0)
+                            DamageHull();
+                        else
+                            _combatState.enemyAI.weaponHealth -= _damage;
                         break;
                     }
                 case (Attack_Against.EnemyPowerStorage):
                     {
-                        _combatState.enemyAI.powerStorageHealth -= _damage;
+                        if (_combatState.enemyAI.powerStorageHealth <= 0)
+                            DamageHull();
+                        else
+                        {
+                            _combatState.enemyAI.powerStorageHealth -= _damage;
+                            _combatState.Ship.Power += _damage * 4;
+                        }
                         break;
                     }
                 case (Attack_Against.EnemyHull):
                     {
-                        int waysToSplit = 0;
-                        if (_combatState.enemyAI.powerGeneratorHealth > 0)
-                            waysToSplit++;
-                        if (_combatState.enemyAI.materialStorageHealth > 0)
-                            waysToSplit++;
-                        if (_combatState.enemyAI.weaponHealth > 0)
-                            waysToSplit++;
-                        if (_combatState.enemyAI.powerStorageHealth > 0)
-                            waysToSplit++;
-
-                        _damage /= (float)waysToSplit;
-                        _damage *= 1.5f;
-                        if (_combatState.enemyAI.powerGeneratorHealth > 0)
-                            _combatState.enemyAI.powerGeneratorHealth -= _damage;
-                        if (_combatState.enemyAI.materialStorageHealth > 0)
-                            _combatState.enemyAI.materialStorageHealth -= _damage;
-                        if (_combatState.enemyAI.weaponHealth > 0)
-                            _combatState.enemyAI.weaponHealth -= _damage;
-                        if (_combatState.enemyAI.powerStorageHealth > 0)
-                            _combatState.enemyAI.powerStorageHealth -= _damage;
+                        DamageHull();
                         break;
-
                     }
                 default:
                     {
@@ -139,6 +137,30 @@ namespace MonoGameWindowsStarter.Spaceship
                         break;
                     }
             }
+        }
+
+        private void DamageHull()
+        {
+            int waysToSplit = 0;
+            if (_combatState.enemyAI.powerGeneratorHealth > 0)
+                waysToSplit++;
+            if (_combatState.enemyAI.materialStorageHealth > 0)
+                waysToSplit++;
+            if (_combatState.enemyAI.weaponHealth > 0)
+                waysToSplit++;
+            if (_combatState.enemyAI.powerStorageHealth > 0)
+                waysToSplit++;
+
+            _damage /= (float)waysToSplit;
+            _damage *= 1.5f;
+            if (_combatState.enemyAI.powerGeneratorHealth > 0)
+                _combatState.enemyAI.powerGeneratorHealth -= _damage;
+            if (_combatState.enemyAI.materialStorageHealth > 0)
+                _combatState.enemyAI.materialStorageHealth -= _damage;
+            if (_combatState.enemyAI.weaponHealth > 0)
+                _combatState.enemyAI.weaponHealth -= _damage;
+            if (_combatState.enemyAI.powerStorageHealth > 0)
+                _combatState.enemyAI.powerStorageHealth -= _damage;
         }
     }
 }

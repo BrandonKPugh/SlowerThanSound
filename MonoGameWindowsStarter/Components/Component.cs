@@ -127,5 +127,21 @@ namespace MonoGameWindowsStarter.Components
             }
             return 0;
         }
+
+        internal static int GetBaseValue(Component.Component_Type type)
+        {
+            switch (type)
+            {
+                case Component_Type.Weapon:
+                    return new WeaponComponent(0, 0, Color.White).getValue();
+                case Component_Type.Material_Storage:
+                    return new MaterialStorageComponent(0, 0, Color.White).getValue();
+                case Component_Type.Power_Generation:
+                    return new PowerGenerationComponent(0, 0, Color.White).getValue();
+                case Component_Type.Power_Storage:
+                    return new PowerStorageComponent(0, 0, Color.White).getValue();
+            }
+            return 0;
+        }
     }
 }
